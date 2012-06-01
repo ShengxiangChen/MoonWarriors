@@ -1,5 +1,6 @@
 MoonWarriors
 ==================
+   *demo:http://www.cocos2d-x.org/MoonWarriors/index.html[3]
 
 This showcase utilizes many features from "Cocos2d-html5 engine",including:
    * Parallax background
@@ -30,3 +31,4 @@ Website
 
    [1]: http://bbs.html5china.com/forum-cocos2d_html5-1.html "HTML5China"
    [2]: http://www.cocos2d-x.org "Cocos2d-html5"
+   [3]: http://www.cocos2d-x.org/MoonWarriors/index.html "MoonWarriors"
