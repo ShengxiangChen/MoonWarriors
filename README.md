@@ -2,12 +2,12 @@ MoonWarriors
 ==================
 
 This showcase utilizes many features from "Cocos2d-html5 engine",including:
-   * Parallax background,
-   * tilemap,
-   * actions,
-   * ease,
-   * frame animation,
-   * schedule,
+   * Parallax background
+   * tilemap
+   * actions
+   * ease
+   * frame animation
+   * schedule
    * Labels
    * keyboard Dispatcher
    * Scene Transition.
