@@ -10,7 +10,7 @@ This showcase utilizes many features from "Cocos2d-html5 engine",including:
    * schedule
    * Labels
    * keyboard Dispatcher
-   * Scene Transition.
+   * Scene Transition
 
 Art and audio is copyrighted by Enigmata Genus Revenge,
 you may not use any copyrigted material without permission.
