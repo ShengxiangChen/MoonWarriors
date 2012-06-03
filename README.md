@@ -14,7 +14,7 @@ This showcase utilizes many features from "Cocos2d-html5 engine",including:
    * Scene Transition
 
 Art and audio is copyrighted by Enigmata Genus Revenge,
-you may not use any copyrigted material without permission.
+you may not use any copyrighted material without permission.
 
 This showcase is licensed under GPL
 
