@@ -2,7 +2,7 @@ var SettingsLayer = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
-            var sp = cc.Sprite.spriteWithFile(s_loading);
+            var sp = cc.Sprite.create(s_loading);
             sp.setAnchorPoint(cc.PointZero());
             this.addChild(sp, 0, 1);
 
@@ -13,34 +13,34 @@ var SettingsLayer = cc.Layer.extend({
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(18);
-            var title1 = cc.MenuItemFont.itemFromString("Sound");
+            var title1 = cc.MenuItemFont.create("Sound");
             title1.setIsEnabled(false);
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(26);
-            var item1 = cc.MenuItemToggle.itemWithTarget(this, this.soundControl,
-                cc.MenuItemFont.itemFromString("On"), cc.MenuItemFont.itemFromString("Off"));
+            var item1 = cc.MenuItemToggle.create(this, this.soundControl,
+                cc.MenuItemFont.create("On"), cc.MenuItemFont.create("Off"));
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(18);
-            var title2 = cc.MenuItemFont.itemFromString("Mode");
+            var title2 = cc.MenuItemFont.create("Mode");
             title2.setIsEnabled(false);
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(26);
-            var item2 = cc.MenuItemToggle.itemWithTarget(this, this.modeControl,
-                cc.MenuItemFont.itemFromString("Easy"),
-                cc.MenuItemFont.itemFromString("Normal"),
-                cc.MenuItemFont.itemFromString("Hard"));
+            var item2 = cc.MenuItemToggle.create(this, this.modeControl,
+                cc.MenuItemFont.create("Easy"),
+                cc.MenuItemFont.create("Normal"),
+                cc.MenuItemFont.create("Hard"));
 
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(26);
-            var label = cc.LabelTTF.labelWithString("Go back", "Arial", 20);
-            var back = cc.MenuItemLabel.itemWithLabel(label, this, this.backCallback);
+            var label = cc.LabelTTF.create("Go back", "Arial", 20);
+            var back = cc.MenuItemLabel.create(label, this, this.backCallback);
             back.setScale(0.8);
 
-            var menu = cc.Menu.menuWithItems(title1, title2, item1, item2, back);
+            var menu = cc.Menu.create(title1, title2, item1, item2, back);
             menu.alignItemsInColumns(2, 2, 1);
             this.addChild(menu);
 
@@ -54,9 +54,9 @@ var SettingsLayer = cc.Layer.extend({
         return bRet;
     },
     backCallback:function (pSender) {
-        var scene = cc.Scene.node();
-        scene.addChild(SysMenu.node());
-        cc.Director.sharedDirector().replaceScene(cc.TransitionFade.transitionWithDuration(1.2, scene));
+        var scene = cc.Scene.create();
+        scene.addChild(SysMenu.create());
+        cc.Director.sharedDirector().replaceScene(cc.TransitionFade.create(1.2, scene));
     },
     soundControl:function(){
         global.sound = global.sound ? false : true;
@@ -68,7 +68,7 @@ var SettingsLayer = cc.Layer.extend({
     }
 });
 
-SettingsLayer.node = function () {
+SettingsLayer.create = function () {
     var sg = new SettingsLayer();
     if (sg && sg.init()) {
         return sg;

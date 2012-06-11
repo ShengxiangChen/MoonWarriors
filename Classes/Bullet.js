@@ -17,10 +17,10 @@ var Bullet = additiveSprite.extend({
         /*var tmpAction;
          switch (this.attackMode) {
          case global.AttackMode.Normal:
-         tmpAction = cc.MoveBy.actionWithDuration(2, cc.ccp(this.getPosition().x, 400));
+         tmpAction = cc.MoveBy.create(2, cc.ccp(this.getPosition().x, 400));
          break;
          case global.AttackMode.Tsuihikidan:
-         tmpAction = cc.MoveTo.actionWithDuration(2, GameLayer.node()._ship.getPosition());
+         tmpAction = cc.MoveTo.create(2, GameLayer.create()._ship.getPosition());
          break;
          }
          this.runAction(tmpAction);*/
@@ -43,9 +43,9 @@ var Bullet = additiveSprite.extend({
         explode.setScale(0.75);
         this.getParent().addChild(explode,9999);
         this.getParent().removeChild(this);
-        var removeExplode = cc.CallFunc.actionWithTarget(explode,explode.removeFromParentAndCleanup);
-        explode.runAction(cc.ScaleBy.actionWithDuration(0.3, 2,2));
-        explode.runAction(cc.Sequence.actions(cc.FadeOut.actionWithDuration(0.3), removeExplode))
+        var removeExplode = cc.CallFunc.create(explode,explode.removeFromParentAndCleanup);
+        explode.runAction(cc.ScaleBy.create(0.3, 2,2));
+        explode.runAction(cc.Sequence.create(cc.FadeOut.create(0.3), removeExplode))
     },
     hurt:function () {
         this.HP--;

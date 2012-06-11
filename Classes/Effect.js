@@ -15,21 +15,21 @@ var flareEffect = function (parent, target, callback) {
     flare.setRotation(-120);
     flare.setScale(0.2);
 
-    var opacityAnim = cc.FadeTo.actionWithDuration(0.5, 255);
-    var opacDim = cc.FadeTo.actionWithDuration(1, 0);
-    var biggeAnim = cc.ScaleBy.actionWithDuration(0.7, 1.2, 1.2);
-    var biggerEase = cc.EaseSineOut.actionWithAction(biggeAnim);
-    var moveAnim = cc.MoveBy.actionWithDuration(0.5, cc.ccp(328, 0));
-    var easeMove = cc.EaseSineOut.actionWithAction(moveAnim);
-    var rotateAnim = cc.RotateBy.actionWithDuration(2.5, 90);
-    var rotateEase = cc.EaseExponentialOut.actionWithAction(rotateAnim)
-    var bigger = cc.ScaleTo.actionWithDuration(0.5, 1);
+    var opacityAnim = cc.FadeTo.create(0.5, 255);
+    var opacDim = cc.FadeTo.create(1, 0);
+    var biggeAnim = cc.ScaleBy.create(0.7, 1.2, 1.2);
+    var biggerEase = cc.EaseSineOut.create(biggeAnim);
+    var moveAnim = cc.MoveBy.create(0.5, cc.ccp(328, 0));
+    var easeMove = cc.EaseSineOut.create(moveAnim);
+    var rotateAnim = cc.RotateBy.create(2.5, 90);
+    var rotateEase = cc.EaseExponentialOut.create(rotateAnim)
+    var bigger = cc.ScaleTo.create(0.5, 1);
 
-    var onComplete = cc.CallFunc.actionWithTarget(target, callback);
-    var killflare = cc.CallFunc.actionWithTarget(flare, function () {
+    var onComplete = cc.CallFunc.create(target, callback);
+    var killflare = cc.CallFunc.create(flare, function () {
         this.getParent().removeChild(this);
     });
-    flare.runAction(cc.Sequence.actions(opacityAnim, biggerEase, opacDim, killflare, onComplete));
+    flare.runAction(cc.Sequence.create(opacityAnim, biggerEase, opacDim, killflare, onComplete));
     flare.runAction(easeMove);
     flare.runAction(rotateEase);
     flare.runAction(bigger);
@@ -56,10 +56,10 @@ var spark = function(ccpoint,parent, scale, duration)
     two.setScale(scale);
     three.setScale(scale);
     three.setRotation(Math.random()*360);
-    var left = cc.RotateBy.actionWithDuration(duration, -45);
-    var right = cc.RotateBy.actionWithDuration(duration, 45);
-    var scaleBy = cc.ScaleBy.actionWithDuration(duration, 3,3);
-    var fadeOut = cc.FadeOut.actionWithDuration(duration);
+    var left = cc.RotateBy.create(duration, -45);
+    var right = cc.RotateBy.create(duration, 45);
+    var scaleBy = cc.ScaleBy.create(duration, 3,3);
+    var fadeOut = cc.FadeOut.create(duration);
     one.runAction(left);
     two.runAction(right);
     one.runAction(scaleBy);

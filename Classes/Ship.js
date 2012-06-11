@@ -20,13 +20,13 @@ var Ship = cc.Sprite.extend({
         this.setPosition(this.appearPosition);
 
         // set frame
-        var animation = cc.Animation.animation();
+        var animation = cc.Animation.create();
         animation.addFrameWithTexture(shipTexture, cc.RectMake(0, 0, 60, 38));
         animation.addFrameWithTexture(shipTexture, cc.RectMake(60, 0, 60, 38));
 
         // ship animate
-        var action = cc.Animate.actionWithDuration(0.1, animation, true);
-        this.runAction(cc.RepeatForever.actionWithAction(action));
+        var action = cc.Animate.create(0.1, animation, true);
+        this.runAction(cc.RepeatForever.create(action));
         this.schedule(this.shoot, 1 / 8);
 
         //revive effect
@@ -36,14 +36,14 @@ var Ship = cc.Sprite.extend({
         ghostSprite.setScale(8);
         ghostSprite.setPosition(cc.ccp(this.getContentSize().width / 2, 12));
         this.addChild(ghostSprite, 3000, 99999);
-        ghostSprite.runAction(cc.ScaleTo.actionWithDuration(0.5, 1, 1));
-        var blinks = cc.Blink.actionWithDuration(3, 9);
-        var makeBeAttack = cc.CallFunc.actionWithTarget(this, function (t) {
+        ghostSprite.runAction(cc.ScaleTo.create(0.5, 1, 1));
+        var blinks = cc.Blink.create(3, 9);
+        var makeBeAttack = cc.CallFunc.create(this, function (t) {
             t.canBeAttack = true;
             t.setIsVisible(true);
             t.removeChild(ghostSprite);
         });
-        this.runAction(cc.Sequence.actions(cc.DelayTime.actionWithDuration(0.5), blinks, makeBeAttack));
+        this.runAction(cc.Sequence.create(cc.DelayTime.create(0.5), blinks, makeBeAttack));
 
         if (global.sound) {
             cc.AudioManager.sharedEngine().playBackgroundMusic(s_bgMusic, true);

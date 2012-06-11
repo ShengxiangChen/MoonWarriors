@@ -25,7 +25,7 @@ var GameLayer = cc.Layer.extend({
             this.screenRect = new cc.Rect(-20, -20, winSize.width + 40, winSize.height + 40);
 
             // score
-            this.lbScore = cc.LabelTTF.labelWithString("Score: 0", cc.SizeMake(winSize.width / 2, 50), cc.TextAlignmentRight, "Arial", 14);
+            this.lbScore = cc.LabelTTF.create("Score: 0", cc.SizeMake(winSize.width / 2, 50), cc.TextAlignmentRight, "Arial", 14);
             this.addChild(this.lbScore, 1000);
             this.lbScore.setPosition(cc.ccp(winSize.width - 100, winSize.height - 15));
 
@@ -37,7 +37,7 @@ var GameLayer = cc.Layer.extend({
             this.addChild(life, 1, 5);
 
             // ship Life count
-            this._lbLife = cc.LabelTTF.labelWithString("0", "Arial", 20);
+            this._lbLife = cc.LabelTTF.create("0", "Arial", 20);
             this._lbLife.setPosition(cc.ccp(60, 463));
             this._lbLife.setColor(cc.RED());
             this.addChild(this._lbLife, 1000);
@@ -77,7 +77,7 @@ var GameLayer = cc.Layer.extend({
 
         var touch = pTouches[0];
         var location = touch.locationInView(touch.view());
-        //this._ship.runAction(cc.MoveTo.actionWithDuration(1.0, cc.ccp(location.x, location.y)));
+        //this._ship.runAction(cc.MoveTo.create(1.0, cc.ccp(location.x, location.y)));
     },
     keyDown:function (e) {
         keys[e] = true;
@@ -145,9 +145,9 @@ var GameLayer = cc.Layer.extend({
             this.addChild(this._ship, this._ship.zOrder, global.Tag.Ship);
         }
         else if (global.life <= 0 && !this._ship.active) {
-            this.runAction(cc.Sequence.actions(
-                cc.DelayTime.actionWithDuration(3),
-                cc.CallFunc.actionWithTarget(this, this.onGameOver)))
+            this.runAction(cc.Sequence.create(
+                cc.DelayTime.create(3),
+                cc.CallFunc.create(this, this.onGameOver)))
         }
     },
     updateUI:function () {
@@ -178,38 +178,38 @@ var GameLayer = cc.Layer.extend({
     },
     initBackground:function () {
         // bg
-        this._backSky = cc.Sprite.spriteWithFile(s_bg01);
+        this._backSky = cc.Sprite.create(s_bg01);
         this._backSky.setAnchorPoint(cc.PointZero());
         this._backSkyHeight = this._backSky.getContentSize().height;
         this.addChild(this._backSky, -10);
 
         //tilemap
-        this._backTileMap = cc.TMXTiledMap.tiledMapWithTMXFile(s_level01);
+        this._backTileMap = cc.TMXTiledMap.create(s_level01);
         this.addChild(this._backTileMap, -9);
         this._backTileMapHeight = this._backTileMap.getMapSize().height * this._backTileMap.getTileSize().height;
 
         this._backSkyHeight -= 48;
         this._backTileMapHeight -= 200;
-        this._backSky.runAction(cc.MoveBy.actionWithDuration(3, new cc.Point(0, -48)));
-        this._backTileMap.runAction(cc.MoveBy.actionWithDuration(3, new cc.Point(0, -200)));
+        this._backSky.runAction(cc.MoveBy.create(3, new cc.Point(0, -48)));
+        this._backTileMap.runAction(cc.MoveBy.create(3, new cc.Point(0, -200)));
 
         this.schedule(this.movingBackground, 3);
     },
     movingBackground:function () {
-        this._backSky.runAction(cc.MoveBy.actionWithDuration(3, new cc.Point(0, -48)));
-        this._backTileMap.runAction(cc.MoveBy.actionWithDuration(3, new cc.Point(0, -200)));
+        this._backSky.runAction(cc.MoveBy.create(3, new cc.Point(0, -48)));
+        this._backTileMap.runAction(cc.MoveBy.create(3, new cc.Point(0, -200)));
         this._backSkyHeight -= 48;
         this._backTileMapHeight -= 200;
 
         if (this._backSkyHeight <= winSize.height) {
             if (!this._isBackSkyReload) {
-                this._backSkyRe = cc.Sprite.spriteWithFile(s_bg01);
+                this._backSkyRe = cc.Sprite.create(s_bg01);
                 this._backSkyRe.setAnchorPoint(cc.PointZero());
                 this.addChild(this._backSkyRe, -10);
                 this._backSkyRe.setPosition(new cc.Point(0, winSize.height));
                 this._isBackSkyReload = true;
             }
-            this._backSkyRe.runAction(cc.MoveBy.actionWithDuration(3, new cc.Point(0, -48)));
+            this._backSkyRe.runAction(cc.MoveBy.create(3, new cc.Point(0, -48)));
         }
         if (this._backSkyHeight <= 0) {
             this._backSkyHeight = this._backSky.getContentSize().height;
@@ -221,12 +221,12 @@ var GameLayer = cc.Layer.extend({
 
         if (this._backTileMapHeight <= winSize.height) {
             if (!this._isBackTileReload) {
-                this._backTileMapRe = cc.TMXTiledMap.tiledMapWithTMXFile(s_level01);
+                this._backTileMapRe = cc.TMXTiledMap.create(s_level01);
                 this.addChild(this._backTileMapRe, -9);
                 this._backTileMapRe.setPosition(new cc.Point(0, winSize.height));
                 this._isBackTileReload = true;
             }
-            this._backTileMapRe.runAction(cc.MoveBy.actionWithDuration(3, new cc.Point(0, -200)));
+            this._backTileMapRe.runAction(cc.MoveBy.create(3, new cc.Point(0, -200)));
         }
         if (this._backTileMapHeight <= 0) {
             this._backTileMapHeight = this._backTileMapRe.getMapSize().height * this._backTileMapRe.getTileSize().height;
@@ -237,13 +237,13 @@ var GameLayer = cc.Layer.extend({
         }
     },
     onGameOver:function () {
-        var scene = cc.Scene.node();
-        scene.addChild(GameOver.node());
-        cc.Director.sharedDirector().replaceScene(cc.TransitionFade.transitionWithDuration(1.2, scene));
+        var scene = cc.Scene.create();
+        scene.addChild(GameOver.create());
+        cc.Director.sharedDirector().replaceScene(cc.TransitionFade.create(1.2, scene));
     }
 });
 
-GameLayer.node = function () {
+GameLayer.create = function () {
     var sg = new GameLayer();
     if (sg && sg.init()) {
         return sg;
@@ -252,8 +252,8 @@ GameLayer.node = function () {
 };
 
 GameLayer.scene = function () {
-    var scene = cc.Scene.node();
-    var layer = GameLayer.node();
+    var scene = cc.Scene.create();
+    var layer = GameLayer.create();
     scene.addChild(layer, 1);
     return scene;
 };

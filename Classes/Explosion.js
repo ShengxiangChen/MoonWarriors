@@ -9,9 +9,9 @@ var Explosion = additiveSprite.extend({
         this.initWithSpriteFrame(pFrame);
 
         var animation = cc.AnimationCache.sharedAnimationCache().animationByName("Explosion");
-        this.runAction(cc.Sequence.actions(
+        this.runAction(cc.Sequence.create(
             cc.Animate.actionWithAnimation(animation, false),
-            cc.CallFunc.actionWithTarget(this, this.destroy)
+            cc.CallFunc.create(this, this.destroy)
         ));
     },
     destroy:function () {
@@ -28,6 +28,6 @@ Explosion.sharedExplosion = function () {
         var frame = cc.SpriteFrameCache.sharedSpriteFrameCache().spriteFrameByName(str);
         animFrames.push(frame);
     }
-    var animation = cc.Animation.animationWithFrames(animFrames, 0.04);
+    var animation = cc.Animation.create(animFrames, 0.04);
     cc.AnimationCache.sharedAnimationCache().addAnimation(animation, "Explosion");
 };
