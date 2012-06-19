@@ -14,6 +14,8 @@ var GameLayer = cc.Layer.extend({
     lbScore:null,
     screenRect:null,
     explosionAnimation:[],
+    isMouseDown:false,
+    _beginPos:cc.PointZero(),
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -71,13 +73,30 @@ var GameLayer = cc.Layer.extend({
         var curTime = minute + ":" + second;
         this._levelManager.loadLevelResource(this._time);
     },
-    ccTouchesEnded:function (pTouches, pEvent) {
-        if (pTouches.length <= 0)
-            return;
+    ccTouchesBegan:function (touches, event) {
+        if (!this.isMouseDown) {
+            var touch = touches[0];
+            this._beginPos = touch.locationInView(0);
+        }
+        this.isMouseDown = true;
+    },
+    ccTouchesMoved:function (touches, event) {
+        if (this.isMouseDown) {
+            var curPos = this._ship.getPosition();
+            if(cc.Rect.CCRectIntersectsRect(this._ship.boundingBox(),this.screenRect)){
+                var touch = touches[0];
+                var location = touch.locationInView(touch.view());
 
-        var touch = pTouches[0];
-        var location = touch.locationInView(touch.view());
-        //this._ship.runAction(cc.MoveTo.create(1.0, cc.ccp(location.x, location.y)));
+                var move = cc.ccpSub(location,this._beginPos);
+                var nextPos = cc.ccpAdd(curPos,move);
+                this._ship.setPosition(nextPos);
+                this._beginPos = location;
+                curPos = nextPos;
+            }
+        }
+    },
+    ccTouchesEnded:function () {
+        this.isMouseDown = false;
     },
     keyDown:function (e) {
         keys[e] = true;
