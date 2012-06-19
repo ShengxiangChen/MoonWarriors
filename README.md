@@ -1,12 +1,12 @@
-MoonWarriors
+MoonWarriors 战神传说
 ==================
-   *demo:[http://www.cocos2d-x.org/MoonWarriors/index.html][3]
+   * demo:[http://www.cocos2d-x.org/MoonWarriors/index.html][3]
 
 This showcase utilizes many features from "Cocos2d-html5 engine",including:
    * Parallax background
    * tilemap
    * actions
-   * ease
+   * ease ()
    * frame animation
    * schedule
    * Labels
@@ -18,13 +18,13 @@ you may not use any copyrighted material without permission.
 
 This showcase is licensed under GPL
 
-Authors
+Authors 作者
 ------------------
-   * Programmer: Shengxiang Chen , Dingping Lv
-   * Effects animation: Hao Wu
-   * Quality Assurance:  Sean Lin
+   * Programmer: Shengxiang Chen (陈升想), Dingping Lv (吕定平)
+   * Effects animation: Hao Wu (吴昊)
+   * Quality Assurance:  Sean Lin (林顺)
 
-Website
+Website 相关站点
 ------------------
    * HTML5China: [bbs.html5china.com][1]
    * Cocos2d-html5: [www.cocos2d-x.org][2]
