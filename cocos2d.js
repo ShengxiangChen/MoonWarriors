@@ -38,16 +38,6 @@ cc.$ = function (x) {
 cc.$new = function (x) {
     return document.createElement(x);
 };
-//function to load files into html
-/*
- cc.loadjs = function(filename)
- {
- //get a ref to header
- var head = cc.$('head');
- var insert = document.createElement('script');
- insert.setAttribute('src',cc.Dir+filename);
- head.appendChild(insert);
- };*/
 
 cc.loadjs = function (filename) {
     //add the file to the que
