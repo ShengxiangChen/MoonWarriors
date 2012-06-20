@@ -39,15 +39,16 @@ var SysMenu = cc.Layer.extend({
             this.schedule(this.update, 0.1);
 
            var tmp = cc.TextureCache.sharedTextureCache().addImage(s_ship01);
-            this._ship = cc.Sprite.spriteWithTexture(tmp,cc.RectMake(0, 45, 60, 38));
+            this._ship = cc.Sprite.createWithTexture(tmp,cc.RectMake(0, 45, 60, 38));
             this.addChild(this._ship, 0, 4);
             this._ship.setPosition(cc.ccp(Math.random() * winSize.width, 0));
             this._ship.runAction(cc.MoveBy.create(2, cc.ccp(Math.random() * winSize.width, this._ship.getPosition().y + winSize.height + 100)));
 
-            /*if (global.sound) {
+            if (global.sound) {
                 cc.AudioManager.sharedEngine().setBackgroundMusicVolume(0.7);
                 cc.AudioManager.sharedEngine().playBackgroundMusic(s_mainMainMusic, true);
-            }*/
+            }
+
             bRet = true;
         }
         return bRet;

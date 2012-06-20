@@ -4,6 +4,9 @@ var GameOver = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super) {
+            global.enemyContainer = [];
+            global.ebulletContainer = [];
+            global.sbulletContainer = [];
             var sp = cc.Sprite.create(s_loading);
             sp.setAnchorPoint(cc.PointZero());
             this.addChild(sp, 0, 1);

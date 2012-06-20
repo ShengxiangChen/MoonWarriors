@@ -10,7 +10,7 @@ var Explosion = additiveSprite.extend({
 
         var animation = cc.AnimationCache.sharedAnimationCache().animationByName("Explosion");
         this.runAction(cc.Sequence.create(
-            cc.Animate.actionWithAnimation(animation, false),
+            cc.Animate.create(animation, false),
             cc.CallFunc.create(this, this.destroy)
         ));
     },

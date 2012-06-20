@@ -7,15 +7,15 @@
             <key>W1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,29},{14,31}}</string>
+                <string>{{2,29},{14,62}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{14,31}}</string>
+                <string>{{0,0},{14,62}}</string>
                 <key>sourceSize</key>
-                <string>{14,31}</string>
+                <string>{14,62}</string>
             </dict>
             <key>W2.png</key>
             <dict>
@@ -38,9 +38,9 @@
             <key>realTextureFileName</key>
             <string>bullet.png</string>
             <key>size</key>
-            <string>{32,64}</string>
+            <string>{32,128}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:0e20b5fc518428b115af31286c7d5cf7$</string>
+            <string>$TexturePacker:SmartUpdate:62c336b840c0c8c734ff060ea6f239c1$</string>
             <key>textureFileName</key>
             <string>bullet.png</string>
         </dict>

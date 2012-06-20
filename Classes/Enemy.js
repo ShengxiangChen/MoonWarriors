@@ -1,4 +1,5 @@
 var Enemy = cc.Sprite.extend({
+    eID:0,
     active:true,
     speed:200,
     bulletSpeed:-200,
@@ -41,6 +42,7 @@ var Enemy = cc.Sprite.extend({
         a.setPosition(this.getPosition());
         this.getParent().addChild(a);
         spark(this.getPosition(),this.getParent(), 1.2, 0.7);
+        cc.ArrayRemoveObject(global.enemyContainer,this);
         this.getParent().removeChild(this);
         if(global.sound){
             cc.AudioManager.sharedEngine().playEffect(s_explodeEffect);
@@ -48,6 +50,7 @@ var Enemy = cc.Sprite.extend({
     },
     shoot:function () {
         var b = new Bullet(this.bulletSpeed, "W2.png", this.attackMode);
+        global.ebulletContainer.push(b);
         this.getParent().addChild(b, b.zOrder, global.Tag.EnemyBullet);
         b.setPosition(cc.ccp(this.getPosition().x, this.getPosition().y - this.getContentSize().height * 0.2));
     },

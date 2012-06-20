@@ -24,7 +24,6 @@ var Bullet = additiveSprite.extend({
          break;
          }
          this.runAction(tmpAction);*/
-
     },
     update:function (dt) {
         var newX = this.getPositionX(), newY = this.getPositionY();
@@ -42,6 +41,8 @@ var Bullet = additiveSprite.extend({
         explode.setRotation(Math.random()*360);
         explode.setScale(0.75);
         this.getParent().addChild(explode,9999);
+       cc.ArrayRemoveObject(global.ebulletContainer,this);
+        cc.ArrayRemoveObject(global.sbulletContainer,this);
         this.getParent().removeChild(this);
         var removeExplode = cc.CallFunc.create(explode,explode.removeFromParentAndCleanup);
         explode.runAction(cc.ScaleBy.create(0.3, 2,2));

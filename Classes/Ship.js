@@ -1,6 +1,6 @@
 var Ship = cc.Sprite.extend({
     speed:220,
-    bulletSpeed:700,
+    bulletSpeed:900,
     HP:10,
     bulletTypeValue:1,
     bulletPowerValue:1,
@@ -27,7 +27,7 @@ var Ship = cc.Sprite.extend({
         // ship animate
         var action = cc.Animate.create(0.1, animation, true);
         this.runAction(cc.RepeatForever.create(action));
-        this.schedule(this.shoot, 1 / 8);
+        this.schedule(this.shoot, 1 / 6);
 
         //revive effect
         this.canBeAttack = false;
@@ -44,10 +44,6 @@ var Ship = cc.Sprite.extend({
             t.removeChild(ghostSprite);
         });
         this.runAction(cc.Sequence.create(cc.DelayTime.create(0.5), blinks, makeBeAttack));
-
-        if (global.sound) {
-            cc.AudioManager.sharedEngine().playBackgroundMusic(s_bgMusic, true);
-        }
     },
     update:function (dt) {
         var newX = this.getPosition().x, newY = this.getPosition().y;
@@ -83,10 +79,12 @@ var Ship = cc.Sprite.extend({
         //this.shootEffect();
         var offset = 13;
         var a = new Bullet(this.bulletSpeed, "W1.png", global.AttackMode.Normal);
+        global.sbulletContainer.push(a);
         this.getParent().addChild(a, a.zOrder, global.Tag.ShipBullet);
         a.setPosition(cc.ccp(this.getPosition().x + offset, this.getPosition().y + 3 + this.getContentSize().height * 0.3));
 
         var b = new Bullet(this.bulletSpeed, "W1.png", global.AttackMode.Normal);
+        global.sbulletContainer.push(b);
         this.getParent().addChild(b, b.zOrder, global.Tag.ShipBullet);
         b.setPosition(cc.ccp(this.getPosition().x - offset, this.getPosition().y + 3 + this.getContentSize().height * 0.3));
     },

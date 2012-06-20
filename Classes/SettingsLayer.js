@@ -7,7 +7,7 @@ var SettingsLayer = cc.Layer.extend({
             this.addChild(sp, 0, 1);
 
             var cacheImage = cc.TextureCache.sharedTextureCache().addImage(s_menuTitle)
-            var title = cc.Sprite.spriteWithTexture(cacheImage, cc.RectMake(0, 0, 134, 34));
+            var title = cc.Sprite.createWithTexture(cacheImage, cc.RectMake(0, 0, 134, 34));
             title.setPosition(cc.ccp(winSize.width / 2, winSize.height - 120));
             this.addChild(title);
 

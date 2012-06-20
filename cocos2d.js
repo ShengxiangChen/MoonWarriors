@@ -74,7 +74,7 @@ cc.loadjs = function (filename) {
     }
 };
 
-cc.loadjs('cocos2d-html5-alpha-canvasmenu-min.js');
+cc.loadjs('Cocos2d-html5-canvasmenu-min.js');
 cc.loadjs('Classes/AppDelegate.js');
 cc.loadjs('Resource.js');
 cc.loadjs('Classes/Config/Global.js');

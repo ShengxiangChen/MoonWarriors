@@ -31,5 +31,8 @@ var global = {
         Normal:1,
         Tsuihikidan:2
     },
-    lifeUpScores:[50000, 100000, 150000, 200000, 250000, 300000]
+    lifeUpScores:[50000, 100000, 150000, 200000, 250000, 300000],
+    enemyContainer:[],
+    ebulletContainer:[],
+    sbulletContainer:[]
 };

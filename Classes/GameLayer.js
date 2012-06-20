@@ -19,21 +19,23 @@ var GameLayer = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
+            global.bulletNum = 0;
+            global.enemyNum = 0;
             Explosion.sharedExplosion();
             Enemy.sharedEnemy();
-
+            winSize = cc.Director.sharedDirector().getWinSize();
             this._levelManager = new LevelManager(this);
             this.initBackground();
-            this.screenRect = new cc.Rect(-20, -20, winSize.width + 40, winSize.height + 40);
+            this.screenRect = new cc.Rect(0, 0, winSize.width, winSize.height + 10);
 
             // score
-            this.lbScore = cc.LabelTTF.create("Score: 0", cc.SizeMake(winSize.width / 2, 50), cc.TextAlignmentRight, "Arial", 14);
+            this.lbScore = cc.LabelTTF.create("Score: 0", cc.SizeMake(winSize.width / 2, 50), cc.TEXT_ALIGNMENT_RIGHT, "Arial", 14);
             this.addChild(this.lbScore, 1000);
             this.lbScore.setPosition(cc.ccp(winSize.width - 100, winSize.height - 15));
 
             // ship life
             var shipTexture = cc.TextureCache.sharedTextureCache().addImage(s_ship01);
-            var life = cc.Sprite.spriteWithTexture(shipTexture, cc.RectMake(0, 0, 60, 38));
+            var life = cc.Sprite.createWithTexture(shipTexture, cc.RectMake(0, 0, 60, 38));
             life.setScale(0.6);
             life.setPosition(cc.ccp(30, 460));
             this.addChild(life, 1, 5);
@@ -56,14 +58,17 @@ var GameLayer = cc.Layer.extend({
 
             // schedule
             this.schedule(this.update);
-            this.schedule(this.checkEnemyAndBulletIsInBound, 5);
-            this.schedule(this.timeCounter, 1);
+            this.schedule(this.scoreCounter, 1);
+
+            if (global.sound) {
+                cc.AudioManager.sharedEngine().playBackgroundMusic(s_bgMusic, true);
+            }
 
             bRet = true;
         }
         return bRet;
     },
-    timeCounter:function () {
+    scoreCounter:function () {
         this._time++;
 
         var minute = 0 | (this._time / 60);
@@ -109,36 +114,45 @@ var GameLayer = cc.Layer.extend({
         this.removeInactiveUnit(dt);
         this.checkIsReborn();
         this.updateUI();
+        cc.$("#cou").innerHTML = "Ship:" + 1 + ", Enemy: " + global.enemyContainer.length
+            + ", Bullet:" + global.ebulletContainer.length + "," + global.sbulletContainer.length + " all:" + this.getChildren().length;
     },
     checkIsCollide:function () {
-        var selChild, bulletChild, layerChildren = this.getChildren();
+        var selChild, bulletChild;
         //check collide
-        for (var i = 0; i < layerChildren.length; i++) {
-            selChild = layerChildren[i];
-            if (selChild.getTag() == global.Tag.Enemy) {
-                for (var j = 0; j < layerChildren.length; j++) {
-                    bulletChild = layerChildren[j];
-                    if (bulletChild.getTag() == global.Tag.ShipBullet) {
-                        if (this.collide(selChild, bulletChild)) {
-                            bulletChild.hurt();
-                            selChild.hurt();
-                        }
-                    }
+        for(var i = 0; i < global.enemyContainer.length;i++){
+            selChild = global.enemyContainer[i];
+            for(var j = 0; j < global.sbulletContainer.length; j++) {
+                bulletChild = global.sbulletContainer[j];
+                if (this.collide(selChild, bulletChild)) {
+                    bulletChild.hurt();
+                    selChild.hurt();
                 }
-                if (this.collide(selChild, this._ship)) {
-                    if (this._ship.active) {
-                        selChild.hurt();
-                        this._ship.hurt();
-                    }
+                if (!cc.Rect.CCRectIntersectsRect(this.screenRect, bulletChild.boundingBoxToWorld())) {
+                        bulletChild.destroy();
                 }
             }
-            else if (selChild.getTag() == global.Tag.EnemyBullet) {
-                if (this.collide(selChild, this._ship)) {
-                    if (this._ship.active) {
-                        selChild.hurt();
-                        this._ship.hurt();
-                    }
+            if (this.collide(selChild, this._ship)) {
+                if (this._ship.active) {
+                    selChild.hurt();
+                    this._ship.hurt();
                 }
+            }
+            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.boundingBoxToWorld())) {
+                    selChild.destroy();
+            }
+        }
+
+        for(var i = 0; i < global.ebulletContainer.length;i++){
+            selChild = global.ebulletContainer[i];
+            if (this.collide(selChild, this._ship)) {
+                if (this._ship.active) {
+                    selChild.hurt();
+                    this._ship.hurt();
+                }
+            }
+            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.boundingBoxToWorld())) {
+                    selChild.destroy();
             }
         }
     },
@@ -183,7 +197,8 @@ var GameLayer = cc.Layer.extend({
             if ((selChild.getTag() == global.Tag.Enemy) || (selChild.getTag() == global.Tag.EnemyBullet) || (selChild.getTag() == global.Tag.ShipBullet)) {
                 var childRect = selChild.boundingBoxToWorld();
                 if (!cc.Rect.CCRectIntersectsRect(this.screenRect, childRect)) {
-                    this.removeChild(selChild, true);
+                    //this.removeChild(selChild, true);
+                    selChild.destroy();
                 }
             }
         }
@@ -259,6 +274,7 @@ var GameLayer = cc.Layer.extend({
         var scene = cc.Scene.create();
         scene.addChild(GameOver.create());
         cc.Director.sharedDirector().replaceScene(cc.TransitionFade.create(1.2, scene));
+        this.getParent().removeChild(this);
     }
 });
 

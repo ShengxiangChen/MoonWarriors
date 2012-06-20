@@ -1,4 +1,3 @@
-
 var LevelManager = cc.Class.extend({
     _currentLevel:null,
     _gameLayer:null,
@@ -88,6 +87,7 @@ var LevelManager = cc.Class.extend({
         }
 
         this._gameLayer.addChild(addEnemy, addEnemy.zOrder, global.Tag.Enemy);
+        global.enemyContainer.push(addEnemy);
         addEnemy.runAction(tmpAction);
     }
 });
