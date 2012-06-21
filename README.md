@@ -1,6 +1,5 @@
 MoonWarriors 战神传说
 ==================
-   * demo:[http://www.cocos2d-x.org/MoonWarriors/index.html][3]
 
 This showcase utilizes many features from "Cocos2d-html5 engine",including:
    * Parallax background
