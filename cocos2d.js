@@ -77,7 +77,7 @@ cc.loadjs = function (filename) {
 cc.loadjs('Cocos2d-html5-canvasmenu-min.js');
 cc.loadjs('Classes/AppDelegate.js');
 cc.loadjs('Resource.js');
-cc.loadjs('Classes/Config/Global.js');
+cc.loadjs('Classes/Config/global.js');
 cc.loadjs('Classes/Config/Level.js');
 cc.loadjs('Classes/Config/EnemyType.js');
 cc.loadjs('Classes/Effect.js');
