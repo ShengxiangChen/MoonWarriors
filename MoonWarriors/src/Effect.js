@@ -1,14 +1,6 @@
-var additiveSprite = cc.Sprite.extend({
-    draw:function (ctx) {
-        var context = ctx || cc.renderContext;
-        context.globalCompositeOperation = 'lighter';
-        this._super(ctx);
-    }
-});
-
 var flareEffect = function (parent, target, callback) {
-    var flare = new additiveSprite();
-    flare.initWithFile(s_flare);
+    var flare = cc.Sprite.create(s_flare);
+    flare.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
     parent.addChild(flare, 10);
     flare.setOpacity(0);
     flare.setPosition(cc.ccp(-30, 297));
@@ -39,12 +31,12 @@ var flareEffect = function (parent, target, callback) {
 var spark = function (ccpoint, parent, scale, duration) {
     scale = scale || 0.3;
     duration = duration || 0.5;
-    var one = new additiveSprite();
-    one.initWithFile(s_explode1);
-    var two = new additiveSprite();
-    two.initWithFile(s_explode2);
-    var three = new additiveSprite();
-    three.initWithFile(s_explode3);
+    var one = cc.Sprite.create(s_explode1);
+    var two = cc.Sprite.create(s_explode2);
+    var three = cc.Sprite.create(s_explode3);
+    one.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+    two.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+    three.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
     one.setPosition(ccpoint);
     two.setPosition(ccpoint);
     three.setPosition(ccpoint);

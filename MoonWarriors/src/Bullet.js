@@ -1,5 +1,5 @@
 //bullet
-var Bullet = additiveSprite.extend({
+var Bullet = cc.Sprite.extend({
     active:true,
     xVolocity:0,
     yVolocity:200,
@@ -14,6 +14,7 @@ var Bullet = additiveSprite.extend({
         this.attackMode = attackMode;
         cc.SpriteFrameCache.sharedSpriteFrameCache().addSpriteFramesWithFile(s_bullet_plist);
         this.initWithSpriteFrameName(weaponType);
+        this.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
         /*var tmpAction;
          switch (this.attackMode) {
          case global.AttackMode.Normal:
@@ -35,8 +36,8 @@ var Bullet = additiveSprite.extend({
         }
     },
     destroy:function () {
-        var explode = new additiveSprite();
-        explode.initWithFile(s_hit);
+        var explode = cc.Sprite.create(s_hit);
+        explode.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
         explode.setPosition(this.getPosition());
         explode.setRotation(Math.random()*360);
         explode.setScale(0.75);

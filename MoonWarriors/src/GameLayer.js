@@ -190,19 +190,6 @@ var GameLayer = cc.Layer.extend({
         this._lbLife.setString(global.life);
         this.lbScore.setString("Score: " + this._tmpScore);
     },
-    checkEnemyAndBulletIsInBound:function () {
-        var layerChildren = this.getChildren();
-        for (var i = 0; i < layerChildren.length; i++) {
-            var selChild = layerChildren[i];
-            if ((selChild.getTag() == global.Tag.Enemy) || (selChild.getTag() == global.Tag.EnemyBullet) || (selChild.getTag() == global.Tag.ShipBullet)) {
-                var childRect = selChild.boundingBoxToWorld();
-                if (!cc.Rect.CCRectIntersectsRect(this.screenRect, childRect)) {
-                    //this.removeChild(selChild, true);
-                    selChild.destroy();
-                }
-            }
-        }
-    },
     collide:function (a, b) {
         var aRect = a.collideRect();
         var bRect = b.collideRect();

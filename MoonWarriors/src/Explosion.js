@@ -1,10 +1,11 @@
-var Explosion = additiveSprite.extend({
+var Explosion = cc.Sprite.extend({
     tmpWidth:0,
     tmpHeight:0,
     ctor:function () {
         this._super();
         this.tmpWidth = this.getContentSize().width;
         this.tmpHeight = this.getContentSize().height;
+
         var pFrame = cc.SpriteFrameCache.sharedSpriteFrameCache().spriteFrameByName("explosion_01.png");
         this.initWithSpriteFrame(pFrame);
 
@@ -13,6 +14,7 @@ var Explosion = additiveSprite.extend({
             cc.Animate.create(animation, false),
             cc.CallFunc.create(this, this.destroy)
         ));
+        this.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
     },
     destroy:function () {
         this.getParent().removeChild(this,true);
