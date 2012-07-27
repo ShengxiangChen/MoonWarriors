@@ -12,8 +12,8 @@ var GameOver = cc.Layer.extend({
             this.addChild(sp, 0, 1);
 
             var logo = cc.Sprite.create(s_gameOver);
-            logo.setAnchorPoint(cc.ccp(0,0));
-            logo.setPosition(cc.ccp(0,300));
+            logo.setAnchorPoint(cc.p(0,0));
+            logo.setPosition(cc.p(0,300));
             this.addChild(logo,10,1);
 
             var playAgainNormal = cc.Sprite.create(s_menu, cc.RectMake(378, 0, 126, 33));
@@ -21,7 +21,7 @@ var GameOver = cc.Layer.extend({
             var playAgainDisabled = cc.Sprite.create(s_menu, cc.RectMake(378, 33 * 2, 126, 33));
 
             var cocos2dhtml5 = cc.Sprite.create(s_cocos2dhtml5);
-            cocos2dhtml5.setPosition(cc.ccp(160,150))
+            cocos2dhtml5.setPosition(cc.p(160,150))
             this.addChild(cocos2dhtml5,10)
             var playAgain = cc.MenuItemSprite.create(playAgainNormal, playAgainSelected, playAgainDisabled, this, function(){
                 flareEffect(this,this,this.onPlayAgain);
@@ -29,11 +29,11 @@ var GameOver = cc.Layer.extend({
 
             var menu = cc.Menu.create(playAgain);
             this.addChild(menu, 1, 2);
-            menu.setPosition(cc.ccp(winSize.width / 2, 220));
+            menu.setPosition(cc.p(winSize.width / 2, 220));
 
             var lbScore = cc.LabelTTF.create("Your Score:"+global.score,"Arial Bold",16);
-            lbScore.setPosition(cc.ccp(160,280));
-            lbScore.setColor(cc.ccc3(250,179,0));
+            lbScore.setPosition(cc.p(160,280));
+            lbScore.setColor(cc.c3(250,179,0));
             this.addChild(lbScore,10);
 
             var b1 = cc.LabelTTF.create("Download Cocos2d-html5","Arial",14);
@@ -46,13 +46,13 @@ var GameOver = cc.Layer.extend({
             })
             var cocos2dMenu = cc.Menu.create(menu1,menu2);
             cocos2dMenu.alignItemsVerticallyWithPadding(10);
-            cocos2dMenu.setPosition(cc.ccp(160,80));
+            cocos2dMenu.setPosition(cc.p(160,80));
             this.addChild(cocos2dMenu);
 
             this.schedule(this.update,0.1);
 
                 if(global.sound){
-                    cc.AudioManager.sharedEngine().playBackgroundMusic(s_mainMainMusic)
+                    cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
                 }
 
             bRet = true;
@@ -65,7 +65,7 @@ var GameOver = cc.Layer.extend({
         var scene = cc.Scene.create();
         scene.addChild(GameLayer.create());
         scene.addChild(GameControlMenu.create());
-        cc.Director.sharedDirector().replaceScene(cc.TransitionFade.create(1.2,scene));
+        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2,scene));
     }
 });
 

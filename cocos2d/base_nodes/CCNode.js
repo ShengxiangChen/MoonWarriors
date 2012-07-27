@@ -29,17 +29,17 @@
  * @constant
  * @type Number
  */
-cc.CCNODE_TAG_INVALID = -1;
+cc.NODE_TAG_INVALID = -1;
 /**
  * Node on enter
  * @constant
  */
-cc.CCNODE_ON_ENTER = null;
+cc.NODE_ON_ENTER = null;
 /**
  * Node on exit
  * @constant
  */
-cc.CCNODE_ON_EXIT = null;
+cc.NODE_ON_EXIT = null;
 
 /**
  * save the context
@@ -139,7 +139,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
     _rotation:0.0,
     _scaleX:1.0,
     _scaleY:1.0,
-    _position:cc.PointZero(),
+    _position:cc.p(0, 0),
     _skewX:0.0,
     _skewY:0.0,
     // children (lazy allocs),
@@ -148,14 +148,14 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
     _camera:null,
     _grid:null,
     _isVisible:true,
-    _anchorPoint:new cc.Point(0, 0),
-    _anchorPointInPoints:new cc.Point(0, 0),
+    _anchorPoint:cc.p(0, 0),
+    _anchorPointInPoints:cc.p(0, 0),
     _contentSize:cc.SizeZero(),
     _isRunning:false,
     _parent:null,
     // "whole screen" objects. like Scenes and Layers, should set _ignoreAnchorPointForPosition to true
     _ignoreAnchorPointForPosition:false,
-    _tag:cc.CCNODE_TAG_INVALID,
+    _tag:cc.NODE_TAG_INVALID,
     // userData is always inited as nil
     _userData:null,
     _userObject:null,
@@ -180,13 +180,16 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
         if (cc.NODE_TRANSFORM_USING_AFFINE_MATRIX) {
             this._isTransformGLDirty = true;
         }
-        this._anchorPoint = new cc.Point(0, 0);
-        this._anchorPointInPoints = new cc.Point(0, 0);
+        this._anchorPoint = cc.p(0, 0);
+        this._anchorPointInPoints = cc.p(0, 0);
         this._contentSize = new cc.Size(0, 0);
+        this._position = cc.p(0,0);
 
-        var director = cc.Director.sharedDirector();
+        var director = cc.Director.getInstance();
         this._actionManager = director.getActionManager();
+        this.getActionManager = function(){return this._actionManager;} ;
         this._scheduler = director.getScheduler();
+        this.getScheduler = function(){return this._scheduler;}
     },
 
     /**
@@ -254,13 +257,13 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      */
     _addDirtyRegionToDirector:function (rect) {
         //if (!cc.firstRun) {
-        //cc.Director.sharedDirector().addRegionToDirtyRegion(rect);
+        //cc.Director.getInstance().addRegionToDirtyRegion(rect);
         //}
     },
 
     _isInDirtyRegion:function () {
         //if (!cc.firstRun) {
-        //    return cc.Director.sharedDirector().rectIsInDirtyRegion(this.boundingBoxToWorld());
+        //    return cc.Director.getInstance().rectIsInDirtyRegion(this.boundingBoxToWorld());
         //}
     },
 
@@ -374,16 +377,19 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
         return this._rotation;
     },
 
+    _rotationRadians:0,
     /**
      * rotation setter
      * @param {Number} newRotation
      */
     setRotation:function (newRotation) {
+        if(this._rotation == newRotation)
+            return ;
         //save dirty region when before change
         //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
 
         this._rotation = newRotation;
-
+        this._rotationRadians = this._rotation * (Math.PI / 180);
         //save dirty region when after changed
         //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
         this.setNodeDirty();
@@ -399,15 +405,16 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
     },
 
     /**
-     * The scale factor of the node. 1.0 is the default scale factor. It modifies the X and Y scale at the same time.
-     * @param {Number} scale
+     * The scale factor of the node. 1.0 is the default scale factor.
+     * @param {Number} scale or scaleX value
+     * @param {Number} scaleY
      */
-    setScale:function (scale) {
+    setScale:function (scale,scaleY) {
         //save dirty region when before change
         //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
 
         this._scaleX = scale;
-        this._scaleY = scale;
+        this._scaleY = scaleY || scale;
 
         //save dirty region when after changed
         //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
@@ -468,8 +475,10 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
     setPosition:function (newPosOrxValue, yValue) {
         //save dirty region when before change
         //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
-        if (typeof(newPosOrxValue) == 'number') {
-            this._position = new cc.Point(newPosOrxValue, yValue || 0);
+        if (yValue) {
+            this._position.x = newPosOrxValue;
+            this._position.y = yValue;
+            //this._position = cc.p(newPosOrxValue,yValue);
         } else if (newPosOrxValue instanceof  cc.Point) {
             this._position = newPosOrxValue;
         }
@@ -492,7 +501,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Point}
      */
     getPosition:function () {
-        return new cc.Point(this._position.x, this._position.y);
+        return cc.p(this._position.x, this._position.y);
     },
 
     /**
@@ -506,7 +515,9 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @param {Number} x
      */
     setPositionX:function (x) {
-        this.setPosition(cc.ccp(x, this._position.y));
+        this._position.x = x;
+        //this._position = cc.p(x,this._position.y);
+        this.setNodeDirty();
     },
 
     /**
@@ -520,7 +531,9 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @param {Number} y
      */
     setPositionY:function (y) {
-        this.setPosition(cc.ccp(this._position.x, y));
+        this._position.y = y;
+        //this._position = cc.p(this._position.x, y);
+        this.setNodeDirty();
     },
 
     /**
@@ -594,7 +607,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      The default anchorPoint is (0.5,0.5), so it starts in the center of the node. <br/></p>
      */
     getAnchorPoint:function () {
-        return new cc.Point(this._anchorPoint.x, this._anchorPoint.y);
+        return cc.p(this._anchorPoint.x, this._anchorPoint.y);
     },
 
     /**
@@ -606,7 +619,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
             //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
 
             this._anchorPoint = point;
-            this._anchorPointInPoints = new cc.Point(this._contentSize.width * this._anchorPoint.x,
+            this._anchorPointInPoints = cc.p(this._contentSize.width * this._anchorPoint.x,
                 this._contentSize.height * this._anchorPoint.y);
 
             //save dirty region when after changed
@@ -619,7 +632,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Point}
      */
     getAnchorPointInPoints:function () {
-        return new cc.Point(this._anchorPointInPoints.x, this._anchorPointInPoints.y);
+        return cc.p(this._anchorPointInPoints.x, this._anchorPointInPoints.y);
     },
 
     /** <p>The untransformed size of the node. <br/>
@@ -640,7 +653,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
             //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
             this._contentSize = size;
 
-            this._anchorPointInPoints = new cc.Point(this._contentSize.width * this._anchorPoint.x,
+            this._anchorPointInPoints = cc.p(this._contentSize.width * this._anchorPoint.x,
                 this._contentSize.height * this._anchorPoint.y);
             //save dirty region when before change
             //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
@@ -796,8 +809,11 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.ActionManager}
      */
     getActionManager:function () {
-        if (!this._actionManager)
-            this._actionManager = cc.Director.sharedDirector().getActionManager();
+        if (!this._actionManager) {
+            this._actionManager = cc.Director.getInstance().getActionManager();
+            this.getActionManager = function(){return this._actionManager;} ;
+        }
+
         return this._actionManager;
     },
 
@@ -821,8 +837,10 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Scheduler}
      */
     getScheduler:function () {
-        if (!this._scheduler)
-            this._scheduler = cc.Director.sharedDirector().getScheduler();
+        if (!this._scheduler){
+            this._scheduler = cc.Director.getInstance().getScheduler();
+            this.getScheduler = function(){return this._scheduler;} ;
+        }
         return this._scheduler;
     },
 
@@ -901,7 +919,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Node}
      */
     getChildByTag:function (aTag) {
-        cc.Assert(aTag != cc.CCNODE_TAG_INVALID, "Invalid tag");
+        cc.Assert(aTag != cc.NODE_TAG_INVALID, "Invalid tag");
         if (this._children != null) {
             for (var i = 0; i < this._children.length; i++) {
                 var node = this._children[i];
@@ -985,11 +1003,11 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @param {Boolean} cleanup
      */
     removeChildByTag:function (tag, cleanup) {
-        cc.Assert(tag != cc.CCNODE_TAG_INVALID, "Invalid tag");
+        cc.Assert(tag != cc.NODE_TAG_INVALID, "Invalid tag");
 
         var child = this.getChildByTag(tag);
         if (child == null) {
-            cc.Log("cocos2d: removeChildByTag: child not found!");
+            cc.log("cocos2d: removeChildByTag: child not found!");
         }
         else {
             this.removeChild(child, cleanup);
@@ -1148,55 +1166,89 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
         if (!this._isVisible) {
             return;
         }
+
         var context = ctx || cc.renderContext;
-        context.save();
+        var i;
 
-        if (this._grid && this._grid.isActive()) {
-            this._grid.beforeDraw();
-        }
+        if(cc.renderContextType == cc.CANVAS){
+            context.save();
+            this.transform(context);
 
-        this.transform(context);
-        var i, node;
-        if (this._children && this._children.length > 0) {
-            this.sortAllChildren();
-            // draw children zOrder < 0
-            for (i = 0; i < this._children.length; i++) {
-                node = this._children[i];
-                if (node && node._zOrder < 0) {
-                    node.visit(context);
-                } else {
-                    break;
-                }
-            }
-
-            //if (this._isInDirtyRegion()) {
-            // self draw
-            this.draw(context);
-            //}
-
-            // draw children zOrder >= 0
-            if (this._children) {
-                for (; i < this._children.length; i++) {
-                    node = this._children[i];
-                    if (node && node._zOrder >= 0) {
-                        node.visit(context);
+            if (this._children && this._children.length > 0) {
+                this.sortAllChildren();
+                // draw children zOrder < 0
+                for (i = 0; i < this._children.length; i++) {
+                    if (this._children[i] && this._children[i]._zOrder < 0) {
+                        this._children[i].visit(context);
+                    } else {
+                        break;
                     }
                 }
+                //if (this._isInDirtyRegion()) {
+                // self draw
+                this.draw(context);
+                //}
+                // draw children zOrder >= 0
+                if (this._children) {
+                    for (; i < this._children.length; i++) {
+                        if (this._children[i] && this._children[i]._zOrder >= 0) {
+                            this._children[i].visit(context);
+                        }
+                    }
+                }
+            } else {
+                //if (this._isInDirtyRegion()) {
+                // self draw
+                this.draw(context);
+                //}
             }
-        } else {
-            //if (this._isInDirtyRegion()) {
-            // self draw
-            this.draw(context);
-            //}
+            this._orderOfArrival = 0;
+            context.restore();
+        } else{
+            if (this._grid && this._grid.isActive()) {
+                this._grid.beforeDraw();
+            }
+
+            this.transform(context);
+            if (this._children && this._children.length > 0) {
+                this.sortAllChildren();
+                // draw children zOrder < 0
+                for (i = 0; i < this._children.length; i++) {
+                    if (this._children[i] && this._children[i]._zOrder < 0) {
+                        this._children[i].visit(context);
+                    } else {
+                        break;
+                    }
+                }
+
+                //if (this._isInDirtyRegion()) {
+                // self draw
+                this.draw(context);
+                //}
+
+                // draw children zOrder >= 0
+                if (this._children) {
+                    for (; i < this._children.length; i++) {
+                        if (this._children[i] && this._children[i]._zOrder >= 0) {
+                            this._children[i].visit(context);
+                        }
+                    }
+                }
+            } else {
+                //if (this._isInDirtyRegion()) {
+                // self draw
+                this.draw(context);
+                //}
+            }
+
+            this._orderOfArrival = 0;
+
+            if (this._grid && this._grid.isActive()) {
+                this._grid.afterDraw(this);
+            }
+
+            context.restore();
         }
-
-        this._orderOfArrival = 0;
-
-        if (this._grid && this._grid.isActive()) {
-            this._grid.afterDraw(this);
-        }
-
-        context.restore();
     },
 
     /** performs OpenGL view-matrix transformation of it's ancestors.<br/>
@@ -1218,30 +1270,30 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
         var context = ctx || cc.renderContext;
         // transformations
         if (cc.renderContextType == cc.CANVAS) {
-            var pAp;
             if (!this._ignoreAnchorPointForPosition) {
                 if (this._parent) {
-                    pAp = this._parent._anchorPointInPoints;
+                    context.translate(0 | (this._position.x - this._parent._anchorPointInPoints.x), -(0 | (this._position.y - this._parent._anchorPointInPoints.y)));
                 } else {
-                    pAp = new cc.Point(0, 0);
+                    context.translate(0 | this._position.x, -(0 | this._position.y));
                 }
-                context.translate(0 | (this._position.x - pAp.x), -(0 | (this._position.y - pAp.y)));
             } else {
                 if (this._parent) {
-                    pAp = this._parent._anchorPointInPoints;
+                    context.translate(0 | ( this._position.x - this._parent._anchorPointInPoints.x + this._anchorPointInPoints.x),
+                        -(0 | (this._position.y - this._parent._anchorPointInPoints.y + this._anchorPointInPoints.y)));
                 } else {
-                    pAp = new cc.Point(0, 0);
+                    context.translate(0 | ( this._position.x  + this._anchorPointInPoints.x), -(0 | (this._position.y + this._anchorPointInPoints.y)));
                 }
-                var lAp = this._anchorPointInPoints;
-                context.translate(0 | ( this._position.x - pAp.x + lAp.x), -(0 | (this._position.y - pAp.y + lAp.y)));
             }
 
             if (this._rotation != 0) {
-                context.rotate(cc.DEGREES_TO_RADIANS(this._rotation));
+                //context.rotate(cc.DEGREES_TO_RADIANS(this._rotation));
+                context.rotate(this._rotationRadians);
             }
+
             if ((this._scaleX != 1) || (this._scaleY != 1)) {
                 context.scale(this._scaleX, this._scaleY);
             }
+
             if ((this._skewX != 0) || (this._skewY != 0)) {
                 context.transform(1,
                     -Math.tan(cc.DEGREES_TO_RADIANS(this._skewY)),
@@ -1350,7 +1402,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @param {Number} tag
      */
     stopActionByTag:function (tag) {
-        cc.Assert(tag != cc.CCACTION_TAG_INVALID, "Invalid tag");
+        cc.Assert(tag != cc.ACTION_TAG_INVALID, "Invalid tag");
         this.getActionManager().removeActionByTag(tag, this);
     },
 
@@ -1360,7 +1412,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Action}
      */
     getActionByTag:function (tag) {
-        cc.Assert(tag != cc.CCACTION_TAG_INVALID, "Invalid tag");
+        cc.Assert(tag != cc.ACTION_TAG_INVALID, "Invalid tag");
         return this.getActionManager().getActionByTag(tag, this);
     },
 
@@ -1484,16 +1536,16 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
             // Rotation values
             var c = 1, s = 0;
             if (this._rotation) {
-                var radians = -cc.DEGREES_TO_RADIANS(this._rotation);
-                c = Math.cos(radians);
-                s = Math.sin(radians);
+                //var radians = -cc.DEGREES_TO_RADIANS(this._rotation);
+                c = Math.cos(-this._rotationRadians);
+                s = Math.sin(-this._rotationRadians);
             }
 
             var needsSkewMatrix = ( this._skewX || this._skewY );
 
             // optimization:
             // inline anchor point calculation if skew is not needed
-            if (!needsSkewMatrix && !cc.Point.CCPointEqualToPoint(this._anchorPointInPoints, new cc.Point(0, 0))) {
+            if (!needsSkewMatrix && !cc.Point.CCPointEqualToPoint(this._anchorPointInPoints, cc.p(0, 0))) {
                 x += c * -this._anchorPointInPoints.x * this._scaleX + -s * -this._anchorPointInPoints.y * this._scaleY;
                 y += s * -this._anchorPointInPoints.x * this._scaleX + c * -this._anchorPointInPoints.y * this._scaleY;
             }
@@ -1511,7 +1563,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
                 this._transform = cc.AffineTransformConcat(skewMatrix, this._transform);
 
                 // adjust anchor point
-                if (!cc.Point.CCPointEqualToPoint(this._anchorPointInPoints, new cc.Point(0, 0))) {
+                if (!cc.Point.CCPointEqualToPoint(this._anchorPointInPoints, cc.p(0, 0))) {
                     this._transform = cc.AffineTransformTranslate(this._transform, -this._anchorPointInPoints.x, -this._anchorPointInPoints.y);
                 }
             }
@@ -1581,7 +1633,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Point}
      */
     convertToNodeSpaceAR:function (worldPoint) {
-        return cc.ccpSub(this.convertToNodeSpace(worldPoint), this._anchorPointInPoints);
+        return cc.pSub(this.convertToNodeSpace(worldPoint), this._anchorPointInPoints);
     },
 
     /**
@@ -1591,7 +1643,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Point}
      */
     convertToWorldSpaceAR:function (nodePoint) {
-        var pt = cc.ccpAdd(nodePoint, this._anchorPointInPoints);
+        var pt = cc.pAdd(nodePoint, this._anchorPointInPoints);
         return this.convertToWorldSpace(pt);
     },
 
@@ -1602,7 +1654,7 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      */
     _convertToWindowSpace:function (nodePoint) {
         var worldPoint = this.convertToWorldSpace(nodePoint);
-        return cc.Director.sharedDirector().convertToUI(worldPoint);
+        return cc.Director.getInstance().convertToUI(worldPoint);
     },
 
     /** convenience methods which take a cc.Touch instead of cc.Point
@@ -1610,8 +1662,8 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Point}
      */
     convertTouchToNodeSpace:function (touch) {
-        var point = touch.locationInView();
-        point = cc.Director.sharedDirector().convertToGL(point);
+        var point = touch.getLocation();
+        point = cc.Director.getInstance().convertToGL(point);
         return this.convertToNodeSpace(point);
     },
 
@@ -1621,8 +1673,8 @@ cc.Node = cc.Class.extend(/** @lends cc.Node# */{
      * @return {cc.Point}
      */
     convertTouchToNodeSpaceAR:function (touch) {
-        var point = touch.locationInView();
-        point = cc.Director.sharedDirector().convertToGL(point);
+        var point = touch.getLocation();
+        point = cc.Director.getInstance().convertToGL(point);
         return this.convertToNodeSpaceAR(point);
     },
 

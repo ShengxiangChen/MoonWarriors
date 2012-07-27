@@ -49,7 +49,7 @@ cc.AppDelegate = cc.Application.extend({
      */
     applicationDidFinishLaunching:function () {
         // initialize director
-        var pDirector = cc.Director.sharedDirector();
+        var pDirector = cc.Director.getInstance();
 
         // enable High Resource Mode(2x, such as iphone4) and maintains low resource on other devices.
 //     pDirector->enableRetinaDisplay(true);
@@ -76,7 +76,7 @@ cc.AppDelegate = cc.Application.extend({
      @param  the pointer of the application
      */
     applicationDidEnterBackground:function () {
-        cc.Director.sharedDirector().pause();
+        cc.Director.getInstance().pause();
     },
 
     /**
@@ -84,6 +84,6 @@ cc.AppDelegate = cc.Application.extend({
      @param  the pointer of the application
      */
     applicationWillEnterForeground:function () {
-        cc.Director.sharedDirector().resume();
+        cc.Director.getInstance().resume();
     }
 });

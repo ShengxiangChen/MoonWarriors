@@ -45,14 +45,14 @@ var Enemy = cc.Sprite.extend({
         cc.ArrayRemoveObject(global.enemyContainer,this);
         this.getParent().removeChild(this,true);
         if(global.sound){
-            cc.AudioManager.sharedEngine().playEffect(s_explodeEffect);
+            cc.AudioEngine.getInstance().playEffect(s_explodeEffect);
         }
     },
     shoot:function () {
         var b = new Bullet(this.bulletSpeed, "W2.png", this.attackMode);
         global.ebulletContainer.push(b);
         this.getParent().addChild(b, b.zOrder, global.Tag.EnemyBullet);
-        b.setPosition(cc.ccp(this.getPosition().x, this.getPosition().y - this.getContentSize().height * 0.2));
+        b.setPosition(cc.p(this.getPosition().x, this.getPosition().y - this.getContentSize().height * 0.2));
     },
     hurt:function () {
         this._hurtColorLife = 2;
@@ -67,5 +67,5 @@ var Enemy = cc.Sprite.extend({
 });
 
 Enemy.sharedEnemy = function(){
-    cc.SpriteFrameCache.sharedSpriteFrameCache().addSpriteFramesWithFile(s_Enemy_plist, s_Enemy);
+    cc.SpriteFrameCache.getInstance().addSpriteFrames(s_Enemy_plist, s_Enemy);
 };

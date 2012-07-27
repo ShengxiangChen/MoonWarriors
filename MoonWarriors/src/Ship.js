@@ -9,12 +9,12 @@ var Ship = cc.Sprite.extend({
     isThrowingBomb:false,
     zOrder:3000,
     maxBulletPowerValue:4,
-    appearPosition:cc.ccp(160, 60),
+    appearPosition:cc.p(160, 60),
     _hurtColorLife:0,
     active:true,
     ctor:function () {
         //init life
-        var shipTexture = cc.TextureCache.sharedTextureCache().addImage(s_ship01);
+        var shipTexture = cc.TextureCache.getInstance().addImage(s_ship01);
         this.initWithTexture(shipTexture, cc.RectMake(0, 0, 60, 38));
         this.setTag(this.zOrder);
         this.setPosition(this.appearPosition);
@@ -38,7 +38,7 @@ var Ship = cc.Sprite.extend({
         var ghostSprite = cc.Sprite.createWithTexture(shipTexture, cc.RectMake(0, 45, 60, 38))
         ghostSprite.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
         ghostSprite.setScale(8);
-        ghostSprite.setPosition(cc.ccp(this.getContentSize().width / 2, 12));
+        ghostSprite.setPosition(cc.p(this.getContentSize().width / 2, 12));
         this.addChild(ghostSprite, 3000, 99999);
         ghostSprite.runAction(cc.ScaleTo.create(0.5, 1, 1));
         var blinks = cc.Blink.create(3, 9);
@@ -63,7 +63,7 @@ var Ship = cc.Sprite.extend({
         if ((keys[cc.KEY.d] || keys[cc.KEY.right]) && this.getPosition().x <= winSize.width) {
             newX += dt * this.speed;
         }
-        this.setPosition(cc.ccp(newX, newY));
+        this.setPosition(cc.p(newX, newY));
 
         if (this.HP <= 0) {
             this.active = false;
@@ -85,19 +85,19 @@ var Ship = cc.Sprite.extend({
         var a = new Bullet(this.bulletSpeed, "W1.png", global.AttackMode.Normal);
         global.sbulletContainer.push(a);
         this.getParent().addChild(a, a.zOrder, global.Tag.ShipBullet);
-        a.setPosition(cc.ccp(this.getPosition().x + offset, this.getPosition().y + 3 + this.getContentSize().height * 0.3));
+        a.setPosition(cc.p(this.getPosition().x + offset, this.getPosition().y + 3 + this.getContentSize().height * 0.3));
 
         var b = new Bullet(this.bulletSpeed, "W1.png", global.AttackMode.Normal);
         global.sbulletContainer.push(b);
         this.getParent().addChild(b, b.zOrder, global.Tag.ShipBullet);
-        b.setPosition(cc.ccp(this.getPosition().x - offset, this.getPosition().y + 3 + this.getContentSize().height * 0.3));
+        b.setPosition(cc.p(this.getPosition().x - offset, this.getPosition().y + 3 + this.getContentSize().height * 0.3));
     },
     destroy:function () {
         global.life--;
         this.getParent().addChild(new Explosion(this.getPosition().x, this.getPosition().y));
         this.getParent().removeChild(this,true);
         if (global.sound) {
-            cc.AudioManager.sharedEngine().playEffect(s_shipDestroyEffect,false);
+            cc.AudioEngine.getInstance().playEffect(s_shipDestroyEffect,false);
         }
     },
     hurt:function () {

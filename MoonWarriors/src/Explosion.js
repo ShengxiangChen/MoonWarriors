@@ -6,10 +6,10 @@ var Explosion = cc.Sprite.extend({
         this.tmpWidth = this.getContentSize().width;
         this.tmpHeight = this.getContentSize().height;
 
-        var pFrame = cc.SpriteFrameCache.sharedSpriteFrameCache().spriteFrameByName("explosion_01.png");
+        var pFrame = cc.SpriteFrameCache.getInstance().spriteFrameByName("explosion_01.png");
         this.initWithSpriteFrame(pFrame);
 
-        var animation = cc.AnimationCache.sharedAnimationCache().animationByName("Explosion");
+        var animation = cc.AnimationCache.getInstance().animationByName("Explosion");
         this.runAction(cc.Sequence.create(
             cc.Animate.create(animation, false),
             cc.CallFunc.create(this, this.destroy)
@@ -22,14 +22,14 @@ var Explosion = cc.Sprite.extend({
 });
 
 Explosion.sharedExplosion = function () {
-    cc.SpriteFrameCache.sharedSpriteFrameCache().addSpriteFramesWithFile(s_explosion_plist);
+    cc.SpriteFrameCache.getInstance().addSpriteFrames(s_explosion_plist);
     var animFrames = [];
     var str = "";
     for (var i = 1; i < 35; i++) {
         str = "explosion_" + (i < 10 ? ("0" + i) : i) + ".png";
-        var frame = cc.SpriteFrameCache.sharedSpriteFrameCache().spriteFrameByName(str);
+        var frame = cc.SpriteFrameCache.getInstance().spriteFrameByName(str);
         animFrames.push(frame);
     }
     var animation = cc.Animation.create(animFrames, 0.04);
-    cc.AnimationCache.sharedAnimationCache().addAnimation(animation, "Explosion");
+    cc.AnimationCache.getInstance().addAnimation(animation, "Explosion");
 };
