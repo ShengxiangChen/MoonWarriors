@@ -53,6 +53,8 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
     _VAOname:0,
     //0: vertex  1: indices
     _buffersVBO:[],
+
+    _pointRect:new cc.Rect(0, 0, 0, 0),
     /**
      * Constructor
      * @override
@@ -178,12 +180,21 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
      * @param {cc.Rect} rect
      */
     setTextureWithRect:function (texture, rect) {
-        // Only update the texture if is different from the current one
-        if (!this._texture || texture.getName() != this._texture.getName()) {
-            this.setTexture(texture, true);
+        if (texture instanceof  cc.Texture2D) {
+            // Only update the texture if is different from the current one
+            if (!this._texture || texture.getName() != this._texture.getName()) {
+                this.setTexture(texture, true);
+            }
+            this._pointRect = rect;
+            this.initTexCoordsWithRect(rect);
         }
-
-        this.initTexCoordsWithRect(rect);
+        if (texture  instanceof HTMLImageElement) {
+            if (!this._texture || texture != this._texture) {
+                this.setTexture(texture, true);
+            }
+            this._pointRect = rect;
+            this.initTexCoordsWithRect(rect);
+        }
     },
 
     // super methods
@@ -208,7 +219,7 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
                 this._setupVBO();
             }
 
-            //this.setShaderProgram(cc.ShaderCache.sharedShaderCache().programForKey(kCCShader_PositionTextureColor));
+            //this.setShaderProgram(cc.ShaderCache.getInstance().programForKey(kCCShader_PositionTextureColor));
 
             // Need to listen the event only when not use batchnode, because it will use VBO
             //extension.CCNotificationCenter.sharedNotificationCenter().addObserver(this,
@@ -355,7 +366,7 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
         if (cc.renderContextType == cc.CANVAS) {
             var context = ctx || cc.renderContext;
             context.save();
-            if (this._isBlendAdditive) {
+            if (this.isBlendAdditive()) {
                 context.globalCompositeOperation = 'lighter';
             } else {
                 context.globalCompositeOperation = 'source-over';
@@ -369,9 +380,9 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
                 if (this._drawMode == cc.PARTICLE_TEXTURE_MODE) {
                     var drawTexture = this.getTexture();
                     if (particle.isChangeColor) {
-                        var cacheTextureForColor = cc.TextureCache.sharedTextureCache().getTextureColors(this.getTexture());
+                        var cacheTextureForColor = cc.TextureCache.getInstance().getTextureColors(this.getTexture());
                         if (cacheTextureForColor) {
-                            drawTexture = cc.generateTintImage(this.getTexture(), cacheTextureForColor, particle.color);
+                            drawTexture = cc.generateTintImage(this.getTexture(), cacheTextureForColor, particle.color, this._pointRect);
                         }
                     }
 
@@ -387,9 +398,9 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
                     context.globalAlpha = particle.color.a;
                     context.translate(0 | particle.drawPos.x, -(0 | particle.drawPos.y));
                     if (this._shapeType == cc.PARTICLE_STAR_SHAPE) {
-                        cc.drawingUtil.drawStar(context, new cc.Point(0, 0), lpx, particle.color);
+                        cc.drawingUtil.drawStar(context, cc.p(0, 0), lpx, particle.color);
                     } else {
-                        cc.drawingUtil.drawColorBall(context, new cc.Point(0, 0), lpx, particle.color);
+                        cc.drawingUtil.drawColorBall(context, cc.p(0, 0), lpx, particle.color);
                     }
                     context.restore()
                 }
@@ -478,6 +489,9 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
     },
 
     setTotalParticles:function (tp) {
+        this._totalParticles = tp;
+        return;
+
         // If we are setting the total numer of particles to a number higher
         // than what is allocated, we need to allocate new arrays
         if (tp > m_uAllocatedParticles) {
@@ -508,7 +522,7 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
                 if (quadsNew) m_pQuads = quadsNew;
                 if (indicesNew) m_pIndices = indicesNew;
 
-                cc.Log("Particle system: out of memory");
+                cc.log("Particle system: out of memory");
                 return;
             }
 
@@ -615,7 +629,7 @@ cc.ParticleSystemQuad = cc.ParticleSystem.extend(/** @lends cc.ParticleSystemQua
         }
 
         if (!this._quads || !this._indices) {
-            cc.Log("cocos2d: Particle system: not enough memory");
+            cc.log("cocos2d: Particle system: not enough memory");
             return false;
         }
 

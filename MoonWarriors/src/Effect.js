@@ -3,7 +3,7 @@ var flareEffect = function (parent, target, callback) {
     flare.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
     parent.addChild(flare, 10);
     flare.setOpacity(0);
-    flare.setPosition(cc.ccp(-30, 297));
+    flare.setPosition(cc.p(-30, 297));
     flare.setRotation(-120);
     flare.setScale(0.2);
 
@@ -11,7 +11,7 @@ var flareEffect = function (parent, target, callback) {
     var opacDim = cc.FadeTo.create(1, 0);
     var biggeAnim = cc.ScaleBy.create(0.7, 1.2, 1.2);
     var biggerEase = cc.EaseSineOut.create(biggeAnim);
-    var moveAnim = cc.MoveBy.create(0.5, cc.ccp(328, 0));
+    var moveAnim = cc.MoveBy.create(0.5, cc.p(328, 0));
     var easeMove = cc.EaseSineOut.create(moveAnim);
     var rotateAnim = cc.RotateBy.create(2.5, 90);
     var rotateEase = cc.EaseExponentialOut.create(rotateAnim)

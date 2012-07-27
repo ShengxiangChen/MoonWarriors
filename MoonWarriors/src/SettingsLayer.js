@@ -6,9 +6,9 @@ var SettingsLayer = cc.Layer.extend({
             sp.setAnchorPoint(cc.PointZero());
             this.addChild(sp, 0, 1);
 
-            var cacheImage = cc.TextureCache.sharedTextureCache().addImage(s_menuTitle)
+            var cacheImage = cc.TextureCache.getInstance().addImage(s_menuTitle)
             var title = cc.Sprite.createWithTexture(cacheImage, cc.RectMake(0, 0, 134, 34));
-            title.setPosition(cc.ccp(winSize.width / 2, winSize.height - 120));
+            title.setPosition(cc.p(winSize.width / 2, winSize.height - 120));
             this.addChild(title);
 
             cc.MenuItemFont.setFontName("Arial");
@@ -56,12 +56,12 @@ var SettingsLayer = cc.Layer.extend({
     backCallback:function (pSender) {
         var scene = cc.Scene.create();
         scene.addChild(SysMenu.create());
-        cc.Director.sharedDirector().replaceScene(cc.TransitionFade.create(1.2, scene));
+        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
     },
     soundControl:function(){
         global.sound = global.sound ? false : true;
         if(!global.sound){
-            cc.AudioManager.sharedEngine().end();
+            cc.AudioEngine.getInstance().end();
         }
     },
     modeControl:function(){

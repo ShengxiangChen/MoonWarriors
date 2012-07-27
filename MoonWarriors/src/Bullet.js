@@ -12,13 +12,13 @@ var Bullet = cc.Sprite.extend({
     ctor:function (bulletSpeed, weaponType, attackMode) {
         this.yVolocity = -bulletSpeed;
         this.attackMode = attackMode;
-        cc.SpriteFrameCache.sharedSpriteFrameCache().addSpriteFramesWithFile(s_bullet_plist);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_bullet_plist);
         this.initWithSpriteFrameName(weaponType);
         this.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
         /*var tmpAction;
          switch (this.attackMode) {
          case global.AttackMode.Normal:
-         tmpAction = cc.MoveBy.create(2, cc.ccp(this.getPosition().x, 400));
+         tmpAction = cc.MoveBy.create(2, cc.p(this.getPosition().x, 400));
          break;
          case global.AttackMode.Tsuihikidan:
          tmpAction = cc.MoveTo.create(2, GameLayer.create()._ship.getPosition());
@@ -30,7 +30,7 @@ var Bullet = cc.Sprite.extend({
         var newX = this.getPositionX(), newY = this.getPositionY();
         newX -= this.xVolocity * dt;
         newY -= this.yVolocity * dt;
-        this.setPosition(cc.ccp(newX, newY));
+        this.setPosition(cc.p(newX, newY));
         if (this.HP <= 0) {
             this.active = false;
         }
