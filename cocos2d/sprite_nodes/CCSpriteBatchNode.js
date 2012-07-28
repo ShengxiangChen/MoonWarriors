@@ -303,7 +303,7 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
         }
         if (cc.renderContextType == cc.WEBGL) {
             this._updateBlendFunc();
-            //this.setShaderProgram(cc.ShaderCache.sharedShaderCache().programForKey(cc.Shader_PositionTextureColor)) ;
+            //this.setShaderProgram(cc.ShaderCache.getInstance().programForKey(cc.Shader_PositionTextureColor)) ;
         }
         return true;
     },
@@ -334,9 +334,9 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
      * @return {Boolean}
      */
     initWithFile:function (fileImage, capacity) {
-        var texture2D = cc.TextureCache.sharedTextureCache().textureForKey(fileImage);
+        var texture2D = cc.TextureCache.getInstance().textureForKey(fileImage);
         if (!texture2D)
-            texture2D = cc.TextureCache.sharedTextureCache().addImage(fileImage);
+            texture2D = cc.TextureCache.getInstance().addImage(fileImage);
         return this.initWithTexture(texture2D, capacity);
     },
 
@@ -354,11 +354,11 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
         // this is likely computationally expensive
         var quantity = (this._textureAtlas.getCapacity() + 1) * 4 / 3;
 
-        cc.Log("cocos2d: CCSpriteBatchNode: resizing TextureAtlas capacity from " + this._textureAtlas.getCapacity() + " to [" + quantity + "].");
+        cc.log("cocos2d: CCSpriteBatchNode: resizing TextureAtlas capacity from " + this._textureAtlas.getCapacity() + " to [" + quantity + "].");
 
         if (!this._textureAtlas.resizeCapacity(quantity)) {
             // serious problems
-            cc.Log("cocos2d: WARNING: Not enough memory to resize the atlas");
+            cc.log("cocos2d: WARNING: Not enough memory to resize the atlas");
             cc.Assert(false, "Not enough memory to resize the atla");
         }
     },
@@ -649,10 +649,6 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
                 return;
             }
             context.save();
-            if (this._grid && this._grid.isActive()) {
-                this._grid.beforeDraw();
-                this.transformAncestors();
-            }
             this.transform(ctx);
             var i;
             if (this._isUseCache) {
@@ -683,10 +679,6 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
                         }
                     }
                 }
-            }
-
-            if (this._grid && this._grid.isActive()) {
-                this._grid.afterDraw(this);
             }
             context.restore();
         } else {
@@ -873,7 +865,6 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
      * draw cc.SpriteBatchNode (override draw of cc.Node)
      * @param {CanvasContext} ctx
      */
-     testNum:0,
     draw:function (ctx) {
         //cc.PROFILER_START("cc.SpriteBatchNode - draw");
         this._super();
@@ -881,16 +872,9 @@ cc.SpriteBatchNode = cc.Node.extend(/** @lends cc.SpriteBatchNode# */{
         if (cc.renderContextType == cc.CANVAS) {
             var context = ctx || cc.renderContext;
             //context.globalAlpha = this._opacity / 255;
-            var pos = new cc.Point(0 | ( -this._anchorPointInPoints.x), 0 | ( -this._anchorPointInPoints.y));
+            var pos = cc.p(0 | ( -this._anchorPointInPoints.x), 0 | ( -this._anchorPointInPoints.y));
             if (this._renderTexture) {
                 //direct draw image by canvas drawImage
-                /*var a = new Image();
-                a.src = this._renderTexture.getCanvas().toDataURL();
-                console.log(this._renderTexture.getCanvas().width)
-                this.testNum++;
-                if(this.testNum == 10){
-                    throw  ""
-                }*/
                 context.drawImage(this._renderTexture.getCanvas(), pos.x, -(pos.y + this._renderTexture.getCanvas().height));
             }
         } else {
