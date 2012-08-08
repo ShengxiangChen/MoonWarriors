@@ -15,27 +15,35 @@ var GameLayer = cc.Layer.extend({
     screenRect:null,
     explosionAnimation:[],
     isMouseDown:false,
-    _beginPos:cc.PointZero(),
+    _beginPos:cc.p(0,0),
     init:function () {
         var bRet = false;
         if (this._super()) {
+
+            // reset global values
             global.bulletNum = 0;
             global.enemyNum = 0;
+            global.enemyContainer = [];
+            global.ebulletContainer = [];
+            global.sbulletContainer = [];
+            global.score = 0;
+            global.life = 4;
+
             Explosion.sharedExplosion();
             Enemy.sharedEnemy();
             winSize = cc.Director.getInstance().getWinSize();
             this._levelManager = new LevelManager(this);
             this.initBackground();
-            this.screenRect = new cc.Rect(0, 0, winSize.width, winSize.height + 10);
+            this.screenRect = cc.rect(0, 0, winSize.width, winSize.height + 10);
 
             // score
-            this.lbScore = cc.LabelTTF.create("Score: 0", cc.SizeMake(winSize.width / 2, 50), cc.TEXT_ALIGNMENT_RIGHT, "Arial", 14);
+            this.lbScore = cc.LabelTTF.create("Score: 0", cc.size(winSize.width / 2, 50), cc.TEXT_ALIGNMENT_RIGHT, "Arial", 14);
             this.addChild(this.lbScore, 1000);
             this.lbScore.setPosition(cc.p(winSize.width - 80, winSize.height - 30));
 
             // ship life
             var shipTexture = cc.TextureCache.getInstance().addImage(s_ship01);
-            var life = cc.Sprite.createWithTexture(shipTexture, cc.RectMake(0, 0, 60, 38));
+            var life = cc.Sprite.createWithTexture(shipTexture, cc.rect(0, 0, 60, 38));
             life.setScale(0.6);
             life.setPosition(cc.p(30, 460));
             this.addChild(life, 1, 5);
@@ -43,7 +51,7 @@ var GameLayer = cc.Layer.extend({
             // ship Life count
             this._lbLife = cc.LabelTTF.create("0", "Arial", 20);
             this._lbLife.setPosition(cc.p(60, 463));
-            this._lbLife.setColor(cc.RED());
+            this._lbLife.setColor(cc.RED);
             this.addChild(this._lbLife, 1000);
 
             // ship
@@ -88,7 +96,7 @@ var GameLayer = cc.Layer.extend({
     onTouchesMoved:function (touches, event) {
         if (this.isMouseDown) {
             var curPos = this._ship.getPosition();
-            if(cc.Rect.CCRectIntersectsRect(this._ship.boundingBox(),this.screenRect)){
+            if(cc.Rect.CCRectIntersectsRect(this._ship.getBoundingBox(),this.screenRect)){
                 var touch = touches[0];
                 var location = touch.getLocation();
 
@@ -128,7 +136,7 @@ var GameLayer = cc.Layer.extend({
                     bulletChild.hurt();
                     selChild.hurt();
                 }
-                if (!cc.Rect.CCRectIntersectsRect(this.screenRect, bulletChild.boundingBoxToWorld())) {
+                if (!cc.Rect.CCRectIntersectsRect(this.screenRect, bulletChild.getBoundingBoxToWorld())) {
                         bulletChild.destroy();
                 }
             }
@@ -138,7 +146,7 @@ var GameLayer = cc.Layer.extend({
                     this._ship.hurt();
                 }
             }
-            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.boundingBoxToWorld())) {
+            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.getBoundingBoxToWorld())) {
                     selChild.destroy();
             }
         }
@@ -151,7 +159,7 @@ var GameLayer = cc.Layer.extend({
                     this._ship.hurt();
                 }
             }
-            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.boundingBoxToWorld())) {
+            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.getBoundingBoxToWorld())) {
                     selChild.destroy();
             }
         }
@@ -200,7 +208,7 @@ var GameLayer = cc.Layer.extend({
     initBackground:function () {
         // bg
         this._backSky = cc.Sprite.create(s_bg01);
-        this._backSky.setAnchorPoint(cc.PointZero());
+        this._backSky.setAnchorPoint(cc.p(0,0));
         this._backSkyHeight = this._backSky.getContentSize().height;
         this.addChild(this._backSky, -10);
 
@@ -225,7 +233,7 @@ var GameLayer = cc.Layer.extend({
         if (this._backSkyHeight <= winSize.height) {
             if (!this._isBackSkyReload) {
                 this._backSkyRe = cc.Sprite.create(s_bg01);
-                this._backSkyRe.setAnchorPoint(cc.PointZero());
+                this._backSkyRe.setAnchorPoint(cc.p(0,0));
                 this.addChild(this._backSkyRe, -10);
                 this._backSkyRe.setPosition(new cc.Point(0, winSize.height));
                 this._isBackSkyReload = true;

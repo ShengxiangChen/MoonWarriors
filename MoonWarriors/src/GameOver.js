@@ -3,12 +3,9 @@ var GameOver = cc.Layer.extend({
     _lbScore:0,
     init:function () {
         var bRet = false;
-        if (this._super) {
-            global.enemyContainer = [];
-            global.ebulletContainer = [];
-            global.sbulletContainer = [];
+        if (this._super()) {
             var sp = cc.Sprite.create(s_loading);
-            sp.setAnchorPoint(cc.PointZero());
+            sp.setAnchorPoint( cc.p(0,0) );
             this.addChild(sp, 0, 1);
 
             var logo = cc.Sprite.create(s_gameOver);
@@ -16,9 +13,9 @@ var GameOver = cc.Layer.extend({
             logo.setPosition(cc.p(0,300));
             this.addChild(logo,10,1);
 
-            var playAgainNormal = cc.Sprite.create(s_menu, cc.RectMake(378, 0, 126, 33));
-            var playAgainSelected = cc.Sprite.create(s_menu, cc.RectMake(378, 33, 126, 33));
-            var playAgainDisabled = cc.Sprite.create(s_menu, cc.RectMake(378, 33 * 2, 126, 33));
+            var playAgainNormal = cc.Sprite.create(s_menu, cc.rect(378, 0, 126, 33));
+            var playAgainSelected = cc.Sprite.create(s_menu, cc.rect(378, 33, 126, 33));
+            var playAgainDisabled = cc.Sprite.create(s_menu, cc.rect(378, 33 * 2, 126, 33));
 
             var cocos2dhtml5 = cc.Sprite.create(s_cocos2dhtml5);
             cocos2dhtml5.setPosition(cc.p(160,150))
@@ -33,7 +30,7 @@ var GameOver = cc.Layer.extend({
 
             var lbScore = cc.LabelTTF.create("Your Score:"+global.score,"Arial Bold",16);
             lbScore.setPosition(cc.p(160,280));
-            lbScore.setColor(cc.c3(250,179,0));
+            lbScore.setColor(cc.c3b(250,179,0));
             this.addChild(lbScore,10);
 
             var b1 = cc.LabelTTF.create("Download Cocos2d-html5","Arial",14);
@@ -60,8 +57,6 @@ var GameOver = cc.Layer.extend({
         return bRet;
     },
     onPlayAgain:function (pSender) {
-        global.score = 0;
-        global.life = 4;
         var scene = cc.Scene.create();
         scene.addChild(GameLayer.create());
         scene.addChild(GameControlMenu.create());
