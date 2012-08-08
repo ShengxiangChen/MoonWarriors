@@ -32,7 +32,7 @@ var Enemy = cc.Sprite.extend({
                 this._hurtColorLife--;
             }
             if (this._hurtColorLife == 1) {
-                this.setColor(new cc.Color3B(255, 255, 255));
+                this.setColor( cc.c3b(255, 255, 255));
             }
         }
     },
@@ -43,26 +43,27 @@ var Enemy = cc.Sprite.extend({
         this.getParent().addChild(a);
         spark(this.getPosition(),this.getParent(), 1.2, 0.7);
         cc.ArrayRemoveObject(global.enemyContainer,this);
-        this.getParent().removeChild(this,true);
+        this.removeFromParentAndCleanup(true);
         if(global.sound){
             cc.AudioEngine.getInstance().playEffect(s_explodeEffect);
         }
     },
     shoot:function () {
+        var p = this.getPosition();
         var b = new Bullet(this.bulletSpeed, "W2.png", this.attackMode);
         global.ebulletContainer.push(b);
         this.getParent().addChild(b, b.zOrder, global.Tag.EnemyBullet);
-        b.setPosition(cc.p(this.getPosition().x, this.getPosition().y - this.getContentSize().height * 0.2));
+        b.setPosition(cc.p(p.x, p.y - this.getContentSize().height * 0.2));
     },
     hurt:function () {
         this._hurtColorLife = 2;
         this.HP--;
-        this.setColor(cc.RED());
+        this.setColor( cc.RED );
     },
     collideRect:function(){
         var a = this.getContentSize();
-        var r = new cc.RectMake(this.getPositionX() - a.width/2,this.getPositionY() - a.height/4,a.width,a.height/2);
-        return r;
+        var p = this.getPosition();
+        return cc.rect(p.x - a.width/2, p.y - a.height/4,a.width,a.height/2);
     }
 });
 

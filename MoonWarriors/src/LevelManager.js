@@ -73,7 +73,8 @@ var LevelManager = cc.Class.extend({
                 var a3 = cc.MoveBy.create(1, cc.p(100 + 100 * Math.random(), 0));
                 var onComplete = cc.CallFunc.create(addEnemy, function (pSender) {
                     pSender.runAction(cc.RepeatForever.create(
-                        cc.Sequence.create(a2, a3.copy(), a2, a3.copy().reverse())
+                        // XXX riq XXX. No need to do: a3.copy().reverse(), since reverse returns a copy
+                        cc.Sequence.create(a2, a3.copy(), a2, a3.reverse())
                     ));
                 });
                 tmpAction = cc.Sequence.create(a0, a1, onComplete);

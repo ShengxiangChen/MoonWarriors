@@ -6,10 +6,10 @@ var Explosion = cc.Sprite.extend({
         this.tmpWidth = this.getContentSize().width;
         this.tmpHeight = this.getContentSize().height;
 
-        var pFrame = cc.SpriteFrameCache.getInstance().spriteFrameByName("explosion_01.png");
+        var pFrame = cc.SpriteFrameCache.getInstance().getSpriteFrame("explosion_01.png");
         this.initWithSpriteFrame(pFrame);
 
-        var animation = cc.AnimationCache.getInstance().animationByName("Explosion");
+        var animation = cc.AnimationCache.getInstance().getAnimation("Explosion");
         this.runAction(cc.Sequence.create(
             cc.Animate.create(animation, false),
             cc.CallFunc.create(this, this.destroy)
@@ -27,7 +27,7 @@ Explosion.sharedExplosion = function () {
     var str = "";
     for (var i = 1; i < 35; i++) {
         str = "explosion_" + (i < 10 ? ("0" + i) : i) + ".png";
-        var frame = cc.SpriteFrameCache.getInstance().spriteFrameByName(str);
+        var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(str);
         animFrames.push(frame);
     }
     var animation = cc.Animation.create(animFrames, 0.04);

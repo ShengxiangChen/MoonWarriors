@@ -1,8 +1,8 @@
 //bullet
 var Bullet = cc.Sprite.extend({
     active:true,
-    xVolocity:0,
-    yVolocity:200,
+    xVelocity:0,
+    yVelocity:200,
     power:1,
     HP:1,
     moveType:null,
@@ -10,7 +10,7 @@ var Bullet = cc.Sprite.extend({
     attackMode:global.AttackMode.Normal,
     parentType:global.bulletType.Ship,
     ctor:function (bulletSpeed, weaponType, attackMode) {
-        this.yVolocity = -bulletSpeed;
+        this.yVelocity = -bulletSpeed;
         this.attackMode = attackMode;
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_bullet_plist);
         this.initWithSpriteFrameName(weaponType);
@@ -27,10 +27,10 @@ var Bullet = cc.Sprite.extend({
          this.runAction(tmpAction);*/
     },
     update:function (dt) {
-        var newX = this.getPositionX(), newY = this.getPositionY();
-        newX -= this.xVolocity * dt;
-        newY -= this.yVolocity * dt;
-        this.setPosition(cc.p(newX, newY));
+        var p = this.getPosition();
+        p.x -= this.xVelocity * dt;
+        p.y -= this.yVelocity * dt;
+        this.setPosition( p );
         if (this.HP <= 0) {
             this.active = false;
         }
@@ -42,19 +42,18 @@ var Bullet = cc.Sprite.extend({
         explode.setRotation(Math.random()*360);
         explode.setScale(0.75);
         this.getParent().addChild(explode,9999);
-       cc.ArrayRemoveObject(global.ebulletContainer,this);
+        cc.ArrayRemoveObject(global.ebulletContainer,this);
         cc.ArrayRemoveObject(global.sbulletContainer,this);
-        this.getParent().removeChild(this,true);
+        this.removeFromParentAndCleanup(true);
         var removeExplode = cc.CallFunc.create(explode,explode.removeFromParentAndCleanup);
         explode.runAction(cc.ScaleBy.create(0.3, 2,2));
-        explode.runAction(cc.Sequence.create(cc.FadeOut.create(0.3), removeExplode))
+        explode.runAction(cc.Sequence.create(cc.FadeOut.create(0.3), removeExplode));
     },
     hurt:function () {
         this.HP--;
     },
     collideRect:function(){
-        var a = this.getContentSize();
-        var r = new cc.RectMake(this.getPositionX() - 3,this.getPositionY() - 3,6,6);
-        return r;
+        var p = this.getPosition();
+        return cc.rect(p.x - 3, p.y - 3, 6, 6);
     }
 });
