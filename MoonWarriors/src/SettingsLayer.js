@@ -8,7 +8,7 @@ var SettingsLayer = cc.Layer.extend({
 
             var cacheImage = cc.TextureCache.getInstance().addImage(s_menuTitle)
             var title = cc.Sprite.createWithTexture(cacheImage, cc.rect(0, 0, 134, 34));
-            title.setPosition(cc.p(screenWidth / 2, screenHeight - 120));
+            title.setPosition(cc.p(winSize.width / 2, winSize.height - 120));
             this.addChild(title);
 
             cc.MenuItemFont.setFontName("Arial");
