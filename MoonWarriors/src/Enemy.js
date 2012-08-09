@@ -9,7 +9,7 @@ var Enemy = cc.Sprite.extend({
     scoreValue:200,
     zOrder:1000,
     delayTime:1 + 1.2 * Math.random(),
-    attackMode:global.AttackMode.Normal,
+    attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
     _hurtColorLife:0,
     ctor:function (arg) {
         this.HP = arg.HP;
@@ -37,22 +37,22 @@ var Enemy = cc.Sprite.extend({
         }
     },
     destroy:function () {
-        global.score += this.scoreValue;
+        MW.SCORE += this.scoreValue;
         var a = new Explosion();
         a.setPosition(this.getPosition());
         this.getParent().addChild(a);
         spark(this.getPosition(),this.getParent(), 1.2, 0.7);
-        cc.ArrayRemoveObject(global.enemyContainer,this);
+        cc.ArrayRemoveObject(MW.CONTAINER.ENEMIES,this);
         this.removeFromParentAndCleanup(true);
-        if(global.sound){
+        if(MW.SOUND){
             cc.AudioEngine.getInstance().playEffect(s_explodeEffect);
         }
     },
     shoot:function () {
         var p = this.getPosition();
         var b = new Bullet(this.bulletSpeed, "W2.png", this.attackMode);
-        global.ebulletContainer.push(b);
-        this.getParent().addChild(b, b.zOrder, global.Tag.EnemyBullet);
+        MW.CONTAINER.ENEMY_BULLETS.push(b);
+        this.getParent().addChild(b, b.zOrder, MW.UNIT_TAG.ENMEY_BULLET);
         b.setPosition(cc.p(p.x, p.y - this.getContentSize().height * 0.2));
     },
     hurt:function () {

@@ -51,16 +51,16 @@ var Ship = cc.Sprite.extend({
     },
     update:function (dt) {
         var newX = this.getPosition().x, newY = this.getPosition().y;
-        if ((keys[cc.KEY.w] || keys[cc.KEY.up]) && this.getPosition().y <= winSize.height) {
+        if ((MW.KEYS[cc.KEY.w] || MW.KEYS[cc.KEY.up]) && this.getPosition().y <= screenHeight) {
             newY += dt * this.speed;
         }
-        if ((keys[cc.KEY.s] || keys[cc.KEY.down]) && this.getPosition().y >= 0) {
+        if ((MW.KEYS[cc.KEY.s] || MW.KEYS[cc.KEY.down]) && this.getPosition().y >= 0) {
             newY -= dt * this.speed;
         }
-        if ((keys[cc.KEY.a] || keys[cc.KEY.left]) && this.getPosition().x >= 0) {
+        if ((MW.KEYS[cc.KEY.a] || MW.KEYS[cc.KEY.left]) && this.getPosition().x >= 0) {
             newX -= dt * this.speed;
         }
-        if ((keys[cc.KEY.d] || keys[cc.KEY.right]) && this.getPosition().x <= winSize.width) {
+        if ((MW.KEYS[cc.KEY.d] || MW.KEYS[cc.KEY.right]) && this.getPosition().x <= screenWidth) {
             newX += dt * this.speed;
         }
         this.setPosition(cc.p(newX, newY));
@@ -84,23 +84,23 @@ var Ship = cc.Sprite.extend({
         var offset = 13;
         var p = this.getPosition();
         var cs = this.getContentSize();
-        var a = new Bullet(this.bulletSpeed, "W1.png", global.AttackMode.Normal);
-        global.sbulletContainer.push(a);
-        this.getParent().addChild(a, a.zOrder, global.Tag.ShipBullet);
+        var a = new Bullet(this.bulletSpeed, "W1.png", MW.ENEMY_MOVE_TYPE.NORMAL);
+        MW.CONTAINER.PLAYER_BULLETS.push(a);
+        this.getParent().addChild(a, a.zOrder, MW.UNIT_TAG.PLAYER_BULLET);
         a.setPosition(cc.p(p.x + offset, p.y + 3 + cs.height * 0.3));
 
-        var b = new Bullet(this.bulletSpeed, "W1.png", global.AttackMode.Normal);
-        global.sbulletContainer.push(b);
-        this.getParent().addChild(b, b.zOrder, global.Tag.ShipBullet);
+        var b = new Bullet(this.bulletSpeed, "W1.png", MW.ENEMY_MOVE_TYPE.NORMAL);
+        MW.CONTAINER.PLAYER_BULLETS.push(b);
+        this.getParent().addChild(b, b.zOrder, MW.UNIT_TAG.PLAYER_BULLET);
         b.setPosition(cc.p(p.x - offset, p.y + 3 + cs.height * 0.3));
     },
     destroy:function () {
-        global.life--;
+        MW.LIFE--;
         var p = this.getPosition();
         var myParent = this.getParent();
         myParent.addChild( new Explosion(p) );
         myParent.removeChild(this,true);
-        if (global.sound) {
+        if (MW.SOUND) {
             cc.AudioEngine.getInstance().playEffect(s_shipDestroyEffect,false);
         }
     },

@@ -53,19 +53,19 @@ var LevelManager = cc.Class.extend({
 
     addEnemyToGameLayer:function(enemyType){
         var addEnemy = new Enemy(EnemyType[enemyType]);
-        addEnemy.setPosition(cc.p(80 + (winSize.width - 160) * Math.random(), winSize.height));
+        addEnemy.setPosition(cc.p(80 + (screenWidth - 160) * Math.random(), screenHeight));
 
         var offset, tmpAction;
         switch (addEnemy.moveType) {
-            case global.moveType.Attack:
+            case MW.ENEMY_MOVE_TYPE.ATTACK:
                 offset = this._gameLayer._ship.getPosition();
                 tmpAction = cc.MoveTo.create(1, offset);
                 break;
-            case global.moveType.Vertical:
-                offset = cc.p(0, -winSize.height - addEnemy.getContentSize().height);
+            case MW.ENEMY_MOVE_TYPE.VERTICAL:
+                offset = cc.p(0, -screenHeight - addEnemy.getContentSize().height);
                 tmpAction = cc.MoveBy.create(4, offset);
                 break;
-            case global.moveType.Horizontal:
+            case MW.ENEMY_MOVE_TYPE.HORIZONTAL:
                 offset = cc.p(0, -100 - 200 * Math.random());
                 var a0 = cc.MoveBy.create(0.5, offset);
                 var a1 = cc.MoveBy.create(1, cc.p(-50 - 100 * Math.random(), 0));
@@ -79,16 +79,16 @@ var LevelManager = cc.Class.extend({
                 });
                 tmpAction = cc.Sequence.create(a0, a1, onComplete);
                 break;
-            case global.moveType.Overlap:
-                var newX = (addEnemy.getPosition().x <= winSize.width / 2) ? 320 : -320;
+            case MW.ENEMY_MOVE_TYPE.OVERLAP:
+                var newX = (addEnemy.getPosition().x <= screenWidth / 2) ? 320 : -320;
                 var a0 = cc.MoveBy.create(4, cc.p(newX, -240));
                 var a1 = cc.MoveBy.create(4,cc.p(-newX,-320));
                 tmpAction = cc.Sequence.create(a0,a1);
                 break;
         }
 
-        this._gameLayer.addChild(addEnemy, addEnemy.zOrder, global.Tag.Enemy);
-        global.enemyContainer.push(addEnemy);
+        this._gameLayer.addChild(addEnemy, addEnemy.zOrder, MW.UNIT_TAG.ENEMY);
+        MW.CONTAINER.ENEMIES.push(addEnemy);
         addEnemy.runAction(tmpAction);
     }
 });

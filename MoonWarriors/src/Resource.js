@@ -37,6 +37,7 @@ var s_bullet_plist = "MoonWarriors/res/bullet.plist";
 var g_ressources = [
     //image
     {type:"image", src:s_bg01},
+    {type:"image", src:s_loading},
     {type:"image", src:s_ship01},
     {type:"image", src:s_menu},
     {type:"image", src:s_logo},

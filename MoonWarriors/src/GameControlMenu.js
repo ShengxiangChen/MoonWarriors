@@ -8,7 +8,7 @@ var GameControlMenu = cc.Layer.extend({
             var menu = cc.Menu.create(systemMenu, null);
             menu.setPosition(cc.p(0, 0));
             systemMenu.setAnchorPoint(cc.p(0, 0));
-            systemMenu.setPosition(cc.p(winSize.width-95, 5));
+            systemMenu.setPosition(cc.p(screenWidth-95, 5));
             this.addChild(menu, 1, 2);
             bRet = true;
         }

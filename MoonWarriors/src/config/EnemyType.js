@@ -4,8 +4,8 @@ var EnemyType = [
         textureName:"E0.png",
         bulletType:"W2.png",
         HP:1,
-        moveType:global.moveType.Vertical,
-        attackMode:global.AttackMode.Normal,
+        moveType:MW.ENEMY_MOVE_TYPE.ATTACK,
+        attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
         scoreValue:15
     },
     {
@@ -13,8 +13,8 @@ var EnemyType = [
         textureName:"E1.png",
         bulletType:"W2.png",
         HP:2,
-        moveType:global.moveType.Attack,
-        attackMode:global.AttackMode.Normal,
+        moveType:MW.ENEMY_MOVE_TYPE.ATTACK,
+        attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
         scoreValue:40
     },
     {
@@ -22,8 +22,8 @@ var EnemyType = [
         textureName:"E2.png",
         bulletType:"W2.png",
         HP:4,
-        moveType:global.moveType.Horizontal,
-        attackMode:global.AttackMode.Tsuihikidan,
+        moveType:MW.ENEMY_MOVE_TYPE.HORIZONTAL,
+        attackMode:MW.ENEMY_ATTACK_MODE.TSUIHIKIDAN,
         scoreValue:60
     },
     {
@@ -31,8 +31,8 @@ var EnemyType = [
         textureName:"E3.png",
         bulletType:"W2.png",
         HP:6,
-        moveType:global.moveType.Overlap,
-        attackMode:global.AttackMode.Normal,
+        moveType:MW.ENEMY_MOVE_TYPE.OVERLAP,
+        attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
         scoreValue:80
     },
     {
@@ -40,8 +40,8 @@ var EnemyType = [
         textureName:"E4.png",
         bulletType:"W2.png",
         HP:10,
-        moveType:global.moveType.Horizontal,
-        attackMode:global.AttackMode.Tsuihikidan,
+        moveType:MW.ENEMY_MOVE_TYPE.HORIZONTAL,
+        attackMode:MW.ENEMY_ATTACK_MODE.TSUIHIKIDAN,
         scoreValue:150
     },
     {
@@ -49,8 +49,8 @@ var EnemyType = [
         textureName:"E5.png",
         bulletType:"W2.png",
         HP:15,
-        moveType:global.moveType.Horizontal,
-        attackMode:global.AttackMode.Normal,
+        moveType:MW.ENEMY_MOVE_TYPE.HORIZONTAL,
+        attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
         scoreValue:200
     }
-]
+];

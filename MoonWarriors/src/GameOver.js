@@ -26,9 +26,9 @@ var GameOver = cc.Layer.extend({
 
             var menu = cc.Menu.create(playAgain);
             this.addChild(menu, 1, 2);
-            menu.setPosition(cc.p(winSize.width / 2, 220));
+            menu.setPosition(cc.p(screenWidth / 2, 220));
 
-            var lbScore = cc.LabelTTF.create("Your Score:"+global.score,"Arial Bold",16);
+            var lbScore = cc.LabelTTF.create("Your Score:"+MW.SCORE,"Arial Bold",16);
             lbScore.setPosition(cc.p(160,280));
             lbScore.setColor(cc.c3b(250,179,0));
             this.addChild(lbScore,10);
@@ -48,7 +48,7 @@ var GameOver = cc.Layer.extend({
 
             this.schedule(this.update,0.1);
 
-                if(global.sound){
+                if(MW.SOUND){
                     cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
                 }
 
