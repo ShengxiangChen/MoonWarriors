@@ -24,6 +24,9 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+var MW = MW = {};
+
 (function () {
     var d = document;
     var c = {
@@ -33,10 +36,10 @@
         showFPS:true,
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on
-        engineDir:'libs/cocos2d/',
+        engineDir:'lib/cocos2d/',
         appFiles:[
             'MoonWarriors/src/Resource.js',
-            'MoonWarriors/src/config/global.js',
+            'MoonWarriors/src/config/GameConfig.js',
             'MoonWarriors/src/config/EnemyType.js',
             'MoonWarriors/src/config/Level.js',
             'MoonWarriors/src/Effect.js',
@@ -45,6 +48,7 @@
             'MoonWarriors/src/Explosion.js',
             'MoonWarriors/src/Ship.js',
             'MoonWarriors/src/LevelManager.js',
+            'MoonWarriors/src/GameController.js',
             'MoonWarriors/src/GameControlMenu.js',
             'MoonWarriors/src/GameLayer.js',
             'MoonWarriors/src/GameOver.js',
