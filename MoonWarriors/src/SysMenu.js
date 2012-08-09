@@ -2,10 +2,10 @@ var SysMenu = cc.Layer.extend({
     _ship:null,
     init:function () {
         var bRet = false;
-        if (this._super) {
+        if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
             var sp = cc.Sprite.create(s_loading);
-            sp.setAnchorPoint(cc.PointZero());
+            sp.setAnchorPoint(cc.p(0,0));
             this.addChild(sp, 0, 1);
 
             var logo = cc.Sprite.create(s_logo);
@@ -13,17 +13,17 @@ var SysMenu = cc.Layer.extend({
             logo.setPosition(cc.p(0, 250));
             this.addChild(logo, 10, 1);
 
-            var newGameNormal = cc.Sprite.create(s_menu, cc.RectMake(0, 0, 126, 33));
-            var newGameSelected = cc.Sprite.create(s_menu, cc.RectMake(0, 33, 126, 33));
-            var newGameDisabled = cc.Sprite.create(s_menu, cc.RectMake(0, 33 * 2, 126, 33));
+            var newGameNormal = cc.Sprite.create(s_menu, cc.rect(0, 0, 126, 33));
+            var newGameSelected = cc.Sprite.create(s_menu, cc.rect(0, 33, 126, 33));
+            var newGameDisabled = cc.Sprite.create(s_menu, cc.rect(0, 33 * 2, 126, 33));
 
-            var gameSettingsNormal = cc.Sprite.create(s_menu, cc.RectMake(126, 0, 126, 33));
-            var gameSettingsSelected = cc.Sprite.create(s_menu, cc.RectMake(126, 33, 126, 33));
-            var gameSettingsDisabled = cc.Sprite.create(s_menu, cc.RectMake(126, 33 * 2, 126, 33));
+            var gameSettingsNormal = cc.Sprite.create(s_menu, cc.rect(126, 0, 126, 33));
+            var gameSettingsSelected = cc.Sprite.create(s_menu, cc.rect(126, 33, 126, 33));
+            var gameSettingsDisabled = cc.Sprite.create(s_menu, cc.rect(126, 33 * 2, 126, 33));
 
-            var aboutNormal = cc.Sprite.create(s_menu, cc.RectMake(252, 0, 126, 33));
-            var aboutSelected = cc.Sprite.create(s_menu, cc.RectMake(252, 33, 126, 33));
-            var aboutDisabled = cc.Sprite.create(s_menu, cc.RectMake(252, 33 * 2, 126, 33));
+            var aboutNormal = cc.Sprite.create(s_menu, cc.rect(252, 0, 126, 33));
+            var aboutSelected = cc.Sprite.create(s_menu, cc.rect(252, 33, 126, 33));
+            var aboutDisabled = cc.Sprite.create(s_menu, cc.rect(252, 33 * 2, 126, 33));
 
             var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled, this, function () {
                 this.onButtonEffect();
@@ -39,7 +39,7 @@ var SysMenu = cc.Layer.extend({
             this.schedule(this.update, 0.1);
 
            var tmp = cc.TextureCache.getInstance().addImage(s_ship01);
-            this._ship = cc.Sprite.createWithTexture(tmp,cc.RectMake(0, 45, 60, 38));
+            this._ship = cc.Sprite.createWithTexture(tmp,cc.rect(0, 45, 60, 38));
             this.addChild(this._ship, 0, 4);
             this._ship.setPosition(cc.p(Math.random() * winSize.width, 0));
             this._ship.runAction(cc.MoveBy.create(2, cc.p(Math.random() * winSize.width, this._ship.getPosition().y + winSize.height + 100)));
