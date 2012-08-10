@@ -1,4 +1,7 @@
 var SettingsLayer = cc.Layer.extend({
+    ctor:function () {
+        cc.associateWithNative( this, cc.Layer );
+    },
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -11,6 +14,7 @@ var SettingsLayer = cc.Layer.extend({
             title.setPosition(cc.p(winSize.width / 2, winSize.height - 120));
             this.addChild(title);
 
+/*
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(18);
             var title1 = cc.MenuItemFont.create("Sound");
@@ -47,6 +51,7 @@ var SettingsLayer = cc.Layer.extend({
             var cp_back = back.getPosition();
             cp_back.y -= 50.0;
             back.setPosition(cp_back);
+*/
 
             bRet = true;
         }

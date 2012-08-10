@@ -53,7 +53,11 @@ var LevelManager = cc.Class.extend({
 
     addEnemyToGameLayer:function(enemyType){
         var addEnemy = new Enemy(EnemyType[enemyType]);
-        addEnemy.setPosition(cc.p(80 + (winSize.width - 160) * Math.random(), winSize.height));
+
+        var enemypos = cc.p( 80 + (winSize.width - 160) * Math.random(), winSize.height);
+        var enemycs =  addEnemy.getContentSize();
+        addEnemy.setPosition( enemypos );
+        
 
         var offset, tmpAction;
         switch (addEnemy.moveType) {
@@ -62,16 +66,16 @@ var LevelManager = cc.Class.extend({
                 tmpAction = cc.MoveTo.create(1, offset);
                 break;
             case MW.ENEMY_MOVE_TYPE.VERTICAL:
-                offset = cc.p(0, -winSize.height - addEnemy.getContentSize().height);
+                offset = cc.p(0, -winSize.height - enemycs.height);
                 tmpAction = cc.MoveBy.create(4, offset);
                 break;
             case MW.ENEMY_MOVE_TYPE.HORIZONTAL:
                 offset = cc.p(0, -100 - 200 * Math.random());
                 var a0 = cc.MoveBy.create(0.5, offset);
                 var a1 = cc.MoveBy.create(1, cc.p(-50 - 100 * Math.random(), 0));
-                var a2 = cc.DelayTime.create(1);
-                var a3 = cc.MoveBy.create(1, cc.p(100 + 100 * Math.random(), 0));
                 var onComplete = cc.CallFunc.create(addEnemy, function (pSender) {
+                    var a2 = cc.DelayTime.create(1);
+                    var a3 = cc.MoveBy.create(1, cc.p(100 + 100 * Math.random(), 0));
                     pSender.runAction(cc.RepeatForever.create(
                         cc.Sequence.create(a2, a3, a2.copy(), a3.reverse())
                     ));
@@ -79,7 +83,7 @@ var LevelManager = cc.Class.extend({
                 tmpAction = cc.Sequence.create(a0, a1, onComplete);
                 break;
             case MW.ENEMY_MOVE_TYPE.OVERLAP:
-                var newX = (addEnemy.getPosition().x <= winSize.width / 2) ? 320 : -320;
+                var newX = (enemypos.x <= winSize.width / 2) ? 320 : -320;
                 var a0 = cc.MoveBy.create(4, cc.p(newX, -240));
                 var a1 = cc.MoveBy.create(4,cc.p(-newX,-320));
                 tmpAction = cc.Sequence.create(a0,a1);

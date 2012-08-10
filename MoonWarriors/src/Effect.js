@@ -72,7 +72,7 @@ var spark = function (ccpoint, parent, scale, duration) {
     three.runAction(scaleBy.copy());
 
     one.runAction(seq);
-    two.runAction(seq.copy());
+    two.runAction(seq.copy() );
     three.runAction(seq.copy());
 }
 

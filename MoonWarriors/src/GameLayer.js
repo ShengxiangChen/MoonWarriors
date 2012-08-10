@@ -15,6 +15,9 @@ var GameLayer = cc.Layer.extend({
     screenRect:null,
     explosionAnimation:[],
     _beginPos:cc.p(0, 0),
+    ctor:function () {
+        cc.associateWithNative( this, cc.Layer );
+    },
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -139,7 +142,7 @@ var GameLayer = cc.Layer.extend({
                     bulletChild.hurt();
                     selChild.hurt();
                 }
-                if (!cc.Rect.CCRectIntersectsRect(this.screenRect, bulletChild.getBoundingBox() )) {
+                if (!cc.rectIntersectsRect(this.screenRect, bulletChild.getBoundingBox() )) {
                     bulletChild.destroy();
                 }
             }
@@ -149,7 +152,7 @@ var GameLayer = cc.Layer.extend({
                     this._ship.hurt();
                 }
             }
-            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.getBoundingBox() )) {
+            if (!cc.rectIntersectsRect(this.screenRect, selChild.getBoundingBox() )) {
                 selChild.destroy();
             }
         }
@@ -162,7 +165,7 @@ var GameLayer = cc.Layer.extend({
                     this._ship.hurt();
                 }
             }
-            if (!cc.Rect.CCRectIntersectsRect(this.screenRect, selChild.getBoundingBox() )) {
+            if (!cc.rectIntersectsRect(this.screenRect, selChild.getBoundingBox() )) {
                 selChild.destroy();
             }
         }
@@ -172,12 +175,14 @@ var GameLayer = cc.Layer.extend({
         for (var i in layerChildren) {
             selChild = layerChildren[i];
             if (selChild) {
-                selChild.update(dt);
-                var tag = selChild.getTag();
-                if ((tag == MW.UNIT_TAG.PLAYER) || (tag == MW.UNIT_TAG.PLAYER_BULLET) ||
-                    (tag == MW.UNIT_TAG.ENEMY) || (tag == MW.UNIT_TAG.ENMEY_BULLET)) {
-                    if (selChild && !selChild.active) {
-                        selChild.destroy();
+                if( typeof selChild.update == 'function' ) {
+                    selChild.update(dt);
+                    var tag = selChild.getTag();
+                    if ((tag == MW.UNIT_TAG.PLAYER) || (tag == MW.UNIT_TAG.PLAYER_BULLET) ||
+                        (tag == MW.UNIT_TAG.ENEMY) || (tag == MW.UNIT_TAG.ENMEY_BULLET)) {
+                        if (selChild && !selChild.active) {
+                            selChild.destroy();
+                        }
                     }
                 }
             }
@@ -205,7 +210,7 @@ var GameLayer = cc.Layer.extend({
     collide:function (a, b) {
         var aRect = a.collideRect();
         var bRect = b.collideRect();
-        if (cc.Rect.CCRectIntersectsRect(aRect, bRect)) {
+        if (cc.rectIntersectsRect(aRect, bRect)) {
             return true;
         }
     },
