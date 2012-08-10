@@ -1,3 +1,12 @@
+//
+// MoonWarriors
+//
+// Handles the Game Logic
+//
+
+STATE_PLAYING = 0;
+STATE_GAMEOVER = 1;
+
 var GameLayer = cc.Layer.extend({
     _time:null,
     _ship:null,
@@ -15,6 +24,7 @@ var GameLayer = cc.Layer.extend({
     screenRect:null,
     explosionAnimation:[],
     _beginPos:cc.p(0, 0),
+    _state:STATE_PLAYING,
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
@@ -27,7 +37,8 @@ var GameLayer = cc.Layer.extend({
             MW.CONTAINER.ENEMY_BULLETS = [];
             MW.CONTAINER.PLAYER_BULLETS = [];
             MW.SCORE = 0;
-            MW.LIFE = 4;
+            MW.LIFE = 2;
+            this._state = STATE_PLAYING;
 
             Explosion.sharedExplosion();
             Enemy.sharedEnemy();
@@ -94,7 +105,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     onTouchesMoved:function (touches, event) {
-        if( this._ship ) {
+        if( this._state == STATE_PLAYING ) {
             var delta = touches[0].getDelta();
             var curPos = this._ship.getPosition();
             curPos= cc.pAdd( curPos, delta );
@@ -104,7 +115,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     onMouseDragged:function( event ) {
-        if( this._ship ) {
+        if( this._state == STATE_PLAYING ) {
             var delta = event.getDelta();
             var curPos = this._ship.getPosition();
             curPos= cc.pAdd( curPos, delta );
@@ -122,10 +133,12 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function (dt) {
-        this.checkIsCollide();
-        this.removeInactiveUnit(dt);
-        this.checkIsReborn();
-        this.updateUI();
+        if( this._state == STATE_PLAYING ) {
+            this.checkIsCollide();
+            this.removeInactiveUnit(dt);
+            this.checkIsReborn();
+            this.updateUI();
+        }
 
         if( cc.config.deviceType == 'browser' )
             cc.$("#cou").innerHTML = "Ship:" + 1 + ", Enemy: " + MW.CONTAINER.ENEMIES.length
@@ -195,8 +208,11 @@ var GameLayer = cc.Layer.extend({
             this.addChild(this._ship, this._ship.zOrder, MW.UNIT_TAG.PLAYER);
         }
         else if (MW.LIFE <= 0 && !this._ship.active) {
+            this._state = STATE_GAMEOVER;
+            // XXX: needed for JS bindings.
+            this._ship = null;
             this.runAction(cc.Sequence.create(
-                cc.DelayTime.create(3),
+                cc.DelayTime.create(0.2),
                 cc.CallFunc.create(this, this.onGameOver)))
         }
     },
@@ -278,7 +294,6 @@ var GameLayer = cc.Layer.extend({
         var scene = cc.Scene.create();
         scene.addChild(GameOver.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-        this.getParent().removeChild(this, true);
     }
 });
 

@@ -50,11 +50,10 @@ var GameOver = cc.Layer.extend({
             cocos2dMenu.setPosition(cc.p(160,80));
             this.addChild(cocos2dMenu);
 
-            this.schedule(this.update,0.1);
 
-                if(MW.SOUND){
-                    cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
-                }
+            if(MW.SOUND){
+                cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
+            }
 
             bRet = true;
         }

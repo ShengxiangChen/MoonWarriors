@@ -1,7 +1,7 @@
 var Ship = cc.Sprite.extend({
     speed:220,
     bulletSpeed:900,
-    HP:10,
+    HP:1,
     bulletTypeValue:1,
     bulletPowerValue:1,
     throwBombing:false,
