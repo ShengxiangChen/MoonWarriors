@@ -60,7 +60,7 @@ var GameLayer = cc.Layer.extend({
             var t = cc.config.deviceType;
             if( t == 'browser' )  {
                 this.setTouchEnabled(true);
-                this.setKeypadEnabled(true);
+                this.setKeyboardEnabled(true);
             } else if( t == 'desktop' ) {
                 this.setMouseEnabled(true);
             } else if( t = 'mobile' ) {
@@ -95,6 +95,7 @@ var GameLayer = cc.Layer.extend({
             var delta = touches[0].getDelta();
             var curPos = this._ship.getPosition();
             curPos= cc.pAdd( curPos, delta );
+            curPos = cc.pClamp(curPos, cc.POINT_ZERO, cc.p(winSize.width, winSize.height) );
             this._ship.setPosition( curPos );
         }
     },
@@ -104,15 +105,16 @@ var GameLayer = cc.Layer.extend({
             var delta = event.getDelta();
             var curPos = this._ship.getPosition();
             curPos= cc.pAdd( curPos, delta );
+            curPos = cc.pClamp(curPos, cc.POINT_ZERO, cc.p(winSize.width, winSize.height) );
             this._ship.setPosition( curPos );
         }
     },
 
-    keyDown:function (e) {
+    onKeyDown:function (e) {
         MW.KEYS[e] = true;
     },
 
-    keyUp:function (e) {
+    onKeyUp:function (e) {
         MW.KEYS[e] = false;
     },
 
