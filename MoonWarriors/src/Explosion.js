@@ -14,7 +14,7 @@ var Explosion = cc.Sprite.extend({
             cc.Animate.create(animation, false),
             cc.CallFunc.create(this, this.destroy)
         ));
-        this.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+        this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     },
     destroy:function () {
         this.getParent().removeChild(this,true);
