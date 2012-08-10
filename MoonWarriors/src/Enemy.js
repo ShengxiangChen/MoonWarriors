@@ -32,7 +32,7 @@ var Enemy = cc.Sprite.extend({
                 this._hurtColorLife--;
             }
             if (this._hurtColorLife == 1) {
-                this.setColor( cc.c3b(255, 255, 255));
+                this.setColor( cc.WHITE );
             }
         }
     },
