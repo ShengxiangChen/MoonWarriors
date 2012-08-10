@@ -1,6 +1,6 @@
 var flareEffect = function (parent, target, callback) {
     var flare = cc.Sprite.create(s_flare);
-    flare.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+    flare.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     parent.addChild(flare, 10);
     flare.setOpacity(0);
     flare.setPosition(cc.p(-30, 297));
@@ -34,9 +34,9 @@ var spark = function (ccpoint, parent, scale, duration) {
     var one = cc.Sprite.create(s_explode1);
     var two = cc.Sprite.create(s_explode2);
     var three = cc.Sprite.create(s_explode3);
-    one.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
-    two.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
-    three.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+    one.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
+    two.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
+    three.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     one.setPosition(ccpoint);
     two.setPosition(ccpoint);
     three.setPosition(ccpoint);

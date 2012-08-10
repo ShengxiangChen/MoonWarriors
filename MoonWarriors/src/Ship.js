@@ -36,7 +36,7 @@ var Ship = cc.Sprite.extend({
         //revive effect
         this.canBeAttack = false;
         var ghostSprite = cc.Sprite.createWithTexture(shipTexture, cc.rect(0, 45, 60, 38))
-        ghostSprite.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+        ghostSprite.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
         ghostSprite.setScale(8);
         ghostSprite.setPosition(cc.p(this.getContentSize().width / 2, 12));
         this.addChild(ghostSprite, 3000, 99999);
