@@ -21,9 +21,9 @@ var LevelManager = cc.Class.extend({
         if(typeof(minuteStr) !=  "number"){
             var mins = minuteStr.split(':');
             if(mins.length == 1){
-                return parseInt(mins[0]);
+                return parseInt(mins[0],10);
             }else {
-                return parseInt(mins[0] )* 60 + parseInt(mins[1]);
+                return parseInt(mins[0],10 )* 60 + parseInt(mins[1],10);
             }
         }
         return minuteStr;
@@ -41,7 +41,7 @@ var LevelManager = cc.Class.extend({
                         }
                     }
                 }else if(selEnemy.ShowType == "Repeate"){
-                    if(deltaTime % selEnemy.ShowTime == 0){
+                    if(deltaTime % selEnemy.ShowTime === 0){
                         for(var rIndex = 0; rIndex < selEnemy.Types.length;rIndex++ ){
                             this.addEnemyToGameLayer(selEnemy.Types[rIndex]);
                         }
@@ -60,6 +60,8 @@ var LevelManager = cc.Class.extend({
         
 
         var offset, tmpAction;
+        var a0=0;
+        var a1=0;
         switch (addEnemy.moveType) {
             case MW.ENEMY_MOVE_TYPE.ATTACK:
                 offset = this._gameLayer._ship.getPosition();
@@ -71,8 +73,8 @@ var LevelManager = cc.Class.extend({
                 break;
             case MW.ENEMY_MOVE_TYPE.HORIZONTAL:
                 offset = cc.p(0, -100 - 200 * Math.random());
-                var a0 = cc.MoveBy.create(0.5, offset);
-                var a1 = cc.MoveBy.create(1, cc.p(-50 - 100 * Math.random(), 0));
+                a0 = cc.MoveBy.create(0.5, offset);
+                a1 = cc.MoveBy.create(1, cc.p(-50 - 100 * Math.random(), 0));
                 var onComplete = cc.CallFunc.create(addEnemy, function (pSender) {
                     var a2 = cc.DelayTime.create(1);
                     var a3 = cc.MoveBy.create(1, cc.p(100 + 100 * Math.random(), 0));
@@ -84,8 +86,8 @@ var LevelManager = cc.Class.extend({
                 break;
             case MW.ENEMY_MOVE_TYPE.OVERLAP:
                 var newX = (enemypos.x <= winSize.width / 2) ? 320 : -320;
-                var a0 = cc.MoveBy.create(4, cc.p(newX, -240));
-                var a1 = cc.MoveBy.create(4,cc.p(-newX,-320));
+                a0 = cc.MoveBy.create(4, cc.p(newX, -240));
+                a1 = cc.MoveBy.create(4,cc.p(-newX,-320));
                 tmpAction = cc.Sequence.create(a0,a1);
                 break;
         }

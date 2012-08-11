@@ -14,7 +14,7 @@ var flareEffect = function (parent, target, callback) {
     var moveAnim = cc.MoveBy.create(0.5, cc.p(328, 0));
     var easeMove = cc.EaseSineOut.create(moveAnim);
     var rotateAnim = cc.RotateBy.create(2.5, 90);
-    var rotateEase = cc.EaseExponentialOut.create(rotateAnim)
+    var rotateEase = cc.EaseExponentialOut.create(rotateAnim);
     var bigger = cc.ScaleTo.create(0.5, 1);
 
     var onComplete = cc.CallFunc.create(target, callback);
@@ -25,12 +25,12 @@ var flareEffect = function (parent, target, callback) {
     flare.runAction(easeMove);
     flare.runAction(rotateEase);
     flare.runAction(bigger);
-}
+};
 
 var removeFromParent = function( sprite )
 {
     sprite.removeFromParentAndCleanup( true );
-}
+};
 
 var spark = function (ccpoint, parent, scale, duration) {
     scale = scale || 0.3;
@@ -74,5 +74,5 @@ var spark = function (ccpoint, parent, scale, duration) {
     one.runAction(seq);
     two.runAction(seq.copy() );
     three.runAction(seq.copy());
-}
+};
 

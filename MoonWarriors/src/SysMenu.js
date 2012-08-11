@@ -79,8 +79,10 @@ var SysMenu = cc.Layer.extend({
     },
     update:function () {
         if (this._ship.getPosition().y > 480) {
-            this._ship.setPosition(cc.p(Math.random() * winSize.width, 10));
-            this._ship.runAction(cc.MoveBy.create(parseInt(5 * Math.random()), cc.p(Math.random() * winSize.width, this._ship.getPosition().y + 480)));
+            this._ship.setPosition( cc.p(Math.random() * winSize.width, 10));
+            this._ship.runAction( cc.MoveBy.create(
+                parseInt(5 * Math.random(), 10),
+                cc.p(Math.random() * winSize.width, this._ship.getPosition().y + 480)));
         }
     },
     onButtonEffect:function(){
