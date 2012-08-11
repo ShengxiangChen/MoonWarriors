@@ -27,7 +27,7 @@ MW.GameController = cc.Class.extend({
     },
     setCurScene:function (s) {
         if (this._curScene != s) {
-            if (this._curScene != null) {
+            if (this._curScene !== null) {
                 this._curScene.onExit();
             }
             this._curScene = s;
