@@ -37,7 +37,7 @@ var GameLayer = cc.Layer.extend({
             MW.CONTAINER.ENEMY_BULLETS = [];
             MW.CONTAINER.PLAYER_BULLETS = [];
             MW.SCORE = 0;
-            MW.LIFE = 2;
+            MW.LIFE = 4;
             this._state = STATE_PLAYING;
 
             Explosion.sharedExplosion();
@@ -94,14 +94,16 @@ var GameLayer = cc.Layer.extend({
         return bRet;
     },
     scoreCounter:function () {
-        this._time++;
+        if( this._state == STATE_PLAYING ) {
+            this._time++;
 
-        var minute = 0 | (this._time / 60);
-        var second = this._time % 60;
-        minute = minute > 9 ? minute : "0" + minute;
-        second = second > 9 ? second : "0" + second;
-        var curTime = minute + ":" + second;
-        this._levelManager.loadLevelResource(this._time);
+            var minute = 0 | (this._time / 60);
+            var second = this._time % 60;
+            minute = minute > 9 ? minute : "0" + minute;
+            second = second > 9 ? second : "0" + second;
+            var curTime = minute + ":" + second;
+            this._levelManager.loadLevelResource(this._time);
+        }
     },
 
     onTouchesMoved:function (touches, event) {

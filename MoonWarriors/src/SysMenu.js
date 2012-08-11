@@ -68,8 +68,7 @@ var SysMenu = cc.Layer.extend({
     onSettings:function (pSender) {
         this.onButtonEffect();
         var scene = cc.Scene.create();
-        scene.addChild(GameOver.create());
-//        scene.addChild(SettingsLayer.create());
+        scene.addChild(SettingsLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
     },
     onAbout:function (pSender) {
