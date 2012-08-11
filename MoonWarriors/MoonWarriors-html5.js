@@ -26,7 +26,7 @@
 // boot code needed for cocos2d-html5
 // Not needed by cocos2d + JS bindings
 
-var MW = MW = {};
+var MW = MW || {};
 
 (function () {
     var d = document;

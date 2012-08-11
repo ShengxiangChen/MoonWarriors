@@ -69,7 +69,7 @@ var SettingsLayer = cc.Layer.extend({
     soundControl:function(){
         MW.SOUND = MW.SOUND ? false : true;
         if(!MW.SOUND){
-            cc.AudioEngine.getInstance().end();
+            cc.AudioEngine.getInstance().stopBackgroundMusic();
         }
     },
     modeControl:function(){

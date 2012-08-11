@@ -28,7 +28,7 @@
 
 require("js/helper.js");
 
-var MW = MW = {};
+var MW = MW || {};
 
 var appFiles = [
 	'Resource.js',
