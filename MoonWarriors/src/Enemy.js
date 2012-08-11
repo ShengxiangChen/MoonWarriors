@@ -12,6 +12,9 @@ var Enemy = cc.Sprite.extend({
     attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
     _hurtColorLife:0,
     ctor:function (arg) {
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Sprite );
+
         this.HP = arg.HP;
         this.moveType = arg.moveType;
         this.scoreValue = arg.scoreValue;

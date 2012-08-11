@@ -1,6 +1,10 @@
 var GameOver = cc.Layer.extend({
     _ship:null,
     _lbScore:0,
+    ctor:function() {
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Layer);
+    },
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -46,11 +50,10 @@ var GameOver = cc.Layer.extend({
             cocos2dMenu.setPosition(cc.p(160,80));
             this.addChild(cocos2dMenu);
 
-            this.schedule(this.update,0.1);
 
-                if(MW.SOUND){
-                    cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
-                }
+            if(MW.SOUND){
+                cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
+            }
 
             bRet = true;
         }

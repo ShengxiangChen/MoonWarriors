@@ -1,7 +1,7 @@
 var Ship = cc.Sprite.extend({
     speed:220,
     bulletSpeed:900,
-    HP:10,
+    HP:5,
     bulletTypeValue:1,
     bulletPowerValue:1,
     throwBombing:false,
@@ -13,6 +13,10 @@ var Ship = cc.Sprite.extend({
     _hurtColorLife:0,
     active:true,
     ctor:function () {
+
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Sprite );
+
         //init life
         var shipTexture = cc.TextureCache.getInstance().addImage(s_ship01);
         this.initWithTexture(shipTexture, cc.rect(0, 0, 60, 38));
@@ -28,7 +32,7 @@ var Ship = cc.Sprite.extend({
         animFrames.push(frame1);
 
         // ship animate
-        var animation = cc.Animation.createWithSpriteFrames(animFrames, 0.1);
+        var animation = cc.Animation.create(animFrames, 0.1);
         var animate = cc.Animate.create(animation);
         this.runAction(cc.RepeatForever.create(animate));
         this.schedule(this.shoot, 1 / 6);
