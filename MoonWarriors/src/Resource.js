@@ -36,12 +36,12 @@ var s_fireEffect = dirMusic + "fireEffect";
 var s_shipDestroyEffect = dirMusic + "shipDestroyEffect";
 
 //tmx
-var s_level01 = dir + "level01.tmx";
+var s_level01 = dirImg + "level01.tmx";
 
 //plist
-var s_Enemy_plist = dir + "Enemy.plist";
-var s_explosion_plist = dir + "explosion.plist";
-var s_bullet_plist = dir + "bullet.plist";
+var s_Enemy_plist = dirImg + "Enemy.plist";
+var s_explosion_plist = dirImg + "explosion.plist";
+var s_bullet_plist = dirImg + "bullet.plist";
 
 var g_ressources = [
     //image
