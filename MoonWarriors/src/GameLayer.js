@@ -77,7 +77,7 @@ var GameLayer = cc.Layer.extend({
                 this.setKeyboardEnabled(true);
             } else if( t == 'desktop' ) {
                 this.setMouseEnabled(true);
-            } else if( t = 'mobile' ) {
+            } else if( t == 'mobile' ) {
                 this.setTouchEnabled(true);
             }
 
@@ -143,13 +143,13 @@ var GameLayer = cc.Layer.extend({
         }
 
         if( cc.config.deviceType == 'browser' )
-            cc.$("#cou").innerHTML = "Ship:" + 1 + ", Enemy: " + MW.CONTAINER.ENEMIES.length
-                + ", Bullet:" + MW.CONTAINER.ENEMY_BULLETS.length + "," + MW.CONTAINER.PLAYER_BULLETS.length + " all:" + this.getChildren().length;
+            cc.$("#cou").innerHTML = "Ship:" + 1 + ", Enemy: " + MW.CONTAINER.ENEMIES.length + ", Bullet:" + MW.CONTAINER.ENEMY_BULLETS.length + "," + MW.CONTAINER.PLAYER_BULLETS.length + " all:" + this.getChildren().length;
     },
     checkIsCollide:function () {
         var selChild, bulletChild;
         //check collide
-        for (var i = 0; i < MW.CONTAINER.ENEMIES.length; i++) {
+        var i =0;
+        for (i = 0; i < MW.CONTAINER.ENEMIES.length; i++) {
             selChild = MW.CONTAINER.ENEMIES[i];
             for (var j = 0; j < MW.CONTAINER.PLAYER_BULLETS.length; j++) {
                 bulletChild = MW.CONTAINER.PLAYER_BULLETS[j];
@@ -172,7 +172,7 @@ var GameLayer = cc.Layer.extend({
             }
         }
 
-        for (var i = 0; i < MW.CONTAINER.ENEMY_BULLETS.length; i++) {
+        for (i = 0; i < MW.CONTAINER.ENEMY_BULLETS.length; i++) {
             selChild = MW.CONTAINER.ENEMY_BULLETS[i];
             if (this.collide(selChild, this._ship)) {
                 if (this._ship.active) {
@@ -215,7 +215,7 @@ var GameLayer = cc.Layer.extend({
             this._ship = null;
             this.runAction(cc.Sequence.create(
                 cc.DelayTime.create(0.2),
-                cc.CallFunc.create(this, this.onGameOver)))
+                cc.CallFunc.create(this, this.onGameOver)));
         }
     },
     updateUI:function () {

@@ -22,8 +22,8 @@ var GameOver = cc.Layer.extend({
             var playAgainDisabled = cc.Sprite.create(s_menu, cc.rect(378, 33 * 2, 126, 33));
 
             var cocos2dhtml5 = cc.Sprite.create(s_cocos2dhtml5);
-            cocos2dhtml5.setPosition(cc.p(160,150))
-            this.addChild(cocos2dhtml5,10)
+            cocos2dhtml5.setPosition(cc.p(160,150));
+            this.addChild(cocos2dhtml5,10);
             var playAgain = cc.MenuItemSprite.create(playAgainNormal, playAgainSelected, playAgainDisabled, this, function(){
                 flareEffect(this,this,this.onPlayAgain);
             });
@@ -41,10 +41,10 @@ var GameOver = cc.Layer.extend({
             var b2 = cc.LabelTTF.create("Download This Sample","Arial",14);
             var menu1 = cc.MenuItemLabel.create(b1,this,function(){
                 window.location.href = "http://www.cocos2d-x.org/projects/cocos2d-x/wiki/Cocos2d-html5";
-            })
+            });
             var menu2 = cc.MenuItemLabel.create(b2,this,function(){
                 window.location.href = "https://github.com/ShengxiangChen/MoonWarriors";
-            })
+            });
             var cocos2dMenu = cc.Menu.create(menu1,menu2);
             cocos2dMenu.alignItemsVerticallyWithPadding(10);
             cocos2dMenu.setPosition(cc.p(160,80));
@@ -52,7 +52,7 @@ var GameOver = cc.Layer.extend({
 
 
             if(MW.SOUND){
-                cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
+                cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic);
             }
 
             bRet = true;
