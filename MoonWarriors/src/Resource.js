@@ -19,6 +19,8 @@ var s_explode1 = dir + "explode1.jpg";
 var s_explode2= dir + "explode2.jpg";
 var s_explode3 = dir + "explode3.jpg";
 var s_hit = dir + "hit.jpg";
+var s_arial14 = dir + "arial-14.png";
+var s_arial14_fnt = dir + "arial-14.fnt";
 
 //music
 var s_bgMusic = dir + "Music/bgMusic";
@@ -56,6 +58,7 @@ var g_ressources = [
     {type:"image", src:s_explode2},
     {type:"image", src:s_explode3},
     {type:"image", src:s_hit},
+    {type:"image", src:s_arial14},
 
     //tmx
     {type:"tmx", src:s_level01},
@@ -73,5 +76,9 @@ var g_ressources = [
     {type:"effect", src:s_buttonEffect},
     {type:"effect", src:s_explodeEffect},
     {type:"effect", src:s_fireEffect},
-    {type:"effect", src:s_shipDestroyEffect}
+    {type:"effect", src:s_shipDestroyEffect},
+
+    // FNT
+    {type:"fnt", src:s_arial14_fnt}
+
 ];

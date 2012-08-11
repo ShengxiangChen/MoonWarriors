@@ -1,8 +1,6 @@
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
- Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
-
+ 
  http://www.cocos2d-x.org
 
 
@@ -24,6 +22,9 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+// boot code needed for cocos2d-html5
+// Not needed by cocos2d + JS bindings
 
 var MW = MW = {};
 
