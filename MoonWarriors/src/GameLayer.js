@@ -109,16 +109,14 @@ var GameLayer = cc.Layer.extend({
     },
 
     onTouchesMoved:function (touches, event) {
-        if( this._state == STATE_PLAYING ) {
-            var delta = touches[0].getDelta();
-            var curPos = this._ship.getPosition();
-            curPos= cc.pAdd( curPos, delta );
-            curPos = cc.pClamp(curPos, cc.POINT_ZERO, cc.p(winSize.width, winSize.height) );
-            this._ship.setPosition( curPos );
-        }
+        this.processEvent( touches[0] );
     },
 
     onMouseDragged:function( event ) {
+        this.processEvent( event );
+    },
+
+    processEvent:function( event ) {
         if( this._state == STATE_PLAYING ) {
             var delta = event.getDelta();
             var curPos = this._ship.getPosition();

@@ -26,7 +26,7 @@
 // boot code needed for cocos2d + JS bindings.
 // Not needed by cocos2d-html5
 
-require("js/helper.js");
+require("jsb_constants.js");
 
 var MW = MW || {};
 
