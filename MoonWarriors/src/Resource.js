@@ -1,6 +1,6 @@
 var dirImg = "";
 var dirMusic = "";
-var musicSuffix = ".mp3"
+var musicSuffix = ".mp3";
 if( cc.config.deviceType == 'browser' ) {
     dirImg = "MoonWarriors/res/";
     dirMusic = "MoonWarriors/res/Music/";
@@ -29,7 +29,7 @@ var s_arial14_fnt = dirImg + "arial-14.fnt";
 
 //music
 var s_bgMusic = dirMusic + "bgMusic" + musicSuffix;
-var s_mainMainMusic = dirMusic + "mainMainMusic" + musicSuffix;;
+var s_mainMainMusic = dirMusic + "mainMainMusic" + musicSuffix;
 
 //effect
 var s_buttonEffect = dirMusic + "buttonEffet" + musicSuffix;
