@@ -12,13 +12,16 @@ var Enemy = cc.Sprite.extend({
     attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
     _hurtColorLife:0,
     ctor:function (arg) {
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Sprite );
+
         this.HP = arg.HP;
         this.moveType = arg.moveType;
         this.scoreValue = arg.scoreValue;
         this.attackMode = arg.attackMode;
 
         this.initWithSpriteFrameName(arg.textureName);
-        this.schedule(this.shoot, this.delayTime)
+        this.schedule(this.shoot, this.delayTime);
     },
     _timeTick:0,
     update:function (dt) {
@@ -32,7 +35,7 @@ var Enemy = cc.Sprite.extend({
                 this._hurtColorLife--;
             }
             if (this._hurtColorLife == 1) {
-                this.setColor( cc.c3b(255, 255, 255));
+                this.setColor( cc.WHITE );
             }
         }
     },

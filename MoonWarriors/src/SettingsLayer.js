@@ -1,4 +1,7 @@
 var SettingsLayer = cc.Layer.extend({
+    ctor:function () {
+        cc.associateWithNative( this, cc.Layer );
+    },
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -6,10 +9,11 @@ var SettingsLayer = cc.Layer.extend({
             sp.setAnchorPoint(cc.p(0,0));
             this.addChild(sp, 0, 1);
 
-            var cacheImage = cc.TextureCache.getInstance().addImage(s_menuTitle)
+            var cacheImage = cc.TextureCache.getInstance().addImage(s_menuTitle);
             var title = cc.Sprite.createWithTexture(cacheImage, cc.rect(0, 0, 134, 34));
-            title.setPosition(cc.p(screenWidth / 2, screenHeight - 120));
+            title.setPosition(cc.p(winSize.width / 2, winSize.height - 120));
             this.addChild(title);
+
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(18);
@@ -18,8 +22,10 @@ var SettingsLayer = cc.Layer.extend({
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(26);
-            var item1 = cc.MenuItemToggle.create(this, this.soundControl,
-                cc.MenuItemFont.create("On"), cc.MenuItemFont.create("Off"));
+            var item1 = cc.MenuItemToggle.create(
+                cc.MenuItemFont.create("On"),
+                cc.MenuItemFont.create("Off") );
+            item1.setCallback(this, this.soundControl );
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(18);
@@ -28,10 +34,11 @@ var SettingsLayer = cc.Layer.extend({
 
             cc.MenuItemFont.setFontName("Arial");
             cc.MenuItemFont.setFontSize(26);
-            var item2 = cc.MenuItemToggle.create(this, this.modeControl,
+            var item2 = cc.MenuItemToggle.create(
                 cc.MenuItemFont.create("Easy"),
                 cc.MenuItemFont.create("Normal"),
                 cc.MenuItemFont.create("Hard"));
+            item2.setCallback( this, this.modeControl );
 
 
             cc.MenuItemFont.setFontName("Arial");
@@ -48,6 +55,7 @@ var SettingsLayer = cc.Layer.extend({
             cp_back.y -= 50.0;
             back.setPosition(cp_back);
 
+
             bRet = true;
         }
 
@@ -61,7 +69,7 @@ var SettingsLayer = cc.Layer.extend({
     soundControl:function(){
         MW.SOUND = MW.SOUND ? false : true;
         if(!MW.SOUND){
-            cc.AudioEngine.getInstance().end();
+            cc.AudioEngine.getInstance().stopBackgroundMusic();
         }
     },
     modeControl:function(){

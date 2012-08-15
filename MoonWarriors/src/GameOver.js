@@ -1,6 +1,10 @@
 var GameOver = cc.Layer.extend({
     _ship:null,
     _lbScore:0,
+    ctor:function() {
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Layer);
+    },
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -18,15 +22,15 @@ var GameOver = cc.Layer.extend({
             var playAgainDisabled = cc.Sprite.create(s_menu, cc.rect(378, 33 * 2, 126, 33));
 
             var cocos2dhtml5 = cc.Sprite.create(s_cocos2dhtml5);
-            cocos2dhtml5.setPosition(cc.p(160,150))
-            this.addChild(cocos2dhtml5,10)
+            cocos2dhtml5.setPosition(cc.p(160,150));
+            this.addChild(cocos2dhtml5,10);
             var playAgain = cc.MenuItemSprite.create(playAgainNormal, playAgainSelected, playAgainDisabled, this, function(){
                 flareEffect(this,this,this.onPlayAgain);
             });
 
             var menu = cc.Menu.create(playAgain);
             this.addChild(menu, 1, 2);
-            menu.setPosition(cc.p(screenWidth / 2, 220));
+            menu.setPosition(cc.p(winSize.width / 2, 220));
 
             var lbScore = cc.LabelTTF.create("Your Score:"+MW.SCORE,"Arial Bold",16);
             lbScore.setPosition(cc.p(160,280));
@@ -37,20 +41,19 @@ var GameOver = cc.Layer.extend({
             var b2 = cc.LabelTTF.create("Download This Sample","Arial",14);
             var menu1 = cc.MenuItemLabel.create(b1,this,function(){
                 window.location.href = "http://www.cocos2d-x.org/projects/cocos2d-x/wiki/Cocos2d-html5";
-            })
+            });
             var menu2 = cc.MenuItemLabel.create(b2,this,function(){
                 window.location.href = "https://github.com/ShengxiangChen/MoonWarriors";
-            })
+            });
             var cocos2dMenu = cc.Menu.create(menu1,menu2);
             cocos2dMenu.alignItemsVerticallyWithPadding(10);
             cocos2dMenu.setPosition(cc.p(160,80));
             this.addChild(cocos2dMenu);
 
-            this.schedule(this.update,0.1);
 
-                if(MW.SOUND){
-                    cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic)
-                }
+            if(MW.SOUND){
+                cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic);
+            }
 
             bRet = true;
         }

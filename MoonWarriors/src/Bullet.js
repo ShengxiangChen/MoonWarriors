@@ -10,11 +10,14 @@ var Bullet = cc.Sprite.extend({
     attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
     parentType:MW.BULLET_TYPE.PLAYER,
     ctor:function (bulletSpeed, weaponType, attackMode) {
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Sprite );
+
         this.yVelocity = -bulletSpeed;
         this.attackMode = attackMode;
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_bullet_plist);
         this.initWithSpriteFrameName(weaponType);
-        this.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+        this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
         /*var tmpAction;
          switch (this.attackMode) {
          case MW.ENEMY_MOVE_TYPE.NORMAL:
@@ -37,7 +40,7 @@ var Bullet = cc.Sprite.extend({
     },
     destroy:function () {
         var explode = cc.Sprite.create(s_hit);
-        explode.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+        explode.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
         explode.setPosition(this.getPosition());
         explode.setRotation(Math.random()*360);
         explode.setScale(0.75);

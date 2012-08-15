@@ -1,8 +1,6 @@
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
- Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
-
+ 
  http://www.cocos2d-x.org
 
 
@@ -25,14 +23,16 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-var MW = MW = {};
+// boot code needed for cocos2d-html5
+// Not needed by cocos2d + JS bindings
+
+var MW = MW || {};
 
 (function () {
     var d = document;
     var c = {
         menuType:'canvas', //whether to use canvas mode menu or dom menu
         COCOS2D_DEBUG:2, //0 to turn debug off, 1 for basic debug, and 2 for full debug
-        box2d:false,
         showFPS:true,
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on

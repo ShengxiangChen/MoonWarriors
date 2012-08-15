@@ -2,19 +2,22 @@ var Explosion = cc.Sprite.extend({
     tmpWidth:0,
     tmpHeight:0,
     ctor:function () {
-        this._super();
-        this.tmpWidth = this.getContentSize().width;
-        this.tmpHeight = this.getContentSize().height;
+        // needed for JS-Bindings compatibility
+        cc.associateWithNative( this, cc.Sprite );
 
         var pFrame = cc.SpriteFrameCache.getInstance().getSpriteFrame("explosion_01.png");
         this.initWithSpriteFrame(pFrame);
 
+        var cs = this.getContentSize();
+        this.tmpWidth = cs.width;
+        this.tmpHeight = cs.height;
+
         var animation = cc.AnimationCache.getInstance().getAnimation("Explosion");
         this.runAction(cc.Sequence.create(
-            cc.Animate.create(animation, false),
+            cc.Animate.create(animation),
             cc.CallFunc.create(this, this.destroy)
         ));
-        this.setBlendFunc(new cc.BlendFunc(cc.GL_SRC_ALPHA, cc.GL_ONE));
+        this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     },
     destroy:function () {
         this.getParent().removeChild(this,true);
