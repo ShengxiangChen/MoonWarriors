@@ -1,44 +1,49 @@
-var dir = "";
-if( cc.config.deviceType == 'browser' )
-    dir = "MoonWarriors/res/";
+var dirImg = "";
+var dirMusic = "";
+var musicSuffix = ".mp3";
+if( cc.config.deviceType == 'browser' ) {
+    dirImg = "MoonWarriors/res/";
+    dirMusic = "MoonWarriors/res/Music/";
+    musicSuffix = "";
+}
 
 //image
-var s_bg01 = dir + "bg01.png";
-var s_loading = dir + "loading.png";
-var s_ship01 = dir + "ship01.png";
-var s_menu = dir + "menu.png";
-var s_logo = dir + "logo.png";
-var s_cocos2dhtml5 = dir + "cocos2d-html5.png";
-var s_gameOver = dir + "gameOver.png";
-var s_menuTitle = dir + "menuTitle.png";
-var s_Enemy = dir + "Enemy.png";
-var s_flare = dir + "flare.jpg";
-var s_bullet = dir + "bullet.png";
-var s_explosion = dir + "explosion.png";
-var s_explode1 = dir + "explode1.jpg";
-var s_explode2= dir + "explode2.jpg";
-var s_explode3 = dir + "explode3.jpg";
-var s_hit = dir + "hit.jpg";
-var s_arial14 = dir + "arial-14.png";
-var s_arial14_fnt = dir + "arial-14.fnt";
+var s_bg01 = dirImg + "bg01.jpg";
+var s_loading = dirImg + "loading.png";
+var s_ship01 = dirImg + "ship01.png";
+var s_menu = dirImg + "menu.png";
+var s_logo = dirImg + "logo.png";
+var s_cocos2dhtml5 = dirImg + "cocos2d-html5.png";
+var s_gameOver = dirImg + "gameOver.png";
+var s_menuTitle = dirImg + "menuTitle.png";
+var s_Enemy = dirImg + "Enemy.png";
+var s_flare = dirImg + "flare.jpg";
+var s_bullet = dirImg + "bullet.png";
+var s_explosion = dirImg + "explosion.png";
+var s_explode1 = dirImg + "explode1.jpg";
+var s_explode2= dirImg + "explode2.jpg";
+var s_explode3 = dirImg + "explode3.jpg";
+var s_hit = dirImg + "hit.jpg";
+var s_arial14 = dirImg + "arial-14.png";
+var s_arial14_fnt = dirImg + "arial-14.fnt";
 
 //music
-var s_bgMusic = dir + "Music/bgMusic";
-var s_mainMainMusic = dir + "Music/mainMainMusic";
+var s_bgMusic = dirMusic + "bgMusic" + musicSuffix;
+var s_mainMainMusic = dirMusic + "mainMainMusic" + musicSuffix;
 
 //effect
-var s_buttonEffect = dir + "Music/buttonEffet";
-var s_explodeEffect = dir + "Music/explodeEffect";
-var s_fireEffect = dir + "Music/fireEffect";
-var s_shipDestroyEffect = dir + "Music/shipDestroyEffect";
+var s_buttonEffect = dirMusic + "buttonEffet" + musicSuffix;
+var s_explodeEffect = dirMusic + "explodeEffect" + musicSuffix;
+var s_fireEffect = dirMusic + "fireEffect" + musicSuffix;
+var s_shipDestroyEffect = dirMusic + "shipDestroyEffect" + musicSuffix;
 
 //tmx
-var s_level01 = dir + "level01.tmx";
+var s_level01 = dirImg + "level01.tmx";
 
 //plist
-var s_Enemy_plist = dir + "Enemy.plist";
-var s_explosion_plist = dir + "explosion.plist";
-var s_bullet_plist = dir + "bullet.plist";
+var s_Enemy_plist = dirImg + "Enemy.plist";
+var s_explosion_plist = dirImg + "explosion.plist";
+var s_bullet_plist = dirImg + "bullet.plist";
 
 var g_ressources = [
     //image

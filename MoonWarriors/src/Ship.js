@@ -109,7 +109,7 @@ var Ship = cc.Sprite.extend({
         myParent.addChild( new Explosion(p) );
         myParent.removeChild(this,true);
         if (MW.SOUND) {
-            cc.AudioEngine.getInstance().playEffect(s_shipDestroyEffect,false);
+            cc.AudioEngine.getInstance().playEffect(s_shipDestroyEffect);
         }
     },
     hurt:function () {
