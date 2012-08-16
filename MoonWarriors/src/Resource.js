@@ -1,7 +1,7 @@
 var dirImg = "";
 var dirMusic = "";
 var musicSuffix = ".mp3";
-if( cc.config.deviceType == 'browser' ) {
+if( cc.config.deviceType == 'browser') {
     dirImg = "MoonWarriors/res/";
     dirMusic = "MoonWarriors/res/Music/";
     musicSuffix = "";
@@ -9,6 +9,7 @@ if( cc.config.deviceType == 'browser' ) {
 
 //image
 var s_bg01 = dirImg + "bg01.jpg";
+var s_b01 = dirImg + "b01.png";
 var s_loading = dirImg + "loading.png";
 var s_ship01 = dirImg + "ship01.png";
 var s_menu = dirImg + "menu.png";
@@ -48,6 +49,7 @@ var s_bullet_plist = dirImg + "bullet.plist";
 var g_ressources = [
     //image
     {type:"image", src:s_bg01},
+    {type:"image", src:s_b01},
     {type:"image", src:s_loading},
     {type:"image", src:s_ship01},
     {type:"image", src:s_menu},

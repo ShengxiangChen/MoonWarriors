@@ -1,5 +1,5 @@
 cc.dumpConfig();
-
+ var winSize;
 var SysMenu = cc.Layer.extend({
     _ship:null,
 
@@ -58,6 +58,7 @@ var SysMenu = cc.Layer.extend({
 
             bRet = true;
         }
+
         return bRet;
     },
     onNewGame:function (pSender) {

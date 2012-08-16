@@ -32,7 +32,6 @@ var GameLayer = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
-
             // reset global values
             MW.CONTAINER.ENEMIES = [];
             MW.CONTAINER.ENEMY_BULLETS = [];
@@ -49,11 +48,11 @@ var GameLayer = cc.Layer.extend({
             this.screenRect = cc.rect(0, 0, winSize.width, winSize.height + 10);
 
             // score
-            this.lbScore = cc.LabelBMFont.create("Score: 0", s_arial14_fnt);
+            /*this.lbScore = cc.LabelBMFont.create("Score: 0", s_arial14_fnt);
             this.lbScore.setAnchorPoint( cc.p(1,0) );
             this.lbScore.setAlignment( cc.TEXT_ALIGNMENT_RIGHT );
             this.addChild(this.lbScore, 1000);
-            this.lbScore.setPosition(cc.p(winSize.width - 5 , winSize.height - 30));
+            this.lbScore.setPosition(cc.p(winSize.width - 5 , winSize.height - 30));*/
 
             // ship life
             var shipTexture = cc.TextureCache.getInstance().addImage(s_ship01);
@@ -148,7 +147,7 @@ var GameLayer = cc.Layer.extend({
             this.checkIsCollide();
             this.removeInactiveUnit(dt);
             this.checkIsReborn();
-            this.updateUI();
+            //this.updateUI();
         }
 
         //if( cc.config.deviceType == 'browser' )

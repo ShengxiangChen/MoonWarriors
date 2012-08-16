@@ -33,10 +33,10 @@ var MW = MW || {};
     var c = {
         menuType:'canvas', //whether to use canvas mode menu or dom menu
         COCOS2D_DEBUG:2, //0 to turn debug off, 1 for basic debug, and 2 for full debug
-        IS_SHOW_DEBUG_ON_PAGE:true,
         showFPS:true,
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on
+        //engineDir:'http://192.168.0.122:8080/cocos2d/',
         engineDir:'libs/cocos2d/',
         appFiles:[
             'MoonWarriors/src/Resource.js',
@@ -61,7 +61,7 @@ var MW = MW || {};
     window.addEventListener('DOMContentLoaded', function () {
         //first load engine file if specified
         var s = d.createElement('script');
-        s.src = c.engineDir + 'platform/jsloader.js';
+        s.src = c.engineDir + 'platform/jsloader.js?';
         d.body.appendChild(s);
         s.c = c;
         s.id = 'cocos2d-html5';
