@@ -33,10 +33,11 @@ var MW = MW || {};
     var c = {
         menuType:'canvas', //whether to use canvas mode menu or dom menu
         COCOS2D_DEBUG:2, //0 to turn debug off, 1 for basic debug, and 2 for full debug
+        IS_SHOW_DEBUG_ON_PAGE:true,
         showFPS:true,
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on
-        engineDir:'http://192.168.1.149:5555/cocos2d/',
+        engineDir:'libs/cocos2d/',
         appFiles:[
             'MoonWarriors/src/Resource.js',
             'MoonWarriors/src/config/GameConfig.js',

@@ -113,7 +113,7 @@ var GameLayer = cc.Layer.extend({
     },
     onTouchesMoved:function (touches, event) {
         if(this._isTouch){
-            this.processEvent( touches[0] );
+            this.processEvent(touches[0]);
         }
     },
     onTouchesEnded:function(touches, event){
