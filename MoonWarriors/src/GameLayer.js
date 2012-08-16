@@ -48,9 +48,8 @@ var GameLayer = cc.Layer.extend({
             this.screenRect = cc.rect(0, 0, winSize.width, winSize.height + 10);
 
             // score
-            this.lbScore = cc.LabelBMFont.create("Score: 0", s_arial14_fnt);
+            this.lbScore = cc.LabelTTF.create("Score: 0", "Arial",14,cc.SizeMake(80,14),cc.TEXT_ALIGNMENT_RIGHT);
             this.lbScore.setAnchorPoint(cc.p(1,0));
-            this.lbScore.setAlignment(cc.TEXT_ALIGNMENT_RIGHT);
             this.addChild(this.lbScore, 1000);
             this.lbScore.setPosition(cc.p(winSize.width - 5 , winSize.height - 20));
 
