@@ -25,6 +25,7 @@ var GameLayer = cc.Layer.extend({
     explosionAnimation:[],
     _beginPos:cc.p(0, 0),
     _state:STATE_PLAYING,
+    _isTouch:false,
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
@@ -107,13 +108,21 @@ var GameLayer = cc.Layer.extend({
             this._levelManager.loadLevelResource(this._time);
         }
     },
-
-    onTouchesMoved:function (touches, event) {
-        this.processEvent( touches[0] );
+    onTouchesBegan:function(touches, event){
+        this._isTouch = true;
     },
-
+    onTouchesMoved:function (touches, event) {
+        if(this._isTouch){
+            this.processEvent( touches[0] );
+        }
+    },
+    onTouchesEnded:function(touches, event){
+        this._isTouch = false;
+    },
     onMouseDragged:function( event ) {
-        this.processEvent( event );
+        if(this._isTouch){
+            this.processEvent( event );
+        }
     },
 
     processEvent:function( event ) {
@@ -142,8 +151,8 @@ var GameLayer = cc.Layer.extend({
             this.updateUI();
         }
 
-        if( cc.config.deviceType == 'browser' )
-            cc.$("#cou").innerHTML = "Ship:" + 1 + ", Enemy: " + MW.CONTAINER.ENEMIES.length + ", Bullet:" + MW.CONTAINER.ENEMY_BULLETS.length + "," + MW.CONTAINER.PLAYER_BULLETS.length + " all:" + this.getChildren().length;
+        //if( cc.config.deviceType == 'browser' )
+         //   cc.$("#cou").innerHTML = "Ship:" + 1 + ", Enemy: " + MW.CONTAINER.ENEMIES.length + ", Bullet:" + MW.CONTAINER.ENEMY_BULLETS.length + "," + MW.CONTAINER.PLAYER_BULLETS.length + " all:" + this.getChildren().length;
     },
     checkIsCollide:function () {
         var selChild, bulletChild;
