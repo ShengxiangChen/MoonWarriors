@@ -37,7 +37,7 @@ var MW = MW || {};
         showFPS:true,
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on
-        engineDir:'http://192.168.0.122:8080/cocos2d/',
+        engineDir:'libs/cocos2d/',
         appFiles:[
             'MoonWarriors/src/Resource.js',
             'MoonWarriors/src/config/GameConfig.js',
