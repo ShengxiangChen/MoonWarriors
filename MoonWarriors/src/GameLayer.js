@@ -63,7 +63,7 @@ var GameLayer = cc.Layer.extend({
             // ship Life count
             this._lbLife = cc.LabelTTF.create("0", "Arial", 20);
             this._lbLife.setPosition(cc.p(60, 463));
-            this._lbLife.setColor(cc.RED);
+            this._lbLife.setColor(cc.red());
             this.addChild(this._lbLife, 1000);
 
             // ship

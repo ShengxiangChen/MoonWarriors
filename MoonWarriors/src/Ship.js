@@ -83,7 +83,7 @@ var Ship = cc.Sprite.extend({
                 this._hurtColorLife--;
             }
             if (this._hurtColorLife == 1) {
-                this.setColor(cc.WHITE);
+                this.setColor(cc.white());
             }
         }
     },
@@ -116,7 +116,7 @@ var Ship = cc.Sprite.extend({
         if (this.canBeAttack) {
             this._hurtColorLife = 2;
             this.HP--;
-            this.setColor(cc.RED);
+            this.setColor(cc.red());
         }
     },
     collideRect:function(){
