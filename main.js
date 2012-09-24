@@ -34,17 +34,17 @@ var cocos2dApp = cc.Application.extend({
         //cc.IS_SHOW_DEBUG_ON_PAGE = true;
         cc.setup(this.config.tag);
         cc.AudioEngine.getInstance().init("mp3,ogg");
-        cc.Loader.shareLoader().onloading = function () {
-            cc.LoaderScene.shareLoaderScene().draw();
+        cc.Loader.getInstance().onloading = function () {
+            cc.LoaderScene.getInstance().draw();
         };
-        cc.Loader.shareLoader().onload = function () {
+        cc.Loader.getInstance().onload = function () {
             cc.AppController.shareAppController().didFinishLaunchingWithOptions();
             cc.adjustSizeForWindow();
             window.addEventListener("resize", function (event) {
                 cc.adjustSizeForWindow();
             });
         };
-        cc.Loader.shareLoader().preload(g_ressources);
+        cc.Loader.getInstance().preload(g_ressources);
     },
     applicationDidFinishLaunching:function () {
         // initialize director
