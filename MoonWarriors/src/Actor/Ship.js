@@ -18,7 +18,7 @@ var Ship = cc.Sprite.extend({
         cc.associateWithNative( this, cc.Sprite );
 
         //init life
-        var shipTexture = cc.TextureCache.getInstance().addImage(s_ship01);
+        var shipTexture = cc.TextureCache.getInstance().addImage(MW.Res.s_ship01);
         this.initWithTexture(shipTexture, cc.rect(0, 0, 60, 38));
         this.setTag(this.zOrder);
         this.setPosition(this.appearPosition);
@@ -109,7 +109,7 @@ var Ship = cc.Sprite.extend({
         myParent.addChild( new Explosion(p) );
         myParent.removeChild(this,true);
         if (MW.SOUND) {
-            cc.AudioEngine.getInstance().playEffect(s_shipDestroyEffect);
+            cc.AudioEngine.getInstance().playEffect(MW.Res.s_shipDestroyEffect);
         }
     },
     hurt:function () {

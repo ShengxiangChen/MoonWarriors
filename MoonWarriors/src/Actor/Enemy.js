@@ -48,7 +48,7 @@ var Enemy = cc.Sprite.extend({
         cc.ArrayRemoveObject(MW.CONTAINER.ENEMIES,this);
         this.removeFromParentAndCleanup(true);
         if(MW.SOUND){
-            cc.AudioEngine.getInstance().playEffect(s_explodeEffect);
+            cc.AudioEngine.getInstance().playEffect(MW.Res.s_explodeEffect);
         }
     },
     shoot:function () {
@@ -71,5 +71,5 @@ var Enemy = cc.Sprite.extend({
 });
 
 Enemy.sharedEnemy = function(){
-    cc.SpriteFrameCache.getInstance().addSpriteFrames(s_Enemy_plist, s_Enemy);
+    cc.SpriteFrameCache.getInstance().addSpriteFrames(MW.Res.s_Enemy_plist, MW.Res.s_Enemy);
 };

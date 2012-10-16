@@ -15,7 +15,7 @@ var Bullet = cc.Sprite.extend({
 
         this.yVelocity = -bulletSpeed;
         this.attackMode = attackMode;
-        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_bullet_plist);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(MW.Res.s_bullet_plist);
         this.initWithSpriteFrameName(weaponType);
         this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
         /*var tmpAction;
@@ -39,7 +39,7 @@ var Bullet = cc.Sprite.extend({
         }
     },
     destroy:function () {
-        var explode = cc.Sprite.create(s_hit);
+        var explode = cc.Sprite.create(MW.Res.s_hit);
         explode.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
         explode.setPosition(this.getPosition());
         explode.setRotation(Math.random()*360);

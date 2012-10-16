@@ -25,7 +25,7 @@ var Explosion = cc.Sprite.extend({
 });
 
 Explosion.sharedExplosion = function () {
-    cc.SpriteFrameCache.getInstance().addSpriteFrames(s_explosion_plist);
+    cc.SpriteFrameCache.getInstance().addSpriteFrames(MW.Res.s_explosion_plist);
     var animFrames = [];
     var str = "";
     for (var i = 1; i < 35; i++) {

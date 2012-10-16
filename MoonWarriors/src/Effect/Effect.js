@@ -1,5 +1,5 @@
 var flareEffect = function (parent, target, callback) {
-    var flare = cc.Sprite.create(s_flare);
+    var flare = cc.Sprite.create(MW.Res.s_flare);
     flare.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     parent.addChild(flare, 10);
     flare.setOpacity(0);
@@ -19,7 +19,7 @@ var flareEffect = function (parent, target, callback) {
 
     var onComplete = cc.CallFunc.create(target, callback);
     var killflare = cc.CallFunc.create(flare, function () {
-        this.getParent().removeChild(this,true);
+        this.getParent().removeChild(this, true);
     });
     flare.runAction(cc.Sequence.create(opacityAnim, biggerEase, opacDim, killflare, onComplete));
     flare.runAction(easeMove);
@@ -27,18 +27,17 @@ var flareEffect = function (parent, target, callback) {
     flare.runAction(bigger);
 };
 
-var removeFromParent = function( sprite )
-{
-    sprite.removeFromParentAndCleanup( true );
+var removeFromParent = function (sprite) {
+    sprite.removeFromParentAndCleanup(true);
 };
 
 var spark = function (ccpoint, parent, scale, duration) {
     scale = scale || 0.3;
     duration = duration || 0.5;
 
-    var one = cc.Sprite.create(s_explode1);
-    var two = cc.Sprite.create(s_explode2);
-    var three = cc.Sprite.create(s_explode3);
+    var one = cc.Sprite.create(MW.Res.s_explode1);
+    var two = cc.Sprite.create(MW.Res.s_explode2);
+    var three = cc.Sprite.create(MW.Res.s_explode3);
 
     one.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     two.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -61,8 +60,8 @@ var spark = function (ccpoint, parent, scale, duration) {
     var right = cc.RotateBy.create(duration, 45);
     var scaleBy = cc.ScaleBy.create(duration, 3, 3);
     var fadeOut = cc.FadeOut.create(duration);
-    var remove = cc.CallFunc.create(this, removeFromParent );
-    var seq = cc.Sequence.create( fadeOut, remove );
+    var remove = cc.CallFunc.create(this, removeFromParent);
+    var seq = cc.Sequence.create(fadeOut, remove);
 
     one.runAction(left);
     two.runAction(right);
@@ -72,7 +71,7 @@ var spark = function (ccpoint, parent, scale, duration) {
     three.runAction(scaleBy.copy());
 
     one.runAction(seq);
-    two.runAction(seq.copy() );
+    two.runAction(seq.copy());
     three.runAction(seq.copy());
 };
 

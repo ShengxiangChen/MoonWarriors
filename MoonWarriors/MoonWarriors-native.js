@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
- 
+
  http://www.cocos2d-x.org
 
 
@@ -31,28 +31,43 @@ require("jsb_constants.js");
 var MW = MW || {};
 
 var appFiles = [
-	'Resource.js',
-    'GameConfig.js',
-	'EnemyType.js',
-	'Level.js',
-	'Effect.js',
-	'Bullet.js',
-	'Enemy.js',
-	'Explosion.js',
-	'Ship.js',
-	'LevelManager.js',
-	'GameControlMenu.js',
-	'GameLayer.js',
-	'GameOver.js',
-	'AboutLayer.js',
-	'SettingsLayer.js',
-	'SysMenu.js'
+    //resource
+    'Resource.js',
+
+    //Config
+    'Config/GameConfig.js',
+    'Config/EnemyType.js',
+    'Config/Level.js',
+
+    //Actor
+    'Actor/Ship.js',
+    'Actor/Enemy.js',
+    'Actor/Bullet.js',
+
+    //Effect
+    'Effect/Effect.js',
+    'Effect/Explosion.js',
+
+    //Controller
+    'Controller/LevelManager.js',
+    'Controller/GameController.js',
+
+    //Layer
+    'Layer/GameLayer.js',
+    'Layer/GameOver.js',
+    'Layer/AboutLayer.js',
+    'Layer/GameControlMenu.js',
+    'Layer/SettingsLayer.js',
+    'Layer/StartMenuLayer.js',
+
+    //Scene
+    'Scene/StartMenuScene.js'
 ];
 
 cc.dumpConfig();
 
-for( var i=0; i < appFiles.length; i++) {
-    require( appFiles[i] );
+for (var i = 0; i < appFiles.length; i++) {
+    require(appFiles[i]);
 }
 
 var director = cc.Director.getInstance();
@@ -62,7 +77,7 @@ director.setDisplayStats(true);
 director.setAnimationInterval(1.0 / 60);
 
 // create a scene. it's an autorelease object
-var mainScene = SysMenu.scene();
+var mainScene = MWStartMenuLayer.scene();
 
 // run
 director.runWithScene(mainScene);

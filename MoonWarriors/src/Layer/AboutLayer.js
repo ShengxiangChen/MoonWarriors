@@ -5,11 +5,11 @@ var AboutLayer = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
-            var sp = cc.Sprite.create(s_loading);
+            var sp = cc.Sprite.create(MW.Res.s_mainMenuBg);
             sp.setAnchorPoint(cc.p(0,0));
             this.addChild(sp, 0, 1);
 
-            var cacheImage = cc.TextureCache.getInstance().addImage(s_menuTitle);
+            var cacheImage = cc.TextureCache.getInstance().addImage(MW.Res.s_menuTitle);
             var title = cc.Sprite.createWithTexture(cacheImage, cc.rect(0, 36, 100, 34));
             title.setPosition(cc.p(winSize.width / 2, winSize.height - 60));
             this.addChild(title);
@@ -33,7 +33,7 @@ var AboutLayer = cc.Layer.extend({
     },
     backCallback:function (pSender) {
         var scene = cc.Scene.create();
-        scene.addChild(SysMenu.create());
+        scene.addChild(MW.StartMenuLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
     }
 });

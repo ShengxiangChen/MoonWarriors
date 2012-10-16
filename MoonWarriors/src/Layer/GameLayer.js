@@ -54,7 +54,7 @@ var GameLayer = cc.Layer.extend({
             this.lbScore.setPosition(cc.p(winSize.width - 5 , winSize.height - 20));
 
             // ship life
-            var shipTexture = cc.TextureCache.getInstance().addImage(s_ship01);
+            var shipTexture = cc.TextureCache.getInstance().addImage(MW.Res.s_ship01);
             var life = cc.Sprite.createWithTexture(shipTexture, cc.rect(0, 0, 60, 38));
             life.setScale(0.6);
             life.setPosition(cc.p(30, 460));
@@ -87,7 +87,7 @@ var GameLayer = cc.Layer.extend({
             this.schedule(this.scoreCounter, 1);
 
             if (MW.SOUND) {
-                cc.AudioEngine.getInstance().playBackgroundMusic(s_bgMusic, true);
+                cc.AudioEngine.getInstance().playBackgroundMusic(MW.Res.s_bgMusic, true);
             }
 
             bRet = true;
@@ -241,13 +241,13 @@ var GameLayer = cc.Layer.extend({
     },
     initBackground:function () {
         // bg
-        this._backSky = cc.Sprite.create(s_bg01);
+        this._backSky = cc.Sprite.create(MW.Res.s_bg01);
         this._backSky.setAnchorPoint(cc.p(0, 0));
         this._backSkyHeight = this._backSky.getContentSize().height;
         this.addChild(this._backSky, -10);
 
         //tilemap
-        this._backTileMap = cc.TMXTiledMap.create(s_level01);
+        this._backTileMap = cc.TMXTiledMap.create(MW.Res.s_level01);
         this.addChild(this._backTileMap, -9);
         this._backTileMapHeight = this._backTileMap.getMapSize().height * this._backTileMap.getTileSize().height;
 
@@ -266,7 +266,7 @@ var GameLayer = cc.Layer.extend({
 
         if (this._backSkyHeight <= winSize.height) {
             if (!this._isBackSkyReload) {
-                this._backSkyRe = cc.Sprite.create(s_bg01);
+                this._backSkyRe = cc.Sprite.create(MW.Res.s_bg01);
                 this._backSkyRe.setAnchorPoint(cc.p(0, 0));
                 this.addChild(this._backSkyRe, -10);
                 this._backSkyRe.setPosition(cc.p(0, winSize.height));
@@ -284,7 +284,7 @@ var GameLayer = cc.Layer.extend({
 
         if (this._backTileMapHeight <= winSize.height) {
             if (!this._isBackTileReload) {
-                this._backTileMapRe = cc.TMXTiledMap.create(s_level01);
+                this._backTileMapRe = cc.TMXTiledMap.create(MW.Res.s_level01);
                 this.addChild(this._backTileMapRe, -9);
                 this._backTileMapRe.setPosition(cc.p(0, winSize.height));
                 this._isBackTileReload = true;

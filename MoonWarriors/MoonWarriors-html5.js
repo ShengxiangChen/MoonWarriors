@@ -1,8 +1,7 @@
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
- 
- http://www.cocos2d-x.org
 
+ http://www.cocos2d-x.org
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -39,23 +38,39 @@ var MW = MW || {};
         //engineDir:'../cocos2d-x/cocos2d-html5/cocos2d/',
         engineDir:'libs/cocos2d/',
         appFiles:[
+            //resource
             'MoonWarriors/src/Resource.js',
-            'MoonWarriors/src/config/GameConfig.js',
-            'MoonWarriors/src/config/EnemyType.js',
-            'MoonWarriors/src/config/Level.js',
-            'MoonWarriors/src/Effect.js',
-            'MoonWarriors/src/Bullet.js',
-            'MoonWarriors/src/Enemy.js',
-            'MoonWarriors/src/Explosion.js',
-            'MoonWarriors/src/Ship.js',
-            'MoonWarriors/src/LevelManager.js',
-            'MoonWarriors/src/GameController.js',
-            'MoonWarriors/src/GameControlMenu.js',
-            'MoonWarriors/src/GameLayer.js',
-            'MoonWarriors/src/GameOver.js',
-            'MoonWarriors/src/AboutLayer.js',
-            'MoonWarriors/src/SettingsLayer.js',
-            'MoonWarriors/src/SysMenu.js'
+
+            //Config
+            'MoonWarriors/src/Config/GameConfig.js',
+            'MoonWarriors/src/Config/AutoAdaptive.js',
+            'MoonWarriors/src/Config/EnemyType.js',
+            'MoonWarriors/src/Config/Level.js',
+
+            //Actor
+            'MoonWarriors/src/Actor/Ship.js',
+            'MoonWarriors/src/Actor/Enemy.js',
+            'MoonWarriors/src/Actor/Bullet.js',
+
+            //Effect
+            'MoonWarriors/src/Effect/Effect.js',
+            'MoonWarriors/src/Effect/Explosion.js',
+
+            //Controller
+            'MoonWarriors/src/Controller/LevelManager.js',
+            'MoonWarriors/src/Controller/GameController.js',
+
+            //Layer
+            'MoonWarriors/src/Layer/GameLayer.js',
+            'MoonWarriors/src/Layer/GameOver.js',
+            'MoonWarriors/src/Layer/AboutLayer.js',
+            'MoonWarriors/src/Layer/GameControlMenu.js',
+            'MoonWarriors/src/Layer/SettingsLayer.js',
+            'MoonWarriors/src/Layer/StartMenuLayer.js',
+
+            //Scene
+            'MoonWarriors/src/Scene/StartMenuScene.js'
+
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {
