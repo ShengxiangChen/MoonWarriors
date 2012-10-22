@@ -22,9 +22,6 @@ MW.GameController = cc.Class.extend({
     _isNewGame:true,
     _curLevel:MW.LEVEL.STAGE1,
     _selectLevel:MW.LEVEL.STAGE1,
-    init:function () {
-        return true;
-    },
     setCurScene:function (s) {
         if (this._curScene != s) {
             if (this._curScene !== null) {
@@ -32,39 +29,28 @@ MW.GameController = cc.Class.extend({
             }
             this._curScene = s;
             if (this._curScene) {
-                this._curScene.onEnter();
-                cc.Director.getInstance().replaceScene(s);
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1, s));
             }
         }
     },
     getCurScene:function () {
         return this._curScene;
     },
-    runGame:function () {
-
-    },
     newGame:function () {
-
+        var scene = MW.GameScene.create();
+        this.setCurScene(scene);
     },
-    option:function () {
-
-    },
-    about:function () {
-
+    backToMenu:function () {
+        var scene = MW.StartMenuScene.create();
+        this.setCurScene(scene);
     }
 });
 
 MW.GameController.getInstance = function () {
-    cc.Assert(this._sharedGame, "Havn't call setSharedGame");
-    if (!this._sharedGame) {
-        this._sharedGame = new MW.GameController();
-        if (this._sharedGame.init()) {
-            return this._sharedGame;
-        }
-    } else {
-        return this._sharedGame;
+    if (!this._instance) {
+        this._instance = new MW.GameController();
     }
-    return null;
+    return this._instance;           /**/
 };
 
-MW.GameController._sharedGame = null;
+MW.GameController._instance = null;

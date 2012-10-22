@@ -1,103 +1,110 @@
 cc.dumpConfig();
- var winSize;
+
 MW.StartMenuLayer = cc.Layer.extend({
     _ship:null,
-
+    _menu:null,
     ctor:function () {
-        cc.associateWithNative( this, cc.Layer );
+        cc.associateWithNative(this, cc.Layer);
     },
+
     init:function () {
-        var bRet = false;
-        if (this._super()) {
-            winSize = cc.Director.getInstance().getWinSize();
+        this._super();
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(MW.Res.s_mainMenu_plist);
 
-             this._initBgAndLogo();
+        //create bg, logo, menu and ship
+        this._initBgAndLogo();
+        this._initMenu();
+        this._initShip();
 
+        //play backgournd music
+        MW.PlayBackgroundMusic(MW.Res.s_mainMainMusic, true);
 
+        this.schedule(this.update, 0.1);
 
-            var newGameNormal = cc.Sprite.create(MW.Res.s_menu, cc.rect(0, 0, 126, 33));
-            var newGameSelected = cc.Sprite.create(MW.Res.s_menu, cc.rect(0, 33, 126, 33));
-            var newGameDisabled = cc.Sprite.create(MW.Res.s_menu, cc.rect(0, 33 * 2, 126, 33));
-
-            var gameSettingsNormal = cc.Sprite.create(MW.Res.s_menu, cc.rect(126, 0, 126, 33));
-            var gameSettingsSelected = cc.Sprite.create(MW.Res.s_menu, cc.rect(126, 33, 126, 33));
-            var gameSettingsDisabled = cc.Sprite.create(MW.Res.s_menu, cc.rect(126, 33 * 2, 126, 33));
-
-            var aboutNormal = cc.Sprite.create(MW.Res.s_menu, cc.rect(252, 0, 126, 33));
-            var aboutSelected = cc.Sprite.create(MW.Res.s_menu, cc.rect(252, 33, 126, 33));
-            var aboutDisabled = cc.Sprite.create(MW.Res.s_menu, cc.rect(252, 33 * 2, 126, 33));
-
-            var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled, this, function () {
-                this.onButtonEffect();
-                flareEffect(this, this, this.onNewGame);
-            });
-            var gameSettings = cc.MenuItemSprite.create(gameSettingsNormal, gameSettingsSelected, gameSettingsDisabled, this, this.onSettings);
-            var about = cc.MenuItemSprite.create(aboutNormal, aboutSelected, aboutDisabled, this, this.onAbout);
-
-            var menu = cc.Menu.create(newGame, gameSettings, about);
-            menu.alignItemsVerticallyWithPadding(10);
-            this.addChild(menu, 1, 2);
-            menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2 - 80));
-            this.schedule(this.update, 0.1);
-
-            var tmp = cc.TextureCache.getInstance().addImage(MW.Res.s_ship01);
-            this._ship = cc.Sprite.createWithTexture(tmp,cc.rect(0, 45, 60, 38));
-            this.addChild(this._ship, 0, 4);
-            var pos = cc.p(Math.random() * winSize.width, 0);
-            this._ship.setPosition( pos );
-            this._ship.runAction(cc.MoveBy.create(2, cc.p(Math.random() * winSize.width, pos.y + winSize.height + 100)));
-
-            if (MW.SOUND) {
-                cc.AudioEngine.getInstance().setBackgroundMusicVolume(0.7);
-                cc.AudioEngine.getInstance().playBackgroundMusic(MW.Res.s_mainMainMusic, true);
-            }
-
-            bRet = true;
-        }
-
-        return bRet;
+        return true;
     },
-    _initBgAndLogo:function(){
+    onExit:function(){
+        this._super();
+        cc.SpriteFrameCache.getInstance().removeSpriteFrameByName(MW.Res.s_mainMenu_plist);
+        this.removeAllChildrenWithCleanup(true);
+        this._ship = null;
+        this._menu = null;
+    },
+    _initBgAndLogo:function () {
         var logo = cc.Sprite.create(MW.Res.s_logo);
         logo.setAnchorPoint(MW.AnchorPoint.Top);
-        logo.setPosition(cc.pAdd(MW.VisibleRect.top(),cc.p(0,-92)));
-        this.addChild(logo,MW.ZORDER.UI);
+        logo.setPosition(cc.pAdd(MW.VisibleRect.top(), cc.p(0, -92)));
+        this.addChild(logo, MW.ZORDER.UI);
 
         var bg = cc.Sprite.create(MW.Res.s_mainMenuBg);
         bg.setAnchorPoint(MW.AnchorPoint.BottomLeft);
         this.addChild(bg, MW.ZORDER.BG);
     },
-    onNewGame:function (pSender) {
-        var scene = cc.Scene.create();
-        scene.addChild(GameLayer.create());
-        scene.addChild(GameControlMenu.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+
+    _initMenu:function () {
+        var newGame = cc.MenuItemSprite.create(
+            cc.Sprite.createWithSpriteFrameName("newgame01.png"),
+            cc.Sprite.createWithSpriteFrameName("newgame02.png"),
+            cc.Sprite.createWithSpriteFrameName("newgame03.png"),
+            this, this.onNewGame);
+
+        var gameSettings = cc.MenuItemSprite.create(
+            cc.Sprite.createWithSpriteFrameName("option01.png"),
+            cc.Sprite.createWithSpriteFrameName("option02.png"),
+            cc.Sprite.createWithSpriteFrameName("option03.png"),
+            this, this.onSettings);
+
+        var about = cc.MenuItemSprite.create(
+            cc.Sprite.createWithSpriteFrameName("about01.png"),
+            cc.Sprite.createWithSpriteFrameName("about02.png"),
+            cc.Sprite.createWithSpriteFrameName("about03.png"),
+            this, this.onAbout);
+
+        this._menu = cc.Menu.create(newGame, gameSettings, about);
+        this._menu.alignItemsVerticallyWithPadding(10);
+        this.addChild(this._menu, MW.ZORDER.UI);
+        this._menu.setPosition(cc.pAdd(MW.VisibleRect.center(), cc.p(0, -80)));
     },
-    onSettings:function (pSender) {
+
+    _initShip:function () {
+        this._ship = cc.Sprite.create(MW.Res.s_ship01, cc.rect(0, 45, 60, 38));
+        this._ship.setPosition(cc.p(Math.random() * MW.ScreenWidth, 0));
+        this.addChild(this._ship, MW.ZORDER.UNIT);
+        var action = cc.MoveBy.create(2, cc.p(Math.random() * MW.ScreenWidth, this._ship.getPosition().y + MW.ScreenHeight + 100));
+        this._ship.runAction(action);
+    },
+
+    onNewGame:function (sender) {
         this.onButtonEffect();
-        var scene = cc.Scene.create();
-        scene.addChild(SettingsLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+        MW.GameController.getInstance().newGame();
     },
-    onAbout:function (pSender) {
+
+    onSettings:function (sender) {
         this.onButtonEffect();
-        var scene = cc.Scene.create();
-        scene.addChild(AboutLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+
+        var settingsLayer = MW.SettingsLayer.create();
+        this.addChild(settingsLayer,MW.ZORDER.TOP);
     },
+
+    onAbout:function (sender) {
+        this.onButtonEffect();
+
+        var about = MW.AboutLayer.create();
+        this.addChild(about,MW.ZORDER.TOP);
+    },
+
     update:function () {
         if (this._ship.getPosition().y > 480) {
-            var pos = cc.p(Math.random() * winSize.width, 10);
-            this._ship.setPosition( pos );
-            this._ship.runAction( cc.MoveBy.create(
+            var pos = cc.p(Math.random() * MW.ScreenWidth, 10);
+            this._ship.setPosition(pos);
+            this._ship.runAction(cc.MoveBy.create(
                 parseInt(5 * Math.random(), 10),
-                cc.p(Math.random() * winSize.width, pos.y + 480)));
+                cc.p(Math.random() * MW.ScreenWidth, pos.y + 480)));
         }
     },
-    onButtonEffect:function(){
-        if (MW.SOUND) {
-            var s = cc.AudioEngine.getInstance().playEffect(MW.Res.s_buttonEffect);
-        }
+
+    onButtonEffect:function () {
+        MW.PlayEffect(MW.Res.s_buttonEffect);
     }
 });
 

@@ -37,13 +37,13 @@ var LevelManager = cc.Class.extend({
                 if(selEnemy.ShowType == "Once"){
                     if(selEnemy.ShowTime == deltaTime){
                         for(var tIndex = 0; tIndex < selEnemy.Types.length;tIndex++ ){
-                            this.addEnemyToGameLayer(selEnemy.Types[tIndex]);
+                            this.addEnemyTogameLayer(selEnemy.Types[tIndex]);
                         }
                     }
                 }else if(selEnemy.ShowType == "Repeate"){
                     if(deltaTime % selEnemy.ShowTime === 0){
                         for(var rIndex = 0; rIndex < selEnemy.Types.length;rIndex++ ){
-                            this.addEnemyToGameLayer(selEnemy.Types[rIndex]);
+                            this.addEnemyTogameLayer(selEnemy.Types[rIndex]);
                         }
                     }
                 }
@@ -51,10 +51,11 @@ var LevelManager = cc.Class.extend({
         }
     },
 
-    addEnemyToGameLayer:function(enemyType){
+    addEnemyTogameLayer:function(enemyType){
         var addEnemy = new Enemy(EnemyType[enemyType]);
+        addEnemy.setDelegate(this._gameLayer);
 
-        var enemypos = cc.p( 80 + (winSize.width - 160) * Math.random(), winSize.height);
+        var enemypos = cc.p( 80 + (MW.ScreenWidth - 160) * Math.random(), MW.ScreenHeight);
         var enemycs =  addEnemy.getContentSize();
         addEnemy.setPosition( enemypos );
         
@@ -64,11 +65,11 @@ var LevelManager = cc.Class.extend({
         var a1=0;
         switch (addEnemy.moveType) {
             case MW.ENEMY_MOVE_TYPE.ATTACK:
-                offset = this._gameLayer._ship.getPosition();
+                offset = this._gameLayer.getPlayer().getPosition();
                 tmpAction = cc.MoveTo.create(1, offset);
                 break;
             case MW.ENEMY_MOVE_TYPE.VERTICAL:
-                offset = cc.p(0, -winSize.height - enemycs.height);
+                offset = cc.p(0, -MW.ScreenHeight - enemycs.height);
                 tmpAction = cc.MoveBy.create(4, offset);
                 break;
             case MW.ENEMY_MOVE_TYPE.HORIZONTAL:
@@ -85,15 +86,14 @@ var LevelManager = cc.Class.extend({
                 tmpAction = cc.Sequence.create(a0, a1, onComplete);
                 break;
             case MW.ENEMY_MOVE_TYPE.OVERLAP:
-                var newX = (enemypos.x <= winSize.width / 2) ? 320 : -320;
+                var newX = (enemypos.x <= MW.ScreenWidth / 2) ? 320 : -320;
                 a0 = cc.MoveBy.create(4, cc.p(newX, -240));
                 a1 = cc.MoveBy.create(4,cc.p(-newX,-320));
                 tmpAction = cc.Sequence.create(a0,a1);
                 break;
         }
 
-        this._gameLayer.addChild(addEnemy, addEnemy.zOrder, MW.UNIT_TAG.ENEMY);
-        MW.CONTAINER.ENEMIES.push(addEnemy);
+        this._gameLayer.getScene().addActor(addEnemy);
         addEnemy.runAction(tmpAction);
     }
 });

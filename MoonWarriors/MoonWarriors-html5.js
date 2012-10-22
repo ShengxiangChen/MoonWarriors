@@ -48,6 +48,7 @@ var MW = MW || {};
             'MoonWarriors/src/Config/Level.js',
 
             //Actor
+            'MoonWarriors/src/Actor/BaseActor.js',
             'MoonWarriors/src/Actor/Ship.js',
             'MoonWarriors/src/Actor/Enemy.js',
             'MoonWarriors/src/Actor/Bullet.js',
@@ -62,14 +63,16 @@ var MW = MW || {};
 
             //Layer
             'MoonWarriors/src/Layer/GameLayer.js',
-            'MoonWarriors/src/Layer/GameOver.js',
+            'MoonWarriors/src/Layer/BackgroundLayer.js',
+            'MoonWarriors/src/Layer/GameOverLayer.js',
             'MoonWarriors/src/Layer/AboutLayer.js',
-            'MoonWarriors/src/Layer/GameControlMenu.js',
+            'MoonWarriors/src/Layer/GameUILayer.js',
             'MoonWarriors/src/Layer/SettingsLayer.js',
             'MoonWarriors/src/Layer/StartMenuLayer.js',
 
             //Scene
-            'MoonWarriors/src/Scene/StartMenuScene.js'
+            'MoonWarriors/src/Scene/StartMenuScene.js',
+            'MoonWarriors/src/Scene/GameScene.js'
 
         ]
     };

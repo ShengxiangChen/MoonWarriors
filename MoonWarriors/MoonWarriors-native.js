@@ -54,9 +54,9 @@ var appFiles = [
 
     //Layer
     'Layer/GameLayer.js',
-    'Layer/GameOver.js',
+    'Layer/GameOverLayer.js',
     'Layer/AboutLayer.js',
-    'Layer/GameControlMenu.js',
+    'Layer/GameUILayer.js',
     'Layer/SettingsLayer.js',
     'Layer/StartMenuLayer.js',
 

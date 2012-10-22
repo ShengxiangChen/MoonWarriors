@@ -1,47 +1,39 @@
-var AboutLayer = cc.Layer.extend({
+MW.AboutLayer = cc.Layer.extend({
     ctor:function () {
-        cc.associateWithNative( this, cc.Layer );
+        cc.associateWithNative(this, cc.Layer);
     },
     init:function () {
-        var bRet = false;
-        if (this._super()) {
-            var sp = cc.Sprite.create(MW.Res.s_mainMenuBg);
-            sp.setAnchorPoint(cc.p(0,0));
-            this.addChild(sp, 0, 1);
+        this._super();
 
-            var cacheImage = cc.TextureCache.getInstance().addImage(MW.Res.s_menuTitle);
-            var title = cc.Sprite.createWithTexture(cacheImage, cc.rect(0, 36, 100, 34));
-            title.setPosition(cc.p(winSize.width / 2, winSize.height - 60));
-            this.addChild(title);
+        var sp = cc.Sprite.create(MW.Res.s_mainMenuBg);
+        sp.setAnchorPoint(MW.AnchorPoint.BottomLeft);
+        this.addChild(sp, MW.ZORDER.BG);
 
-            // There is a bug in LabelTTF native. Apparently it fails with some unicode chars.
-//            var about = cc.LabelTTF.create("   This showcase utilizes many features from Cocos2d-html5 engine, including: Parallax background, tilemap, actions, ease, frame animation, schedule, Labels, keyboard Dispatcher, Scene Transition. \n    Art and audio is copyrighted by Enigmata Genus Revenge, you may not use any copyrigted material without permission. This showcase is licensed under GPL. \n \n Programmer: \n Shengxiang Chen (陈升想) \n Dingping Lv (吕定平) \n Effects animation: Hao Wu(吴昊)\n Quality Assurance:  Sean Lin(林顺)", "Arial", 14, cc.size(winSize.width * 0.85, 100), cc.TEXT_ALIGNMENT_LEFT );
-            var about = cc.LabelTTF.create("   This showcase utilizes many features from Cocos2d-html5 engine, including: Parallax background, tilemap, actions, ease, frame animation, schedule, Labels, keyboard Dispatcher, Scene Transition. \n    Art and audio is copyrighted by Enigmata Genus Revenge, you may not use any copyrigted material without permission. This showcase is licensed under GPL. \n\nProgrammer: \n Shengxiang Chen\n Dingping Lv \n Effects animation: Hao Wu\n Quality Assurance:  Sean Lin", "Arial", 14, cc.size(winSize.width * 0.85, 320), cc.TEXT_ALIGNMENT_LEFT );
-            about.setPosition(cc.p(winSize.width / 2,  winSize.height/2 -20) );
-            about.setAnchorPoint( cc.p(0.5, 0.5));
-            this.addChild(about);
+        var title = cc.Sprite.create(MW.Res.s_menuTitle, cc.rect(0, 36, 100, 34));
+        title.setPosition(cc.p(MW.ScreenWidth / 2, MW.ScreenHeight - 60));
+        this.addChild(title, MW.ZORDER.UI);
 
-            var label = cc.LabelTTF.create("Go back", "Arial", 14);
-            var back = cc.MenuItemLabel.create(label, this, this.backCallback);
-            var menu = cc.Menu.create(back);
-            menu.setPosition(cc.p(winSize.width / 2, 40));
-            this.addChild(menu);
-            bRet = true;
-        }
+        var about = cc.LabelTTF.create("   This showcase utilizes many features from Cocos2d-html5 engine, including: Parallax background, tilemap, actions, ease, frame animation, schedule, Labels, keyboard Dispatcher, Scene Transition. \n    Art and audio is copyrighted by Enigmata Genus Revenge, you may not use any copyrigted material without permission. This showcase is licensed under GPL. \n\nProgrammer: \n Shengxiang Chen\n Dingping Lv \n Effects animation: Hao Wu\n Quality Assurance:  Sean Lin", "Arial", 14, cc.size(MW.ScreenWidth * 0.85, 320), cc.TEXT_ALIGNMENT_LEFT);
+        about.setPosition(cc.p(MW.ScreenWidth / 2, MW.ScreenHeight / 2 - 20));
+        about.setAnchorPoint(MW.AnchorPoint.Center);
+        this.addChild(about, MW.ZORDER.UI);
 
-        return bRet;
+        var back = cc.MenuItemLabel.create(cc.LabelTTF.create("Go back", "Arial", 14), this, this.backToMenu);
+        var menu = cc.Menu.create(back);
+        menu.setPosition(cc.p(MW.ScreenWidth / 2, 40));
+        this.addChild(menu, MW.ZORDER.UI);
+
+        return true;
     },
-    backCallback:function (pSender) {
-        var scene = cc.Scene.create();
-        scene.addChild(MW.StartMenuLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+    backToMenu:function (pSender) {
+        this.removeAllChildrenWithCleanup(true);
+        this.removeFromParentAndCleanup(true);
     }
 });
 
-AboutLayer.create = function () {
-    var sg = new AboutLayer();
+MW.AboutLayer.create = function () {
+    var sg = new MW.AboutLayer();
     if (sg && sg.init()) {
         return sg;
     }
-    return null;
 };

@@ -20,7 +20,7 @@ var Explosion = cc.Sprite.extend({
         this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
     },
     destroy:function () {
-        this.getParent().removeChild(this,true);
+        this.removeFromParentAndCleanup(true);
     }
 });
 

@@ -1,4 +1,4 @@
-var Ship = cc.Sprite.extend({
+MW.Ship = MW.BaseActor.extend({
     speed:220,
     bulletSpeed:900,
     HP:5,
@@ -11,11 +11,12 @@ var Ship = cc.Sprite.extend({
     maxBulletPowerValue:4,
     appearPosition:cc.p(160, 60),
     _hurtColorLife:0,
-    active:true,
+    _isAlive:true,
+    _group:"Ship",
     ctor:function () {
 
         // needed for JS-Bindings compatibility
-        cc.associateWithNative( this, cc.Sprite );
+        cc.associateWithNative(this, cc.Sprite);
 
         //init life
         var shipTexture = cc.TextureCache.getInstance().addImage(MW.Res.s_ship01);
@@ -49,16 +50,21 @@ var Ship = cc.Sprite.extend({
         var makeBeAttack = cc.CallFunc.create(this, function (t) {
             t.canBeAttack = true;
             t.setVisible(true);
-            t.removeChild(ghostSprite,true);
+            t.removeChild(ghostSprite, true);
         });
         this.runAction(cc.Sequence.create(cc.DelayTime.create(0.5), blinks, makeBeAttack));
+
+        var a = this.getContentSize();
+        this.setCollideRect(cc.rect(- a.width / 2, - a.height / 2, a.width, a.height / 2));
+    },
+    setDelegate:function (delegate) {
+        this._delegate = delegate;
     },
     update:function (dt) {
-
         // Keys are only enabled on the browser
-        if( cc.config.deviceType == 'browser' ) {
+        if (cc.config.deviceType == 'browser') {
             var pos = this.getPosition();
-            if ((MW.KEYS[cc.KEY.w] || MW.KEYS[cc.KEY.up]) && pos.y <= winSize.height) {
+            if ((MW.KEYS[cc.KEY.w] || MW.KEYS[cc.KEY.up]) && pos.y <= MW.ScreenHeight) {
                 pos.y += dt * this.speed;
             }
             if ((MW.KEYS[cc.KEY.s] || MW.KEYS[cc.KEY.down]) && pos.y >= 0) {
@@ -67,15 +73,16 @@ var Ship = cc.Sprite.extend({
             if ((MW.KEYS[cc.KEY.a] || MW.KEYS[cc.KEY.left]) && pos.x >= 0) {
                 pos.x -= dt * this.speed;
             }
-            if ((MW.KEYS[cc.KEY.d] || MW.KEYS[cc.KEY.right]) && pos.x <= winSize.width) {
+            if ((MW.KEYS[cc.KEY.d] || MW.KEYS[cc.KEY.right]) && pos.x <= MW.ScreenWidth) {
                 pos.x += dt * this.speed;
             }
-            this.setPosition( pos );
+            this.setPosition(pos);
         }
 
         if (this.HP <= 0) {
-            this.active = false;
+            this._isAlive = false;
         }
+
         this._timeTick += dt;
         if (this._timeTick > 0.1) {
             this._timeTick = 0;
@@ -86,31 +93,33 @@ var Ship = cc.Sprite.extend({
                 this.setColor(cc.white());
             }
         }
+        this._super();
     },
     shoot:function (dt) {
         //this.shootEffect();
         var offset = 13;
         var p = this.getPosition();
         var cs = this.getContentSize();
-        var a = new Bullet(this.bulletSpeed, "W1.png", MW.ENEMY_MOVE_TYPE.NORMAL);
-        MW.CONTAINER.PLAYER_BULLETS.push(a);
-        this.getParent().addChild(a, a.zOrder, MW.UNIT_TAG.PLAYER_BULLET);
-        a.setPosition(cc.p(p.x + offset, p.y + 3 + cs.height * 0.3));
 
-        var b = new Bullet(this.bulletSpeed, "W1.png", MW.ENEMY_MOVE_TYPE.NORMAL);
-        MW.CONTAINER.PLAYER_BULLETS.push(b);
-        this.getParent().addChild(b, b.zOrder, MW.UNIT_TAG.PLAYER_BULLET);
-        b.setPosition(cc.p(p.x - offset, p.y + 3 + cs.height * 0.3));
+        var bullet1 = new MW.ShipBullet();
+        this._delegate.getScene().addActor(bullet1);
+        bullet1.setPosition(cc.p(p.x + offset, p.y + 3 + cs.height * 0.3));
+        bullet1.setDelegate(this._delegate);
+
+        var bullet2 = new MW.ShipBullet();
+        this._delegate.getScene().addActor(bullet2);
+        bullet2.setPosition(cc.p(p.x - offset, p.y + 3 + cs.height * 0.3));
+        bullet2.setDelegate(this._delegate);
     },
     destroy:function () {
         MW.LIFE--;
-        var p = this.getPosition();
-        var myParent = this.getParent();
-        myParent.addChild( new Explosion(p) );
-        myParent.removeChild(this,true);
-        if (MW.SOUND) {
-            cc.AudioEngine.getInstance().playEffect(MW.Res.s_shipDestroyEffect);
-        }
+
+        var explosion = new Explosion();
+        explosion.setPosition(this.getPosition());
+        this._delegate.getScene().addChild(explosion);
+
+        MW.PlayEffect(MW.Res.s_shipDestroyEffect);
+        this._super();
     },
     hurt:function () {
         if (this.canBeAttack) {
@@ -119,10 +128,22 @@ var Ship = cc.Sprite.extend({
             this.setColor(cc.red());
         }
     },
-    collideRect:function(){
+    collideRect:function () {
         var p = this.getPosition();
         var a = this.getContentSize();
-        var r = new cc.rect(p.x - a.width/2, p.y - a.height/2, a.width, a.height/2);
+        var r = new cc.rect(p.x - a.width / 2, p.y - a.height / 2, a.width, a.height / 2);
         return r;
     }
 });
+
+MW.Ship.getInstance = function () {
+    if (this._instance) {
+        this._instance = new MW.Ship();
+    }
+    return this._instance;
+};
+
+MW.Ship._instance = null;
+
+
+

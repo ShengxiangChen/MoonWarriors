@@ -1,6 +1,6 @@
-var Enemy = cc.Sprite.extend({
+var Enemy = MW.BaseActor.extend({
     eID:0,
-    active:true,
+    _isAlive:true,
     speed:200,
     bulletSpeed:-200,
     HP:15,
@@ -11,6 +11,7 @@ var Enemy = cc.Sprite.extend({
     delayTime:1 + 1.2 * Math.random(),
     attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
     _hurtColorLife:0,
+    _group:"Enemy",
     ctor:function (arg) {
         // needed for JS-Bindings compatibility
         cc.associateWithNative( this, cc.Sprite );
@@ -22,11 +23,13 @@ var Enemy = cc.Sprite.extend({
 
         this.initWithSpriteFrameName(arg.textureName);
         this.schedule(this.shoot, this.delayTime);
+        var size = this.getContentSize();
+        this.setCollideRect(cc.rect(- size.width/2, 0,size.width,size.height/2));
     },
     _timeTick:0,
     update:function (dt) {
         if (this.HP <= 0) {
-            this.active = false;
+            this._isAlive = false;
         }
         this._timeTick += dt;
         if (this._timeTick > 0.1) {
@@ -38,25 +41,28 @@ var Enemy = cc.Sprite.extend({
                 this.setColor( cc.white() );
             }
         }
+        this._super();
     },
     destroy:function () {
+        this._super();
+
         MW.SCORE += this.scoreValue;
-        var a = new Explosion();
-        a.setPosition(this.getPosition());
-        this.getParent().addChild(a);
-        spark(this.getPosition(),this.getParent(), 1.2, 0.7);
-        cc.ArrayRemoveObject(MW.CONTAINER.ENEMIES,this);
-        this.removeFromParentAndCleanup(true);
+        var explosion = new Explosion();
+        explosion.setPosition(this.getPosition());
+        this._delegate.getScene().addChild(explosion);
+
+        spark(this.getPosition(),this._delegate.getScene(), 1.2, 0.7);
+
         if(MW.SOUND){
             cc.AudioEngine.getInstance().playEffect(MW.Res.s_explodeEffect);
         }
     },
     shoot:function () {
         var p = this.getPosition();
-        var b = new Bullet(this.bulletSpeed, "W2.png", this.attackMode);
-        MW.CONTAINER.ENEMY_BULLETS.push(b);
-        this.getParent().addChild(b, b.zOrder, MW.UNIT_TAG.ENMEY_BULLET);
-        b.setPosition(cc.p(p.x, p.y - this.getContentSize().height * 0.2));
+        var bullet = new MW.EnemyBullet();
+        this._delegate.getScene().addActor(bullet);
+        bullet.setPosition(cc.p(p.x, p.y - this.getContentSize().height * 0.2));
+        bullet.setDelegate(this._delegate);
     },
     hurt:function () {
         this._hurtColorLife = 2;

@@ -8,6 +8,10 @@ if (cc.config.deviceType == 'browser') {
 }
 
 MW.Res = {
+    //mainMenu
+    s_mainMenu_plist:dirImg+"mainMenu.plist",
+    s_mainMenu_png:dirImg+"mainMenu.png",
+
     //image
     s_bg01:dirImg + "bg01.jpg",
     s_b01:dirImg + "b01.png",
@@ -49,6 +53,10 @@ MW.Res = {
 };
 
 var g_ressources = [
+    //main Menu
+    {type:"plist", src:MW.Res.s_mainMenu_plist},
+    {type:"image", src:MW.Res.s_mainMenu_png},
+
     //image
     {type:"image", src:MW.Res.s_bg01},
     {type:"image", src:MW.Res.s_b01},
@@ -76,6 +84,7 @@ var g_ressources = [
     {type:"plist", src:MW.Res.s_Enemy_plist},
     {type:"plist", src:MW.Res.s_explosion_plist},
     {type:"plist", src:MW.Res.s_bullet_plist},
+
 
     //music
     {type:"bgm", src:MW.Res.s_bgMusic},
