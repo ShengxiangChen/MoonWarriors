@@ -114,7 +114,7 @@ MW.Ship = MW.BaseActor.extend({
     destroy:function () {
         MW.LIFE--;
 
-        var explosion = new Explosion();
+        var explosion = new MW.Explosion();
         explosion.setPosition(this.getPosition());
         this._delegate.getScene().addChild(explosion);
 
@@ -127,12 +127,6 @@ MW.Ship = MW.BaseActor.extend({
             this.HP--;
             this.setColor(cc.red());
         }
-    },
-    collideRect:function () {
-        var p = this.getPosition();
-        var a = this.getContentSize();
-        var r = new cc.rect(p.x - a.width / 2, p.y - a.height / 2, a.width, a.height / 2);
-        return r;
     }
 });
 

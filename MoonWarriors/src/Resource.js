@@ -6,6 +6,12 @@ if (cc.config.deviceType == 'browser') {
     dirMusic = "MoonWarriors/res/Music/";
     musicSuffix = "";
 }
+else if( cc.config.engine == 'cocos2d-x') {
+    dirImg = "res/";
+    dirMusic = "res/Music/";
+    musicSuffix = ".mp3";
+}
+
 
 MW.Res = {
     //mainMenu

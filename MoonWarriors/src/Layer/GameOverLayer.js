@@ -1,6 +1,4 @@
-var GameOver = cc.Layer.extend({
-    _ship:null,
-    _lbScore:0,
+MW.GameOverLayer = cc.Layer.extend({
     ctor:function () {
         // needed for JS-Bindings compatibility
         cc.associateWithNative(this, cc.Layer);
@@ -8,7 +6,7 @@ var GameOver = cc.Layer.extend({
     setScene:function (scene) {
         this._scene = scene;
     },
-    getScene:function (scene) {
+    getScene:function () {
         return this._scene;
     },
     onEnter:function () {
@@ -21,9 +19,7 @@ var GameOver = cc.Layer.extend({
         var playAgain = cc.MenuItemSprite.create(
             cc.Sprite.create(MW.Res.s_menu, cc.rect(378, 0, 126, 33)),
             cc.Sprite.create(MW.Res.s_menu, cc.rect(378, 33, 126, 33)),
-            this, function () {
-                flareEffect(this, this, this.onPlayAgain);
-            });
+            this, this.onPlayAgain);
         playAgain.setPosition(cc.p(0, -10));
         var menu = cc.Menu.create(playAgain);
         this.addChild(menu, 1, 2);
@@ -56,34 +52,26 @@ var GameOver = cc.Layer.extend({
         var b1 = cc.LabelTTF.create("Download Cocos2d-html5", "Arial", 14);
         var b2 = cc.LabelTTF.create("Download This Sample", "Arial", 14);
         var menu1 = cc.MenuItemLabel.create(b1, this, function () {
-            window.location.href = "http://www.cocos2d-x.org/projects/cocos2d-x/wiki/Cocos2d-html5";
+            window.open("http://www.cocos2d-x.org/projects/cocos2d-x/wiki/Cocos2d-html5");
         });
         var menu2 = cc.MenuItemLabel.create(b2, this, function () {
-            window.location.href = "https://github.com/ShengxiangChen/MoonWarriors";
+            window.open("https://github.com/ShengxiangChen/MoonWarriors");
         });
         var cocos2dMenu = cc.Menu.create(menu1, menu2);
         cocos2dMenu.alignItemsVerticallyWithPadding(10);
         cocos2dMenu.setPosition(cc.pAdd(MW.VisibleRect.center(), cc.p(0, -170)));
         this.addChild(cocos2dMenu);
     },
-    onPlayAgain:function (pSender) {
+    onPlayAgain:function () {
         this.removeAllChildrenWithCleanup(true);
         this.removeFromParentAndCleanup(true);
         this._scene.menuPlayAgain();
     }
 });
 
-GameOver.create = function () {
-    var sg = new GameOver();
-    if (sg && sg.init()) {
-        return sg;
+MW.GameOverLayer.create = function () {
+    var layer = new MW.GameOverLayer();
+    if (layer && layer.init()) {
+        return layer;
     }
-    return null;
-};
-
-GameOver.scene = function () {
-    var scene = cc.Scene.create();
-    var layer = GameOver.create();
-    scene.addChild(layer);
-    return scene;
 };

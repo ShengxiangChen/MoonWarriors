@@ -14,6 +14,12 @@ MW.GameUILayer = cc.Layer.extend({
 
         return true;
     },
+    setScene:function (scene) {
+        this._scene = scene;
+    },
+    getScene:function () {
+        return this._scene;
+    },
     _initUI:function () {
         // score
         this.lbScore = cc.LabelTTF.create("Score: 0", "Arial", 14, cc.SizeMake(80, 14), cc.TEXT_ALIGNMENT_RIGHT);
@@ -47,7 +53,11 @@ MW.GameUILayer = cc.Layer.extend({
     },
 
     update:function () {
-
+        if (this._scene.getScore() < MW.SCORE) {
+            this._scene.setScore(this._scene.getScore()+5);
+        }
+        this._lbLife.setString(MW.LIFE);
+        this.lbScore.setString("Score: " + this._scene.getScore());
     },
     backToMenu:function (pSender) {
         MW.GameController.getInstance().backToMenu();

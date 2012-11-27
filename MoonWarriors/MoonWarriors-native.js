@@ -36,10 +36,12 @@ var appFiles = [
 
     //Config
     'Config/GameConfig.js',
+    'Config/AutoAdaptive.js',
     'Config/EnemyType.js',
     'Config/Level.js',
 
     //Actor
+    'Actor/BaseActor.js',
     'Actor/Ship.js',
     'Actor/Enemy.js',
     'Actor/Bullet.js',
@@ -47,6 +49,7 @@ var appFiles = [
     //Effect
     'Effect/Effect.js',
     'Effect/Explosion.js',
+    'Effect/Explode.js',
 
     //Controller
     'Controller/LevelManager.js',
@@ -54,6 +57,7 @@ var appFiles = [
 
     //Layer
     'Layer/GameLayer.js',
+    'Layer/BackgroundLayer.js',
     'Layer/GameOverLayer.js',
     'Layer/AboutLayer.js',
     'Layer/GameUILayer.js',
@@ -61,7 +65,8 @@ var appFiles = [
     'Layer/StartMenuLayer.js',
 
     //Scene
-    'Scene/StartMenuScene.js'
+    'Scene/StartMenuScene.js',
+    'Scene/GameScene.js'
 ];
 
 cc.dumpConfig();
@@ -70,14 +75,17 @@ for (var i = 0; i < appFiles.length; i++) {
     require(appFiles[i]);
 }
 
+MW.AutoAdaptive.getInstance().initVisible();
+
 var director = cc.Director.getInstance();
 director.setDisplayStats(true);
+
 
 // set FPS. the default value is 1.0/60 if you don't call this
 director.setAnimationInterval(1.0 / 60);
 
 // create a scene. it's an autorelease object
-var mainScene = MWStartMenuLayer.scene();
+var mainScene = MW.StartMenuScene.create();
 
 // run
 director.runWithScene(mainScene);

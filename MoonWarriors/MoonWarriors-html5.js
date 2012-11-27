@@ -56,6 +56,7 @@ var MW = MW || {};
             //Effect
             'MoonWarriors/src/Effect/Effect.js',
             'MoonWarriors/src/Effect/Explosion.js',
+            'MoonWarriors/src/Effect/Explode.js',
 
             //Controller
             'MoonWarriors/src/Controller/LevelManager.js',

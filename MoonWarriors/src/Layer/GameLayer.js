@@ -7,40 +7,12 @@
 
 MW.GameLayer = cc.Layer.extend({
     _player:null,
-    _levelManager:null,
-    screenRect:null,
-    explosionAnimation:[],
     _beginPos:cc.p(0, 0),
     _isTouch:false,
     _scene:null,
+    _isGameOverLoading:false,
     ctor:function () {
         cc.associateWithNative(this, cc.Layer);
-    },
-    onEnter:function () {
-        this._super();
-        this.screenRect = cc.rect(0, 0, MW.ScreenWidth, MW.ScreenHeight + 10);
-
-        // ship
-        this._player = new MW.Ship();
-        this._player.setDelegate(this);
-        this._scene.addActor(this._player);
-
-        // accept touch now!
-        var t = cc.config.deviceType;
-        if (t == 'browser') {
-            this.setTouchEnabled(true);
-            this.setKeyboardEnabled(true);
-        }
-        else if (t == 'desktop') {
-            this.setMouseEnabled(true);
-        }
-        else if (t == 'mobile') {
-            this.setTouchEnabled(true);
-        }
-
-        MW.PlayBackgroundMusic(MW.Res.s_bgMusic, true);
-
-        return true;
     },
     getPlayer:function () {
         return this._player;
@@ -48,8 +20,43 @@ MW.GameLayer = cc.Layer.extend({
     setScene:function (scene) {
         this._scene = scene;
     },
-    getScene:function (scene) {
+    getScene:function () {
         return this._scene;
+    },
+    onEnter:function () {
+        this._super();
+
+        this.initPlayer();
+        this.setControll(true);
+
+        this._isGameOverLoading = false;
+        MW.PlayBackgroundMusic(MW.Res.s_bgMusic, true);
+
+        return true;
+    },
+    onExit:function () {
+        this._super();
+        this._player = null;
+    },
+    setControll:function (bool) {
+        var t = cc.config.deviceType;
+        if (t == 'browser') {
+            this.setTouchEnabled(bool);
+            this.setKeyboardEnabled(bool);
+        }
+        else if (t == 'desktop') {
+            this.setMouseEnabled(bool);
+        }
+        else if (t == 'mobile') {
+            this.setTouchEnabled(bool);
+        }
+
+    },
+    initPlayer:function () {
+        // ship
+        this._player = new MW.Ship();
+        this._player.setDelegate(this);
+        this._scene.addActor(this._player);
     },
     onTouchesBegan:function (touches, event) {
         this._isTouch = true;
@@ -67,7 +74,6 @@ MW.GameLayer = cc.Layer.extend({
             this.processEvent(event);
         }
     },
-
     processEvent:function (event) {
         if (this._scene.getGameState() == MW.GAME_STATE.PLAYING) {
             if (this._player && this._player.getIsAlive()) {
@@ -79,7 +85,6 @@ MW.GameLayer = cc.Layer.extend({
             }
         }
     },
-
     onKeyDown:function (e) {
         MW.KEYS[e] = true;
     },
@@ -87,7 +92,6 @@ MW.GameLayer = cc.Layer.extend({
     onKeyUp:function (e) {
         MW.KEYS[e] = false;
     },
-
     update:function (dt) {
         if (this._player && this._player.getIsAlive()) {
             this._player.update(dt);
@@ -139,11 +143,12 @@ MW.GameLayer = cc.Layer.extend({
                         tmpBullet.hurt();
                         enemy.hurt();
                     }
-                    if (enemy.collideWith(this._player)) {
-                        this._player.hurt();
-                        enemy.hurt();
+                    if (enemy && this._player) {
+                        if (enemy.collideWith(this._player)) {
+                            this._player.hurt();
+                            enemy.hurt();
+                        }
                     }
-
                 }
             }
         }
@@ -159,26 +164,25 @@ MW.GameLayer = cc.Layer.extend({
         }
     },
     checkForReborn:function () {
-        if (MW.LIFE > 0 && !this._player.getIsAlive()) {
+        if (MW.LIFE > 0 && this._player && !this._player.getIsAlive()) {
             // ship
             this._player = new MW.Ship();
             this._player.setDelegate(this);
             this._scene.addActor(this._player);
         }
-        else if (MW.LIFE <= 0 && !this._player.getIsAlive()) {
-            this._scene.setGameState(MW.GAME_STATE.OVER);
-            // XXX: needed for JS bindings.
-            this._player = null;
-            this.runAction(cc.Sequence.create(
-                cc.DelayTime.create(1),
-                cc.CallFunc.create(this, this.onGameOver)));
+        else if (MW.LIFE <= 0 && this._player && !this._player.getIsAlive()) {
+            if (!this._isGameOverLoading) {
+                this._isGameOverLoading = true;
+                var action = cc.Sequence.create(cc.DelayTime.create(3), cc.CallFunc.create(this, this.onGameOver));
+                this.runAction(action);
+            }
         }
     },
-
     onGameOver:function () {
-       this.removeAllChildrenWithCleanup(true);
-       this.onExit();
-       this._scene.setGameOver();
+        this.setControll(true);
+        this._scene.removeAllActor();
+        this._scene.setGameOver();
+        this.onExit();
     }
 });
 

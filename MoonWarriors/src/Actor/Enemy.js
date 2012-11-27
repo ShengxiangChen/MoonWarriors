@@ -47,7 +47,7 @@ var Enemy = MW.BaseActor.extend({
         this._super();
 
         MW.SCORE += this.scoreValue;
-        var explosion = new Explosion();
+        var explosion = new MW.Explosion();
         explosion.setPosition(this.getPosition());
         this._delegate.getScene().addChild(explosion);
 
@@ -75,7 +75,3 @@ var Enemy = MW.BaseActor.extend({
         return cc.rect(p.x - a.width/2, p.y - a.height/4,a.width,a.height/2);
     }
 });
-
-Enemy.sharedEnemy = function(){
-    cc.SpriteFrameCache.getInstance().addSpriteFrames(MW.Res.s_Enemy_plist, MW.Res.s_Enemy);
-};

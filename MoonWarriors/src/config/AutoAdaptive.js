@@ -2,15 +2,15 @@ MW.AutoAdaptive = cc.Class.extend({
     initVisible:function () {
         //init anchor point
         MW.AnchorPoint = {
-            Center:new cc.Point(0.5, 0.5),
-            Top:new cc.Point(0.5, 1),
-            TopRight:new cc.Point(1, 1),
-            Right:new cc.Point(1, 0.5),
-            BottomRight:new cc.Point(1, 0),
-            Bottom:new cc.Point(0.5, 0),
-            BottomLeft:new cc.Point(0, 0),
-            Left:new cc.Point(0, 0.5),
-            TopLeft:new cc.Point(0, 1)
+            Center:cc.p(0.5, 0.5),
+            Top:cc.p(0.5, 1),
+            TopRight:cc.p(1, 1),
+            Right:cc.p(1, 0.5),
+            BottomRight:cc.p(1, 0),
+            Bottom:cc.p(0.5, 0),
+            BottomLeft:cc.p(0, 0),
+            Left:cc.p(0, 0.5),
+            TopLeft:cc.p(0, 1)
         };
 
         //init visible rect

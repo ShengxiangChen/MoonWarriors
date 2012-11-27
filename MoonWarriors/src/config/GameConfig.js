@@ -18,7 +18,7 @@
 //game state
 MW.GAME_STATE = {
     HOME:0,
-    PLAY:1,
+    PLAYING:1,
     OVER:2
 };
 
@@ -91,4 +91,25 @@ MW.CONTAINER = {
     ENEMIES:[],
     ENEMY_BULLETS:[],
     PLAYER_BULLETS:[]
+};
+
+// zOrder
+MW.ZORDER = {
+    BG:0,
+    DECO:10,
+    UNIT:100,
+    UI:200,
+    TOP:999
+};
+
+MW.PlayEffect = function (path, loop) {
+    if (MW.SOUND) {
+        cc.AudioEngine.getInstance().playEffect(path, loop);
+    }
+};
+
+MW.PlayBackgroundMusic = function (path, loop) {
+    if (MW.SOUND) {
+        cc.AudioEngine.getInstance().playBackgroundMusic(path, loop);
+    }
 };

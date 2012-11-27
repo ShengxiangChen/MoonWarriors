@@ -23,7 +23,7 @@ MW.StartMenuLayer = cc.Layer.extend({
 
         return true;
     },
-    onExit:function(){
+    onExit:function () {
         this._super();
         cc.SpriteFrameCache.getInstance().removeSpriteFrameByName(MW.Res.s_mainMenu_plist);
         this.removeAllChildrenWithCleanup(true);
@@ -46,7 +46,9 @@ MW.StartMenuLayer = cc.Layer.extend({
             cc.Sprite.createWithSpriteFrameName("newgame01.png"),
             cc.Sprite.createWithSpriteFrameName("newgame02.png"),
             cc.Sprite.createWithSpriteFrameName("newgame03.png"),
-            this, this.onNewGame);
+            this, function () {
+                flareEffect(this, this, this.onNewGame);
+            });
 
         var gameSettings = cc.MenuItemSprite.create(
             cc.Sprite.createWithSpriteFrameName("option01.png"),
@@ -83,14 +85,14 @@ MW.StartMenuLayer = cc.Layer.extend({
         this.onButtonEffect();
 
         var settingsLayer = MW.SettingsLayer.create();
-        this.addChild(settingsLayer,MW.ZORDER.TOP);
+        this.addChild(settingsLayer, MW.ZORDER.TOP);
     },
 
     onAbout:function (sender) {
         this.onButtonEffect();
 
         var about = MW.AboutLayer.create();
-        this.addChild(about,MW.ZORDER.TOP);
+        this.addChild(about, MW.ZORDER.TOP);
     },
 
     update:function () {

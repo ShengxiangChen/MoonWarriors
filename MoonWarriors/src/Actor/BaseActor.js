@@ -4,6 +4,7 @@ MW.BaseActor = cc.Sprite.extend({
     _collideRect:cc.rect(0, 0, 10, 10),
     _scene:null,
     _group:"Default",
+    _pause:false,
     ctor:function () {
         this._super();
         // needed for JS-Bindings compatibility
@@ -28,10 +29,10 @@ MW.BaseActor = cc.Sprite.extend({
         this._group = scene
     },
     getIsPause:function () {
-        return this.pause
+        return this._pause
     },
     setIsPause:function (p) {
-        this.pause = p
+        this._pause = p
     },
     getIsAlive:function () {
         return this._isAlive
@@ -90,8 +91,7 @@ MW.BaseActor = cc.Sprite.extend({
         ptCenter2 = cc.pAdd(actor.getPosition(), ptCenter2);
 
         var dis = cc.pDistance(ptCenter1, ptCenter2);
-        var bool = (dis <= (radius1 + radius2));
-        return bool;
+        return (dis <= (radius1 + radius2));
     },
     collidesWithRect:function (rect, collides) {
 
@@ -103,14 +103,13 @@ MW.BaseActor = cc.Sprite.extend({
         this.stopAllActions();
         this.setUpdatebySelf(false);
         this._scene.removeActor(this);
-        this.removeFromParentAndCleanup(true);
     },
     destroy:function(){
         var scene = MW.GameController.getInstance().getCurScene();
         scene.removeActor(this);
     },
     resetState:function () {
-        this.pause = false;
+        this._pause = false;
         this._isAlive = true;
         this.setUpdatebySelf(true);
     }

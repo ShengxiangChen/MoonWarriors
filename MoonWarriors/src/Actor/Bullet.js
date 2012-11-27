@@ -11,25 +11,10 @@ MW.Bullet = MW.BaseActor.extend({
     _group:"EnemyBulet",
     attackMode:MW.ENEMY_MOVE_TYPE.NORMAL,
     parentType:MW.BULLET_TYPE.PLAYER,
-    ctor:function (bulletSpeed, weaponType, attackMode) {
+    ctor:function () {
         this._super();
-
-     /*   this.yVelocity = -bulletSpeed;
-        this.attackMode = attackMode;
-        this._weaponType = weaponType;*/
-        cc.SpriteFrameCache.getInstance().addSpriteFrames(MW.Res.s_bullet_plist);
         this.initWithSpriteFrameName(this._weaponType);
         this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
-        /*var tmpAction;
-         switch (this.attackMode) {
-         case MW.ENEMY_MOVE_TYPE.NORMAL:
-         tmpAction = cc.MoveBy.create(2, cc.p(this.getPosition().x, 400));
-         break;
-         case MW.ENEMY_ATTACK_MODE.TSUIHIKIDAN:
-         tmpAction = cc.MoveTo.create(2, MW.GameLayer.create()._ship.getPosition());
-         break;
-         }
-         this.runAction(tmpAction);*/
     },
     update:function (dt) {
         var p = this.getPosition();
@@ -44,23 +29,12 @@ MW.Bullet = MW.BaseActor.extend({
     destroy:function () {
        this._super();
 
-        var explode = cc.Sprite.create(MW.Res.s_hit);
-        explode.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
+         var explode = MW.Explode.create();
         explode.setPosition(this.getPosition());
-        explode.setRotation(Math.random()*360);
-        explode.setScale(0.75);
         this._delegate.getScene().addChild(explode,MW.ZORDER.TOP+100);
-
-        var removeExplode = cc.CallFunc.create(explode,explode.removeFromParentAndCleanup,true);
-        explode.runAction(cc.ScaleBy.create(0.3, 2,2));
-        explode.runAction(cc.Sequence.create(cc.FadeOut.create(0.3), removeExplode));
     },
     hurt:function () {
         this.HP--;
-    },
-    collideRect:function(){
-        var p = this.getPosition();
-        return cc.rect(p.x - 3, p.y - 3, 6, 6);
     }
 });
 
